@@ -1,0 +1,63 @@
+{
+  "name": "@2players/ft",
+  "description": "A simple game framework in ECS pattern.",
+  "version": "0.1.0",
+  "repository": "2players/ft",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
+    "test": "ava",
+    "code-quality": "npm run lint && npm run test",
+    "cleanup": "rm -rf dist",
+    "transpile": "babel src -d dist",
+    "copy-files": "cp -r package.json README.md LICENSE dist",
+    "build": "npm run cleanup && npm run transpile && npm run copy-files",
+    "release":
+      "npm run code-quality && npm run build && cd dist && npm publish"
+  },
+  "files": [
+    "*"
+  ],
+  "main": "index.js",
+  "keywords": [
+    ""
+  ],
+  "dependencies": {
+     "core-js": "^2.5.7"
+  },
+  "devDependencies": {
+    "ava": "1.0.0-rc.1",
+    "babel-eslint": "^10.0.1",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "esm": "^3.0.84",
+    "eslint": "^5.2.0",
+    "eslint-plugin-ava": "^5.0.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-config-prettier": "^3.1.0",
+    "prettier": "^1.11.1",
+    "husky": "^1.1.3",
+    "lint-staged": "^8.0.4"
+  },
+  "ava": {
+    "require": [
+      "./test/_register.js",
+      "esm"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "**/*.{json,md}": ["prettier --write", "git add"],
+      "**/*.js": ["eslint --fix", "git add"]
+    }
+  }
+}
