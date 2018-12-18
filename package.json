@@ -26,6 +26,7 @@
   "dependencies": {
     "@tweenjs/tween.js": "^17.2.0",
     "core-js": "^2.5.7",
+    "fast-glob": "^2.2.4",
     "pixi-sound": "^2.0.4",
     "pixi-spine": "^1.5.19",
     "pixi.js": "^4.8.3",
