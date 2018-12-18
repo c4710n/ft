@@ -1,13 +1,7 @@
-'use strict'
-
-function print(input, opts) {
-  if (typeof input !== 'string') {
-    throw new TypeError(`Expected a string, got ${typeof input}`)
-  }
-
-  opts = opts || {}
-
-  return input + ' & ' + (opts.postfix || 'rainbows')
-}
-
-export default print
+export * from './core'
+export * from './ecs'
+export * from './display'
+export * from './res'
+export * from './animation'
+export * from './scene'
+export * from './debug'
