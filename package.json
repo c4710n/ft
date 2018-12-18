@@ -14,8 +14,7 @@
     "transpile": "babel src -d dist",
     "copy-files": "cp -r package.json README.md LICENSE dist",
     "build": "npm run cleanup && npm run transpile && npm run copy-files",
-    "release":
-      "npm run code-quality && npm run build && cd dist && npm publish"
+    "release": "npm run code-quality && npm run build && cd dist && npm publish"
   },
   "files": [
     "*"
@@ -25,17 +24,23 @@
     ""
   ],
   "dependencies": {
-     "core-js": "^2.5.7"
+    "core-js": "^2.5.7"
   },
   "devDependencies": {
     "ava": "1.0.0-rc.1",
     "babel-eslint": "^10.0.1",
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.2.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "babel-plugin-root-import": "^5.1.0",
+    "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
+    "@babel/preset-env": "^7.2.0",
     "@babel/register": "^7.0.0",
     "esm": "^3.0.84",
     "eslint": "^5.2.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-ava": "^5.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-config-prettier": "^3.1.0",
@@ -56,8 +61,14 @@
   },
   "lint-staged": {
     "linters": {
-      "**/*.{json,md}": ["prettier --write", "git add"],
-      "**/*.js": ["eslint --fix", "git add"]
+      "**/*.{json,md}": [
+        "prettier --write",
+        "git add"
+      ],
+      "**/*.js": [
+        "eslint --fix",
+        "git add"
+      ]
     }
   }
 }
