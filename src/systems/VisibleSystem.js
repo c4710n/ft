@@ -1,3 +1,4 @@
+import { sound } from 'pixi.js'
 import { System } from '../ecs'
 
 class VisibleSystem extends System {
@@ -39,11 +40,11 @@ class VisibleSystem extends System {
 
   onVisibilityChange = () => {
     if (document[this.#hidden]) {
-      // eslint-disable-next-line
-      console.log('pause ticker')
+      sound.muteAll()
+      // TODO: pause ticker
     } else {
-      // eslint-disable-next-line
-      console.log('play ticker')
+      sound.unmuteAll()
+      // TODO: play ticker
     }
   }
 }
