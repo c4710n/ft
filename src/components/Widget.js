@@ -1,4 +1,5 @@
 import { Component } from '../ecs'
+import { classname } from '../utils'
 
 class Widget extends Component {
   constructor(
@@ -6,11 +7,19 @@ class Widget extends Component {
   ) {
     super('widget')
 
-    // NOTE: top and bottom can't be set in the same time, add guard later.
+    if (top !== undefined && bottom !== undefined) {
+      throw new Error(
+        `[${classname(this)}] can't set 'top' and 'bottom' in the same time`
+      )
+    }
     if (top !== undefined) this.top = top
     if (bottom !== undefined) this.bottom = bottom
 
-    // NOTE: left and right can't be set in the same time, add guard later.
+    if (top !== undefined && bottom !== undefined) {
+      throw new Error(
+        `[${classname(this)}] can't set 'left' and 'right' in the same time`
+      )
+    }
     if (left !== undefined) this.left = left
     if (right !== undefined) this.right = right
   }
