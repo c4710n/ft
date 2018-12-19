@@ -1,7 +1,7 @@
 import { Application, utils } from 'pixi.js'
 import { TWEEN } from '../animation'
 import { ECS } from '../ecs'
-import { ScaleSystem, VisibleSystem, WidgetSystem } from '../systems'
+import { ScaleSystem, VisibleSystem, PositionSystem } from '../systems'
 import ResManager from '../res/ResManager'
 import SceneManager from '../scene/SceneManager'
 import { classname } from '../utils'
@@ -60,7 +60,7 @@ class FT {
       })
     )
     ecs.addSystem(new VisibleSystem())
-    ecs.addSystem(new WidgetSystem())
+    ecs.addSystem(new PositionSystem())
 
     const container = document.querySelector(selector)
     this.#container = container

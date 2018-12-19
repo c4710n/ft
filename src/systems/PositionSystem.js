@@ -1,13 +1,13 @@
 import { FT } from '../core'
 import { System } from '../ecs'
 
-class WidgetSystem extends System {
+class PositionSystem extends System {
   test(entity) {
-    return !!entity.components.widget
+    return !!entity.components.position
   }
 
   update(entity) {
-    const { top, bottom, left, right } = entity.components.widget
+    const { top, bottom, left, right } = entity.components.position
     const { bounds } = FT.stage
 
     let x, y
@@ -16,8 +16,14 @@ class WidgetSystem extends System {
     if (left !== undefined) x = bounds.left + left
     if (right !== undefined) x = bounds.right - right
 
-    entity.position.set(x, y)
+    if (x) {
+      entity.position.x = x
+    }
+
+    if (y) {
+      entity.position.y = y
+    }
   }
 }
 
-export default WidgetSystem
+export default PositionSystem

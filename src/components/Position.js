@@ -1,11 +1,11 @@
 import { Component } from '../ecs'
 import { classname } from '../utils'
 
-class Widget extends Component {
+class Position extends Component {
   constructor(
     { top, bottom, left, right } = { top: 0, bottom: 0, left: 0, right: 0 }
   ) {
-    super('widget')
+    super('position')
 
     if (top !== undefined && bottom !== undefined) {
       throw new Error(
@@ -25,4 +25,4 @@ class Widget extends Component {
   }
 }
 
-export default Widget
+export default Position
