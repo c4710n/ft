@@ -7,22 +7,33 @@ class PositionSystem extends System {
   }
 
   update(entity) {
-    const { top, bottom, left, right } = entity.components.position
+    let $x, $y
+    const {
+      anchor,
+      top,
+      bottom,
+      left,
+      right,
+      x,
+      y,
+    } = entity.components.position
     const { bounds } = FT.stage
 
-    let x, y
-    if (top !== undefined) y = bounds.top + top
-    if (bottom !== undefined) y = bounds.bottom - bottom
-    if (left !== undefined) x = bounds.left + left
-    if (right !== undefined) x = bounds.right - right
+    // anchor
+    entity.anchor.set(...anchor)
 
-    if (x) {
-      entity.position.x = x
-    }
+    // absolute position feature
+    if (x !== undefined) $x = x
+    if (y !== undefined) $y = y
 
-    if (y) {
-      entity.position.y = y
-    }
+    // widget-like position feature
+    if (left !== undefined) $x = bounds.left + left
+    if (right !== undefined) $x = bounds.right - right
+    if (top !== undefined) $y = bounds.top + top
+    if (bottom !== undefined) $y = bounds.bottom - bottom
+
+    if ($x) entity.position.x = $x
+    if ($y) entity.position.y = $y
   }
 }
 

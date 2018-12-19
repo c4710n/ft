@@ -3,7 +3,15 @@ import { classname } from '../utils'
 
 class Position extends Component {
   constructor(
-    { top, bottom, left, right } = { top: 0, bottom: 0, left: 0, right: 0 }
+    { anchor, top, bottom, left, right, x, y } = {
+      anchor: [0, 0],
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      x: 0,
+      y: 0,
+    }
   ) {
     super('position')
 
@@ -22,6 +30,11 @@ class Position extends Component {
     }
     if (left !== undefined) this.left = left
     if (right !== undefined) this.right = right
+
+    if (x !== undefined) this.x = x
+    if (y !== undefined) this.y = y
+
+    if (anchor !== undefined) this.anchor = anchor
   }
 }
 
