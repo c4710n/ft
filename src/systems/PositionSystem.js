@@ -21,6 +21,16 @@ class PositionSystem extends System {
 
     $anchor = anchor || [0.5, 0.5]
 
+    if (entity.anchor) {
+      entity.anchor.set(...$anchor)
+    } else {
+      const [percentX, percentY] = $anchor
+      const { width, height } = entity
+      const pivotX = width * percentX
+      const pivotY = height * percentY
+      entity.pivot.set(pivotX, pivotY)
+    }
+
     if (x !== undefined) $x = x
     if (y !== undefined) $y = y
 
@@ -29,7 +39,6 @@ class PositionSystem extends System {
     if (top !== undefined) $y = bounds.top + top
     if (bottom !== undefined) $y = bounds.bottom - bottom
 
-    entity.anchor.set(...$anchor)
     if ($x) entity.position.x = $x
     if ($y) entity.position.y = $y
   }
