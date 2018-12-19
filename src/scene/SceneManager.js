@@ -123,6 +123,7 @@ class SceneManager {
         return true
       } else {
         FT.internal.stage.removeChild(scene)
+        scene.destroy({ children: true })
         return false
       }
     })
@@ -137,6 +138,7 @@ class SceneManager {
     if (index >= 0) {
       const scene = this.activeScenes[index]
       FT.internal.stage.removeChild(scene)
+      scene.destroy({ children: true })
       this.activeScenes.splice(index, 1)
     }
   }
