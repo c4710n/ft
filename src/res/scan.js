@@ -1,4 +1,4 @@
-/* global require, module, __filename */
+/* eslint-env node */
 
 /**
  * This module scan a directory and generate an array containing metadatas of

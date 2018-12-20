@@ -19,8 +19,11 @@ module.exports = function generateConfig(api) {
     '@babel/plugin-syntax-dynamic-import',
   ]
 
+  const exclude = ['./src/res/scan.js']
+
   return {
     presets,
     plugins,
+    exclude,
   }
 }
