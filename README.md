@@ -6,6 +6,14 @@
 
 Currently, ft doesn't in strict ECS pattern. ;[
 
+## Feature
+
+- built-in resource scanner (require webpack and val-loader)
+- built-in resource manager
+- built-in scene manager
+- responsive stage
+- ...
+
 ## Dependencies
 
 - 2D WebGL renderer - [pixi.js](https://github.com/pixijs/pixi.js)
