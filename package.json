@@ -33,6 +33,7 @@
     "pixi-spine": "^1.5.19",
     "pixi.js": "^4.8.3",
     "qs": "^6.6.0",
+    "string-length": "^2.0.0",
     "vconsole": "^3.2.0"
   },
   "devDependencies": {
