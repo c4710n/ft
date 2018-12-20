@@ -1,2 +1,4 @@
 // delegate contents of pixi.js
-export * from 'pixi.js'
+import * as PIXI from 'pixi.js'
+
+export default PIXI
