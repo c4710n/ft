@@ -20,6 +20,7 @@
   "files": [
     "*"
   ],
+  "sideEffects": false,
   "main": "index.js",
   "keywords": [
     ""
