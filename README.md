@@ -6,7 +6,7 @@
 
 Currently, ft doesn't in strict ECS pattern. ;[
 
-## Feature
+## Features
 
 - built-in resource scanner (require webpack and val-loader)
 - built-in resource manager
