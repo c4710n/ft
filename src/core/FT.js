@@ -17,7 +17,7 @@ const defaultOptions = {
   antialias: true,
   autoStart: false,
   scaleMode: 'COVER',
-  backgroundColor: 'rgba(0, 0, 0, 0)',
+  backgroundColor: '#ffffff',
 }
 
 class FT {
@@ -117,7 +117,7 @@ class FT {
     container.style.userSelect = 'none'
     container.style.touchAction = 'none'
     container.style.cursor = 'auto'
-    container.style.WebkitTapHighlightColor = 'rgba(1, 1, 1, 1)'
+    container.style.WebkitTapHighlightColor = 'rgba(0, 0, 0, 0)'
   }
 }
 
