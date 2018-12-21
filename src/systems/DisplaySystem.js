@@ -11,7 +11,16 @@ class DisplaySystem extends System {
 
     const defaultAnchor = [0.5, 0.5]
     const { $anchor = defaultAnchor } = displayObject
-    displayObject.anchor.set(...$anchor)
+
+    if (displayObject.anchor) {
+      displayObject.anchor.set(...$anchor)
+    } else {
+      const [percentX, percentY] = $anchor
+      const { width, height } = displayObject
+      const pivotX = width * percentX
+      const pivotY = height * percentY
+      displayObject.pivot.set(pivotX, pivotY)
+    }
 
     FT.internal.stage.addChild(displayObject)
   }
