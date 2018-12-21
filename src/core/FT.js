@@ -1,7 +1,12 @@
 import { Container, ticker } from 'pixi.js'
 import { TWEEN } from '#/animation'
 import { ECS } from '#/ecs'
-import { BasicRenderSystem, VisibleSystem, PositionSystem } from '#/systems'
+import {
+  DisplaySystem,
+  VisibleSystem,
+  WidgetSystem,
+  BasicRenderSystem,
+} from '#/systems'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
 
@@ -57,7 +62,8 @@ class FT {
     this.ticker = ticker
 
     ecs.addSystem(new VisibleSystem())
-    ecs.addSystem(new PositionSystem())
+    ecs.addSystem(new DisplaySystem())
+    ecs.addSystem(new WidgetSystem())
 
     const scaleOptions = {
       width,

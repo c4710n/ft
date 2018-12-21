@@ -44,10 +44,9 @@ class Entity {
      * @property {Object} components
      */
     this.components = {}
-
-    // components initialisation
     for (const component of components) {
-      this.components[component.name] = component
+      const { name, data } = component
+      this.components[name] = data
     }
 
     /**
@@ -117,7 +116,8 @@ class Entity {
    * @param {Object} data Component data.
    */
   addComponent(component) {
-    this.components[component.name] = component
+    const { name, data } = component
+    this.components[name] = data
     this.setSystemsDirty()
   }
 
