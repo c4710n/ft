@@ -68,9 +68,9 @@ class SceneManager {
    * @param {Object} [options]
    * @param {boolean} [options.sticky=false] scene will not be removed unless
    *                                         you unload it explicitly
-   * @param {boolean} [options.transition=true] enable transition when switching
+   * @param {boolean} [options.transition=false] enable transition when switching
    *                                            scene
-   * @param {number} [options.transitionTime=1] transition's duration, unit in
+   * @param {number} [options.transitionTime=500] transition's duration, unit in
    *                                            seconds
    * @return {boolean} load is done or not
    */
