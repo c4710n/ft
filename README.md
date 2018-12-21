@@ -2,10 +2,6 @@
 
 > A simple game framework in ECS pattern.
 
-## NOTE
-
-Currently, ft doesn't in strict ECS pattern. ;[
-
 ## Features
 
 - built-in resource scanner (require webpack and val-loader)
@@ -14,11 +10,13 @@ Currently, ft doesn't in strict ECS pattern. ;[
 - responsive stage
 - ...
 
-## Dependencies
+## Supported By
+
+ft is supported by helpful libraries:
 
 - 2D WebGL renderer - [pixi.js](https://github.com/pixijs/pixi.js)
-  - Spine support - [pixijs/pixi-spine](https://github.com/pixijs/pixi-spine)
-- Sound support - [pixijs/pixi-sound](https://github.com/pixijs/pixi-sound)
+- Spine support - [pixi-spine](https://github.com/pixijs/pixi-spine)
+- Sound support - [pixi-sound](https://github.com/pixijs/pixi-sound)
 - Tween library - [tween.js](https://github.com/tweenjs/tween.js)
 - Web Console - [vConsole](https://github.com/Tencent/vConsole)
 
