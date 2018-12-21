@@ -3,12 +3,12 @@ import { System } from '#/ecs'
 
 class WidgetSystem extends System {
   test(entity) {
-    return !!entity.components.displayObject && !!entity.components.widget
+    return !!entity.components.display && !!entity.components.widget
   }
 
   update(entity) {
     let $x, $y
-    const { displayObject, widget } = entity.components
+    const { display, widget } = entity.components
     const { top, bottom, left, right } = widget
     const { bounds } = FT.stage
 
@@ -17,8 +17,8 @@ class WidgetSystem extends System {
     if (top !== undefined) $y = bounds.top + top
     if (bottom !== undefined) $y = bounds.bottom - bottom
 
-    if ($x) displayObject.position.x = $x
-    if ($y) displayObject.position.y = $y
+    if ($x) display.position.x = $x
+    if ($y) display.position.y = $y
   }
 }
 

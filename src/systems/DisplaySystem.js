@@ -3,34 +3,34 @@ import { System } from '#/ecs'
 
 class DisplaySystem extends System {
   test(entity) {
-    return !!entity.components.displayObject
+    return !!entity.components.display
   }
 
   enter(entity) {
-    const { displayObject } = entity.components
+    const { display } = entity.components
 
     const defaultAnchor = [0.5, 0.5]
-    const { $anchor = defaultAnchor } = displayObject
+    const { $anchor = defaultAnchor } = display
 
-    if (displayObject.anchor) {
-      displayObject.anchor.set(...$anchor)
+    if (display.anchor) {
+      display.anchor.set(...$anchor)
     } else {
       const [percentX, percentY] = $anchor
-      const { width, height } = displayObject
+      const { width, height } = display
       const pivotX = width * percentX
       const pivotY = height * percentY
-      displayObject.pivot.set(pivotX, pivotY)
+      display.pivot.set(pivotX, pivotY)
     }
 
-    FT.internal.stage.addChild(displayObject)
+    FT.internal.stage.addChild(display)
   }
 
   exit(entity) {
-    const { displayObject } = entity.components
-    const { parent } = displayObject
+    const { display } = entity.components
+    const { parent } = display
 
     if (parent) {
-      parent.removeChild(displayObject)
+      parent.removeChild(display)
     }
   }
 }
