@@ -1,5 +1,5 @@
-import { Component } from '../ecs'
-import { classname } from '../utils'
+import { Component } from '#/ecs'
+import { classname } from '#/utils'
 
 class Position extends Component {
   constructor(

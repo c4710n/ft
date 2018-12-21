@@ -1,7 +1,7 @@
 import 'pixi-sound'
 import { loaders } from 'pixi.js'
+import { classname } from '#/utils'
 import { advancedImageLoader } from './spine'
-import { classname } from '../utils'
 import fontLoader from './loader/font'
 
 let _res

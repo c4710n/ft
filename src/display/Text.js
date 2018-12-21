@@ -1,6 +1,6 @@
 import { Text as $Text } from 'pixi.js'
-import { FT } from '../core'
-import { entitify } from '../ecs'
+import { FT } from '#/core'
+import { entitify } from '#/ecs'
 
 class Text extends $Text {
   constructor(...args) {

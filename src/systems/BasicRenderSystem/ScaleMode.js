@@ -1,5 +1,5 @@
 import { Rectangle } from 'pixi.js'
-import { Device, Orientation } from '../../core'
+import { Device, Orientation } from '#/core'
 
 function getRendererOrientation(width, height) {
   return width >= height ? Orientation.LANDSCAPE : Orientation.PORTRAIT

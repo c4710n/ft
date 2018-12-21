@@ -1,6 +1,6 @@
 import { Sprite as $Sprite } from 'pixi.js'
-import { FT } from '../core'
-import { entitify } from '../ecs'
+import { FT } from '#/core'
+import { entitify } from '#/ecs'
 
 class Sprite extends $Sprite {
   constructor(...args) {

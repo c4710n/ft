@@ -1,6 +1,6 @@
 import { Graphics as $Graphics } from 'pixi.js'
-import { FT } from '../core'
-import { entitify } from '../ecs'
+import { FT } from '#/core'
+import { entitify } from '#/ecs'
 
 class Graphics extends $Graphics {
   constructor(...args) {

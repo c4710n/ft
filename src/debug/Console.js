@@ -1,4 +1,4 @@
-import { qs } from '../utils'
+import { qs } from '#/utils'
 
 /**
  * Load vConsole according querystring. When specified pattern is found in

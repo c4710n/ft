@@ -1,5 +1,5 @@
-import { FT } from '../core'
-import { System } from '../ecs'
+import { FT } from '#/core'
+import { System } from '#/ecs'
 
 class PositionSystem extends System {
   test(entity) {

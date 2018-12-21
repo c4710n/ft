@@ -1,9 +1,9 @@
 import { Container, ticker } from 'pixi.js'
-import { TWEEN } from '../animation'
-import { ECS } from '../ecs'
-import { BasicRenderSystem, VisibleSystem, PositionSystem } from '../systems'
-import ResManager from '../res/ResManager'
-import SceneManager from '../scene/SceneManager'
+import { TWEEN } from '#/animation'
+import { ECS } from '#/ecs'
+import { BasicRenderSystem, VisibleSystem, PositionSystem } from '#/systems'
+import ResManager from '#/res/ResManager'
+import SceneManager from '#/scene/SceneManager'
 
 const { Ticker } = ticker
 

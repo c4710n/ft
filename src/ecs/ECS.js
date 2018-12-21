@@ -1,4 +1,4 @@
-import { splice } from '../utils/fast'
+import { splice } from '#/utils/fast'
 
 /**
  * @class  ECS

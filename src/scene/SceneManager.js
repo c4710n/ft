@@ -1,6 +1,6 @@
-import { FT } from '../core'
-import { Tween } from '../animation'
-import { classname, qs } from '../utils'
+import { FT } from '#/core'
+import { Tween } from '#/animation'
+import { classname, qs } from '#/utils'
 
 /**
  * Manager of Scenes.

@@ -1,4 +1,4 @@
-import { classname } from '../utils'
+import { classname } from '#/utils'
 
 class Component {
   constructor(name) {

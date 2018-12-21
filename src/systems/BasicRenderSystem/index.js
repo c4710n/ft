@@ -1,8 +1,8 @@
 import { autoDetectRenderer, utils } from 'pixi.js'
-import { FT, Device, Layer } from '../../core'
+import { FT, Device, Layer } from '#/core'
+import { System } from '#/ecs'
+import { classname } from '#/utils'
 import ScaleMode from './ScaleMode'
-import { System } from '../../ecs'
-import { classname } from '../../utils'
 
 // keep quiet!
 utils.skipHello()

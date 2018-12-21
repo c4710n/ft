@@ -1,6 +1,6 @@
 import { Container as $Container } from 'pixi.js'
-import { FT } from '../core'
-import { entitify } from '../ecs'
+import { FT } from '#/core'
+import { entitify } from '#/ecs'
 
 class Container extends $Container {
   constructor(...args) {

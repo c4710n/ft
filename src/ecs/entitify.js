@@ -1,5 +1,5 @@
 import { utils } from 'pixi.js'
-import { splice } from '../utils/fast'
+import { splice } from '#/utils/fast'
 
 const { uid } = utils
 

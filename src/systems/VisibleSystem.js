@@ -1,5 +1,5 @@
 import { sound } from 'pixi.js'
-import { System } from '../ecs'
+import { System } from '#/ecs'
 
 class VisibleSystem extends System {
   #hidden
