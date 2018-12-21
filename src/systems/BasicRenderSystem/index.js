@@ -1,9 +1,13 @@
+import { autoDetectRenderer, utils } from 'pixi.js'
 import { FT, Device, Layer } from '../../core'
 import ScaleMode from './ScaleMode'
 import { System } from '../../ecs'
 import { classname } from '../../utils'
 
-class ScaleSystem extends System {
+// keep quiet!
+utils.skipHello()
+
+class BasicRenderSystem extends System {
   #view
   #renderer
   #stage
@@ -11,14 +15,20 @@ class ScaleSystem extends System {
   #designHeight
   #mode
 
-  constructor(view, renderer, stage, { designWidth, designHeight, mode }) {
+  constructor(container, stage, { width, height, mode }) {
     super()
 
-    this.#view = view
+    const renderer = autoDetectRenderer({
+      transparent: true,
+      antialias: true,
+    })
+    container.appendChild(renderer.view)
+
     this.#renderer = renderer
+    this.#view = renderer.view
     this.#stage = stage
-    this.#designWidth = designWidth
-    this.#designHeight = designHeight
+    this.#designWidth = width
+    this.#designHeight = height
     this.#mode = mode
 
     window.addEventListener('resize', this.onResize)
@@ -62,6 +72,10 @@ class ScaleSystem extends System {
 
     FT.stage = stage
   }
+
+  updateAll() {
+    this.#renderer.render(this.#stage)
+  }
 }
 
-export default ScaleSystem
+export default BasicRenderSystem
