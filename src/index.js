@@ -1,4 +1,6 @@
 export * from './core'
+export * from './components'
+export * from './systems'
 export * from './res'
 export * from './animation'
 export * from './scene'

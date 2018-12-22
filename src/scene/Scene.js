@@ -1,4 +1,6 @@
-import { Container } from 'pixi.js'
+import PIXI from '#/pixi'
+
+const { Container } = PIXI
 
 class Scene extends Container {
   constructor(name) {

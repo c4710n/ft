@@ -1,5 +1,7 @@
-import { Rectangle } from 'pixi.js'
+import PIXI from '#/pixi'
 import Orientation from './Orientation'
+
+const { Rectangle } = PIXI
 
 class Device {
   static get DPR() {

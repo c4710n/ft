@@ -1,6 +1,7 @@
 import 'pixi-spine'
-import { spine } from 'pixi.js'
+import PIXI from '#/pixi'
 
+const { spine } = PIXI
 const { Spine } = spine
 
 export default Spine

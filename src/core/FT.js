@@ -1,8 +1,12 @@
-import { Container, ticker } from 'pixi.js'
+import patch from '#/patch'
+patch.apply()
+
+import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
 import { BasicRenderSystem } from '#/systems'
 
+const { Container, ticker } = PIXI
 const { Ticker } = ticker
 
 const defaultOptions = {

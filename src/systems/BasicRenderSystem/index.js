@@ -1,8 +1,10 @@
-import { autoDetectRenderer, utils } from 'pixi.js'
+import PIXI from '#/pixi'
 import { FT, Device, Layer } from '#/core'
 import { classname } from '#/utils'
 import System from '../System'
 import ScaleMode from './ScaleMode'
+
+const { autoDetectRenderer, utils } = PIXI
 
 // keep quiet!
 utils.skipHello()
