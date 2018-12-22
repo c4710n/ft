@@ -1,5 +1,4 @@
 export * from './core'
-export * from './ecs'
 export * from './res'
 export * from './animation'
 export * from './scene'

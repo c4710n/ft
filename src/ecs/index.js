@@ -1,5 +1,0 @@
-export { default as ECS } from './ECS'
-export { default as Entity } from './Entity'
-export { default as Component } from './Component'
-export { default as System } from './System'
-export { default as entitify } from './entitify'

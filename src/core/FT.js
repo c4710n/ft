@@ -1,14 +1,7 @@
 import { Container, ticker } from 'pixi.js'
-import { TWEEN } from '#/animation'
-import { ECS } from '#/ecs'
-import {
-  DisplaySystem,
-  VisibleSystem,
-  WidgetSystem,
-  BasicRenderSystem,
-} from '#/systems'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
+import { BasicRenderSystem } from '#/systems'
 
 const { Ticker } = ticker
 
@@ -34,10 +27,15 @@ function createContainer(selector) {
 }
 
 class FT {
+  #systems
+  #updates
+
   constructor() {
     window.FT = this
     this.internal = {}
 
+    this.#systems = []
+    this.#updates = 0
     this.rm = ResManager.default
     this.sm = SceneManager.default
   }
@@ -52,30 +50,38 @@ class FT {
     this.container = container
     this.backgroundColor = backgroundColor
 
-    const ecs = new ECS()
-    this.ecs = ecs
-
     const stage = new Container()
     this.internal.stage = stage
 
     const ticker = new Ticker()
     this.ticker = ticker
 
-    ecs.addSystem(new VisibleSystem())
-    ecs.addSystem(new DisplaySystem())
-    ecs.addSystem(new WidgetSystem())
-
     const scaleOptions = {
       width,
       height,
       mode: scaleMode,
     }
-    ecs.addSystem(new BasicRenderSystem(container, stage, scaleOptions))
+    this.addSystem(new BasicRenderSystem(container, stage, scaleOptions))
 
     ticker.add(dt => {
-      TWEEN.update(performance.now())
-      this.ecs.update(dt)
+      this.update(dt)
     })
+  }
+
+  addSystem(system) {
+    this.#systems.push(system)
+  }
+
+  update(dt) {
+    for (const system of this.#systems) {
+      if (this.#updates % system.frequency > 0) {
+        break
+      }
+
+      system.update(dt)
+    }
+
+    this.#updates += 1
   }
 
   start() {

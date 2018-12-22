@@ -1,7 +1,7 @@
 import { autoDetectRenderer, utils } from 'pixi.js'
 import { FT, Device, Layer } from '#/core'
-import { System } from '#/ecs'
 import { classname } from '#/utils'
+import System from '../System'
 import ScaleMode from './ScaleMode'
 
 // keep quiet!
@@ -73,7 +73,7 @@ class BasicRenderSystem extends System {
     FT.stage = stage
   }
 
-  updateAll() {
+  update() {
     this.#renderer.render(this.#stage)
   }
 }

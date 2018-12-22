@@ -1,6 +1,6 @@
 # ft
 
-> A simple game framework in ECS pattern.
+> A simple game framework in EC pattern.
 
 ## Features
 
