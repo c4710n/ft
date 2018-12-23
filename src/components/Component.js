@@ -1,6 +1,7 @@
 class Component {
   constructor() {
     this.added = false
+    this.meta = {}
   }
 
   // eslint-disable-next-line
