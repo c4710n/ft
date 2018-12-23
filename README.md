@@ -1,12 +1,13 @@
 # ft
 
-> A simple game framework in EC pattern.
+> A simple framework in EC pattern for HTML5 marketing pages.
 
 ## Features
 
 - built-in resource scanner (require webpack and val-loader)
 - built-in resource manager
 - built-in scene manager
+- built-in component system
 - responsive stage
 - ...
 
