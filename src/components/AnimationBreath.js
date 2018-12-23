@@ -1,5 +1,5 @@
 import Component from './Component'
-import { Tween } from '#/animation'
+import { Tween, Easing } from '#/animation'
 
 class AnimationBreath extends Component {
   #duration
@@ -19,6 +19,7 @@ class AnimationBreath extends Component {
     const duration = this.#duration
     tween
       .to({ alpha }, duration)
+      .easing(Easing.Cubic.InOut)
       .yoyo(true)
       .repeat(Infinity)
       .start()
