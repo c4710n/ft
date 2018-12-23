@@ -3,8 +3,6 @@ import { splice } from '#/utils/fast'
 
 const { DisplayObject } = PIXI
 
-class $DisplayObject extends DisplayObject {}
-
 function initComponents() {
   if (!this.components) {
     this.components = []
@@ -17,7 +15,7 @@ function addComponent(component) {
   this.components.push(component)
 
   if (component.added === true) return
-  component.added === true
+  component.added = true
   component.onAdded(this)
 }
 
@@ -30,14 +28,14 @@ function removeComponent(component) {
   }
 
   if (component.added === false) return
-  component.added === false
+  component.added = false
   component.onRemoved(this)
 }
 
 function apply() {
-  $DisplayObject.prototype.initComponents = initComponents
-  $DisplayObject.prototype.addComponent = addComponent
-  $DisplayObject.prototype.removeComponent = removeComponent
+  DisplayObject.prototype.initComponents = initComponents
+  DisplayObject.prototype.addComponent = addComponent
+  DisplayObject.prototype.removeComponent = removeComponent
 }
 
 export default {
