@@ -1,5 +1,5 @@
 import patch from '#/patch'
-patch.apply()
+patch.patchDisplayObject()
 
 import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
@@ -42,6 +42,8 @@ class FT {
     this.#updates = 0
     this.rm = ResManager.default
     this.sm = SceneManager.default
+
+    this.create = patch.createDisplayObject
   }
 
   init(selector, options) {
