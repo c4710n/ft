@@ -1,6 +1,6 @@
 export { default as classname } from './classname'
 export { default as object } from './object'
 export { default as qs } from './qs'
-export { default as timer } from './timer'
+export { default as time } from './time'
 export { default as fast } from './fast'
 export { default as string } from './string'

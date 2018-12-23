@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import { FT } from '#/core'
 
 export function delay(ms) {
   return new Promise(resolve => {
