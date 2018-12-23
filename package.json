@@ -1,6 +1,6 @@
 {
   "name": "@2players/ft",
-  "description": "A simple game framework in ECS pattern.",
+  "description": "A simple framework in EC pattern for HTML5 marketing pages.",
   "version": "0.1.0",
   "repository": "2players/ft",
   "engines": {
@@ -26,8 +26,8 @@
     ""
   ],
   "dependencies": {
-    "@tweenjs/tween.js": "^17.2.0",
     "core-js": "^2.5.7",
+    "es6-tween": "^5.3.1",
     "fast-glob": "^2.2.4",
     "pixi-sound": "^2.0.4",
     "pixi-spine": "^1.5.19",

@@ -18,7 +18,7 @@ ft is supported by helpful libraries:
 - 2D WebGL renderer - [pixi.js](https://github.com/pixijs/pixi.js)
 - Spine support - [pixi-spine](https://github.com/pixijs/pixi-spine)
 - Sound support - [pixi-sound](https://github.com/pixijs/pixi-sound)
-- Tween library - [tween.js](https://github.com/tweenjs/tween.js)
+- Tween library - [es6-tween](https://github.com/tweenjs/es6-tween)
 - Web Console - [vConsole](https://github.com/Tencent/vConsole)
 
 ## License
