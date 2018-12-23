@@ -4,7 +4,7 @@ patch.patchDisplayObject()
 import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
-import { TweenSystem, BasicRenderSystem } from '#/systems'
+import { TweenSystem, WidgetSystem, BasicRenderSystem } from '#/systems'
 
 const { Container, ticker } = PIXI
 const { Ticker } = ticker
@@ -38,7 +38,7 @@ class FT {
     window.FT = this
     this.internal = {}
 
-    this.#systems = []
+    this.systems = []
     this.#updates = 0
     this.rm = ResManager.default
     this.sm = SceneManager.default
@@ -63,6 +63,7 @@ class FT {
     this.ticker = ticker
 
     this.addSystem(new TweenSystem())
+    this.addSystem(new WidgetSystem())
 
     const scaleOptions = {
       width,
@@ -77,11 +78,11 @@ class FT {
   }
 
   addSystem(system) {
-    this.#systems.push(system)
+    this.systems.push(system)
   }
 
   update(dt) {
-    for (const system of this.#systems) {
+    for (const system of this.systems) {
       if (this.#updates % system.frequency > 0) {
         break
       }
