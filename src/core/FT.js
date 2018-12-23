@@ -4,7 +4,7 @@ patch.apply()
 import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
-import { BasicRenderSystem } from '#/systems'
+import { TweenSystem, BasicRenderSystem } from '#/systems'
 
 const { Container, ticker } = PIXI
 const { Ticker } = ticker
@@ -59,6 +59,8 @@ class FT {
 
     const ticker = new Ticker()
     this.ticker = ticker
+
+    this.addSystem(new TweenSystem())
 
     const scaleOptions = {
       width,
