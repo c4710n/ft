@@ -146,7 +146,7 @@ class HTML5Video extends Container {
    * @emits {end}
    */
   onEnd = () => {
-    this.post('end')
+    this.emit('end')
   }
 
   /**
@@ -165,7 +165,7 @@ class HTML5Video extends Container {
    */
   onUpdate() {
     const { currentTime } = this.mVideo
-    this.post('progress', { currentTime })
+    this.emit('progress', { currentTime })
   }
 
   /**
@@ -227,7 +227,7 @@ class HTML5Video extends Container {
     const { mVideo: video } = this
 
     if (this.mReady) {
-      this.post('play')
+      this.emit('play')
       return video.play()
     }
 
@@ -241,7 +241,7 @@ class HTML5Video extends Container {
             this.mReady = true
             this.mReadyTime = currentTime
             video.muted = false
-            this.post('play')
+            this.emit('play')
             resolve()
           }
         }
@@ -259,7 +259,7 @@ class HTML5Video extends Container {
    * @return {Promise} same as DOM API - `pause()`
    */
   pause() {
-    this.post('pause')
+    this.emit('pause')
     return this.mVideo.pause()
   }
 
@@ -269,7 +269,7 @@ class HTML5Video extends Container {
    * @emits {reset}
    */
   reset() {
-    this.post('reset')
+    this.emit('reset')
     this.mVideo.currentTime = this.mReadyTime
   }
 
@@ -287,7 +287,7 @@ class HTML5Video extends Container {
    */
   show() {
     this.mVideo.style.zIndex = Layer.DOM_DISPLAY
-    this.post('show')
+    this.emit('show')
   }
 
   /**
@@ -297,7 +297,7 @@ class HTML5Video extends Container {
    */
   hide() {
     this.mVideo.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
-    this.post('hide')
+    this.emit('hide')
   }
 }
 
