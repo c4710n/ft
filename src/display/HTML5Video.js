@@ -164,7 +164,7 @@ class HTML5Video extends Container {
    */
   onUpdate() {
     const { currentTime } = this.mVideo
-    this.emit('progress', { currentTime })
+    this.emit('progress', currentTime)
 
     this.transformVideo()
   }
