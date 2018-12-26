@@ -137,7 +137,6 @@ class HTML5Video extends Container {
     this.transformVideo()
 
     video.addEventListener('ended', this.onEnd)
-    window.addEventListener('resize', this.transformVideo)
     this.mContainer.appendChild(video)
   }
 
@@ -166,6 +165,8 @@ class HTML5Video extends Container {
   onUpdate() {
     const { currentTime } = this.mVideo
     this.emit('progress', { currentTime })
+
+    this.transformVideo()
   }
 
   /**
@@ -176,7 +177,6 @@ class HTML5Video extends Container {
     if (!video) return
 
     video.removeEventListener('ended', this.onEnd)
-    window.removeEventListener('resize', this.transformVideo)
     this.mContainer.removeChild(video)
   }
 
