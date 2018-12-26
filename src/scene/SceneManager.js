@@ -88,7 +88,7 @@ class SceneManager {
     }
 
     const { Class, name: $name } = scene
-    const activeScene = new Class($name)
+    const activeScene = FT.create(Class, $name)
     activeScene.sticky = sticky
 
     this.activeScenes.push(activeScene)
