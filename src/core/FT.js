@@ -1,6 +1,4 @@
 import patch from '#/patch'
-patch.patchDisplayObject()
-
 import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
@@ -43,6 +41,9 @@ class FT {
     this.rm = ResManager.default
     this.sm = SceneManager.default
 
+    const ticker = new Ticker()
+    this.ticker = ticker
+
     this.create = patch.createDisplayObject
   }
 
@@ -59,9 +60,6 @@ class FT {
     const stage = new Container()
     this.internal.stage = stage
 
-    const ticker = new Ticker()
-    this.ticker = ticker
-
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
 
@@ -72,7 +70,7 @@ class FT {
     }
     this.addSystem(new BasicRenderSystem(container, stage, scaleOptions))
 
-    ticker.add(dt => {
+    this.ticker.add(dt => {
       this.update(dt)
     })
   }

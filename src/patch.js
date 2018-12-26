@@ -1,4 +1,5 @@
 import PIXI from '#/pixi'
+import { FT } from '#/core'
 import { splice } from '#/utils/fast'
 
 function _bindComponent(displayObject, component) {
@@ -15,7 +16,7 @@ function _unbindComponent(displayObject, component) {
   }
 }
 
-function onAdded() {
+function _onAdded() {
   this.added = true
 
   if (this.components) {
@@ -23,15 +24,31 @@ function onAdded() {
       _bindComponent(this, component)
     })
   }
+
+  if (this.onAdded) {
+    this.onAdded()
+  }
+
+  if (this.onUpdate) {
+    FT.ticker.add(this.onUpdate, this)
+  }
 }
 
-function onRemoved() {
+function _onRemoved() {
   this.added = false
 
   if (this.components) {
     this.components.forEach(component => {
       _unbindComponent(this, component)
     })
+  }
+
+  if (this.onRemoved) {
+    this.onRemoved()
+  }
+
+  if (this.onUpdate) {
+    FT.ticker.remove(this.onUpdate, this)
   }
 }
 
@@ -64,18 +81,20 @@ function patchDisplayObject() {
   DisplayObject.prototype.initComponents = initComponents
   DisplayObject.prototype.addComponent = addComponent
   DisplayObject.prototype.removeComponent = removeComponent
-  DisplayObject.prototype.onAdded = onAdded
-  DisplayObject.prototype.onRemoved = onRemoved
+  DisplayObject.prototype._onAdded = _onAdded
+  DisplayObject.prototype._onRemoved = _onRemoved
 }
 
 function createDisplayObject(Class, ...args) {
   const instance = new Class(...args)
-  instance.on('added', instance.onAdded, instance)
-  instance.on('removed', instance.onRemoved, instance)
+  instance.on('added', instance._onAdded, instance)
+  instance.on('removed', instance._onRemoved, instance)
   return instance
 }
 
+// patch it, now!
+patchDisplayObject()
+
 export default {
-  patchDisplayObject,
   createDisplayObject,
 }
