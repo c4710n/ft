@@ -1,9 +1,8 @@
-import Component from './Component'
-import { Tween, Easing } from '#/animation'
+import Animation from './Animation'
+import { Easing } from '#/animation'
 
-class AnimationBreath extends Component {
+class AnimationBreath extends Animation {
   #duration
-  #tween
 
   constructor({ duration = 1000 } = {}) {
     super()
@@ -11,22 +10,17 @@ class AnimationBreath extends Component {
   }
 
   onAdded(displayObject) {
+    super.onAdded(displayObject)
     displayObject.alpha = 0
 
-    const tween = new Tween(displayObject)
-    this.#tween = tween
     const alpha = 1
     const duration = this.#duration
-    tween
+    this.tween
       .to({ alpha }, duration)
       .easing(Easing.Cubic.InOut)
       .yoyo(true)
       .repeat(Infinity)
       .start()
-  }
-
-  onRemoved() {
-    this.#tween.stop()
   }
 }
 

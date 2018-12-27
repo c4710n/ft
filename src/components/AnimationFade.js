@@ -1,14 +1,12 @@
-import Component from './Component'
-import { Tween } from '#/animation'
+import Animation from './Animation'
 
 const IN = 'in'
 const OUT = 'out'
 
-class AnimationFade extends Component {
+class AnimationFade extends Animation {
   #alphaStart
   #alphaEnd
   #duration
-  #tween
 
   constructor({ type = IN, duration = 1000 } = {}) {
     super()
@@ -26,17 +24,11 @@ class AnimationFade extends Component {
   }
 
   onAdded(displayObject) {
+    super.onAdded(displayObject)
     displayObject.alpha = this.#alphaStart
-
-    const tween = new Tween(displayObject)
-    this.#tween = tween
     const alpha = this.#alphaEnd
     const duration = this.#duration
-    tween.to({ alpha }, duration).start()
-  }
-
-  onRemoved() {
-    this.#tween.stop()
+    this.tween.to({ alpha }, duration).start()
   }
 }
 
