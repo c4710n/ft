@@ -5,7 +5,6 @@ class Component {
     this.meta = {}
   }
 
-  // eslint-disable-next-line
   onAdded(displayObject) {
     this.displayObject = displayObject
   }
