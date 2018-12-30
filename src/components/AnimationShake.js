@@ -10,6 +10,7 @@ class AnimationShake extends Animation {
   #offset
   #originX
   #originY
+  #stop
 
   /**
    * @param {Object} args
@@ -24,11 +25,18 @@ class AnimationShake extends Animation {
 
   onAdded(displayObject) {
     super.onAdded(displayObject)
+    this.#stop = false
     this.#originX = displayObject.x
     this.#originY = displayObject.y
   }
 
+  onRemoved(displayObject) {
+    this.#stop = true
+    super.onRemoved(displayObject)
+  }
+
   onUpdate() {
+    if (this.#stop) return
     if (!this.displayObject || !this.displayObject.added) return
 
     const offset = this.#offset
