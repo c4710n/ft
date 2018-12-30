@@ -42,6 +42,7 @@ function generate(
   }
 
   const stage = calculator(designWidth, designHeight, deviceWidth, deviceHeight)
+  stage.center = [stage.centerX, stage.centerY] // shortcut for center
 
   const values = {
     stage,
