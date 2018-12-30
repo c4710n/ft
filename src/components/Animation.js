@@ -8,8 +8,8 @@ class Animation extends Component {
   }
 
   onRemoved(displayObject) {
-    super.onRemoved(displayObject)
     this.tween.stop()
+    super.onRemoved(displayObject)
   }
 
   complete() {

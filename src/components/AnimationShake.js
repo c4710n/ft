@@ -29,7 +29,7 @@ class AnimationShake extends Animation {
   }
 
   onUpdate() {
-    if (!this.displayObject) return
+    if (!this.displayObject || !this.displayObject.added) return
 
     const offset = this.#offset
 
@@ -47,8 +47,10 @@ class AnimationShake extends Animation {
       includeMax: true,
     })
 
-    this.displayObject.x = this.#originX + offsetX
-    this.displayObject.y = this.#originY + offsetY
+    const x = this.#originX + offsetX
+    const y = this.#originY + offsetY
+
+    this.displayObject.position.set(x, y)
   }
 }
 
