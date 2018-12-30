@@ -3,10 +3,12 @@ import { Tween } from '#/animation'
 
 class Animation extends Component {
   onAdded(displayObject) {
+    super.onAdded()
     this.tween = new Tween(displayObject)
   }
 
   onRemoved() {
+    super.onRemoved()
     this.tween.stop()
   }
 
