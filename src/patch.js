@@ -14,7 +14,8 @@ function _bindComponent(displayObject, component) {
 }
 
 function _unbindComponent(displayObject, component) {
-  if (!displayObject.added && component.added === true) {
+  // no need to check displayed.added when removing component
+  if (component.added === true) {
     component.added = false
     component.onRemoved(displayObject)
 
