@@ -1,8 +1,7 @@
+import Animation from './Animation'
 import random from '@m31271n/random-number'
 
 /**
- * A common animation - shake.
- *
  * @example
  * const shake = new Shake({ offset: 3 })
  * displayObject.addComponent(shake)
@@ -24,6 +23,7 @@ class AnimationShake extends Animation {
   }
 
   onAdded(displayObject) {
+    super.onAdded(displayObject)
     this.#originX = displayObject.x
     this.#originY = displayObject.y
   }

@@ -13,6 +13,8 @@ class Component {
   onRemoved(displayObject) {
     this.displayObject = null
   }
+
+  // onUpdate() {}
 }
 
 export default Component

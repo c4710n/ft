@@ -6,6 +6,10 @@ function _bindComponent(displayObject, component) {
   if (displayObject.added && component.added === false) {
     component.added = true
     component.onAdded(displayObject)
+
+    if (component.onUpdate) {
+      FT.ticker.add(component.onUpdate, component)
+    }
   }
 }
 
@@ -13,6 +17,10 @@ function _unbindComponent(displayObject, component) {
   if (!displayObject.added && component.added === true) {
     component.added = false
     component.onRemoved(displayObject)
+
+    if (component.onUpdate) {
+      FT.ticker.remove(component.onUpdate, component)
+    }
   }
 }
 
