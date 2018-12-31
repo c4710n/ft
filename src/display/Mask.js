@@ -13,13 +13,23 @@ class Mask extends PIXI.Graphics {
    * @param {Object} options
    * @param {number} options.color mask's color
    */
-  constructor({ x = 0, y = 0, color = 0x00000 } = {}) {
+  constructor({ color = 0x00000, alpha = 0.5 } = {}) {
     super()
 
     this.beginFill(color)
-    const { width, height } = FT.stage
-    this.drawRect(x, y, width, height)
+    const { left, top, width, height } = FT.stage.bounds
+    this.drawRect(left, top, width, height)
     this.endFill()
+
+    this.alpha = alpha
+  }
+
+  onUpdate() {
+    const { left, top, width, height } = FT.stage.bounds
+    this.x = left
+    this.y = top
+    this.width = width
+    this.height = height
   }
 }
 
