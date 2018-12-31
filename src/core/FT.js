@@ -4,9 +4,6 @@ import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
 import { TweenSystem, WidgetSystem, BasicRenderSystem } from '#/systems'
 
-const { Container, ticker } = PIXI
-const { Ticker } = ticker
-
 const defaultOptions = {
   width: 750,
   height: 1500,
@@ -28,25 +25,63 @@ function createContainer(selector) {
   return container
 }
 
+/**
+ * Commander for framework.
+ */
 class FT {
-  #systems
-  #updates
-
   constructor() {
     window.FT = this
+
+    /**
+     * @ignore
+     */
+    this.$systems = []
+    /**
+     * @ignore
+     */
+    this.$updates = 0
+
+    /**
+     * place to store conflict variables.
+     */
     this.internal = {}
 
-    this.systems = []
-    this.#updates = 0
+    /**
+     * ticker for game loop.
+     */
+    this.ticker = new PIXI.ticker.Ticker()
+
+    /**
+     * DOM container of FT's canvas.
+     */
+    this.container = null
+
+    /**
+     * default instance of ResManager.
+     */
     this.rm = ResManager.default
+
+    /**
+     * default instance of SceneManager.
+     */
     this.sm = SceneManager.default
 
-    const ticker = new Ticker()
-    this.ticker = ticker
-
+    /**
+     * helper for extending PIXI's classes.
+     */
     this.create = patch.createDisplayObject
   }
 
+  /**
+   * Prepare for start.
+   *
+   * @param {string} selector - selector of DOM container.
+   * @param {Object} options
+   * @param {number} [options.width=750] - stage's width.
+   * @param {number} [options.height=1500] - stage's height.
+   * @param {string} [options.scaleMode='COVER'] - stage's scale mode.
+   * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
+   */
   init(selector, options) {
     const { width, height, scaleMode, backgroundColor } = Object.assign(
       defaultOptions,
@@ -57,7 +92,7 @@ class FT {
     this.container = container
     this.backgroundColor = backgroundColor
 
-    const stage = new Container()
+    const stage = new PIXI.Container()
     this.internal.stage = stage
 
     this.addSystem(new TweenSystem())
@@ -75,37 +110,53 @@ class FT {
     })
   }
 
+  /**
+   * @access private
+   */
   addSystem(system) {
-    this.systems.push(system)
+    this.$systems.push(system)
   }
 
+  /**
+   * @access private
+   */
   update(dt) {
-    for (const system of this.systems) {
-      if (this.#updates % system.frequency > 0) {
+    for (const system of this.$systems) {
+      if (this.$updates % system.frequency > 0) {
         break
       }
 
       system.update(dt)
     }
 
-    this.#updates += 1
+    this.$updates += 1
   }
 
+  /**
+   * start ticker.
+   */
   start() {
     this.ticker.start()
   }
 
+  /**
+   * stop ticker.
+   */
   stop() {
     this.ticker.stop()
   }
 
-  get backgroundColor() {
-    return this.container.style.backgroundColor
-  }
-
+  /**
+   * setter for background color of DOM container.
+   */
   set backgroundColor(color) {
     this.container.style.backgroundColor = color
   }
 }
 
-export default new FT()
+/**
+ * The global single instance of FT.
+ */
+const ft = new FT()
+
+export default ft
