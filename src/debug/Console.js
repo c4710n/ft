@@ -4,6 +4,11 @@ import { qs } from '#/utils'
  * Load vConsole according querystring. When specified pattern is found in
  * querystring, vConsole will be enabled.
  *
+ * @example
+ * new Console('debug')
+ * // After adding this line, when you visit https://example.com?debug,
+ * // vConsole will be loaded
+ *
  * @see https://github.com/Tencent/vConsole
  */
 class Console {
