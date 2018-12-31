@@ -6,6 +6,22 @@ import fontLoader from './loader/font'
 
 let $res
 
+/**
+ * Resource manager built on the loader provided by PIXI.
+ *
+ * In FT, resources for `ResManager` must be registered in advance.
+ * Because of that, you need to create a standalone module for `ResManager` in
+ * order to achieve this.
+ *
+ * @example
+ * // register-resources.js
+ * import { ResManager } from 'ft'
+ * import resources from '!val-loader?basedir=./res!ft/res/scan.val'
+ * ResManager.register(resources)
+ *
+ * // Above code should be placed in a standalone file.
+ * // Then, import `register-resources` at first line of the entry file.
+ */
 class ResManager extends PIXI.loaders.Loader {
   constructor(...args) {
     super(...args)
@@ -25,14 +41,7 @@ class ResManager extends PIXI.loaders.Loader {
   }
 
   /**
-   * delegate methods of $res
-   */
-  url(name) {
-    return $res.url(name)
-  }
-
-  /**
-   * Add an image into loading queue.
+   * Add an image to loading queue.
    */
   addImage(name) {
     if (this.resources[name]) return
@@ -40,7 +49,7 @@ class ResManager extends PIXI.loaders.Loader {
   }
 
   /**
-   * Add a font into loading queue.
+   * Add a font to loading queue.
    */
   addFont(name) {
     if (this.resources[name]) return
@@ -48,7 +57,7 @@ class ResManager extends PIXI.loaders.Loader {
   }
 
   /**
-   * Add a sound into loading queue
+   * Add a sound to loading queue.
    */
   addSound(name) {
     if (this.resources[name]) return
@@ -71,6 +80,16 @@ class ResManager extends PIXI.loaders.Loader {
     })
   }
 
+  /**
+   * Get url of resource.
+   */
+  url(name) {
+    return $res.url(name)
+  }
+
+  /**
+   * Get a texture by name.
+   */
   texture(name) {
     const resource = this.resources[name]
     if (!resource) {
@@ -80,11 +99,17 @@ class ResManager extends PIXI.loaders.Loader {
     }
   }
 
+  /**
+   * Get a sound by name.
+   */
   sound(name) {
     const resource = this.resources[name]
     return resource.sound
   }
 
+  /**
+   * Get a spine by name.
+   */
   spine(name) {
     const resource = this.resources[name]
     if (!resource) {
