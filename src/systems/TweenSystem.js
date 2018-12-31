@@ -1,5 +1,5 @@
-import System from './System'
 import TWEEN from '#/animation/TWEEN'
+import System from './System'
 
 class TweenSystem extends System {
   update() {
