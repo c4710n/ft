@@ -1,37 +1,51 @@
 import PIXI from '#/pixi'
 
-const { Container, Text } = PIXI
-
-class ProgressText extends Container {
-  #progress
-
+/**
+ * Text for displaying progress.
+ *
+ * @example
+ * const progressText = FT.create(ProgressText)
+ * progressText.progress = 10
+ *
+ * @todo extends from PIXI.Text.
+ * @todo add arguments for customizing template of text.
+ */
+class ProgressText extends PIXI.Container {
   constructor() {
     super()
 
-    this.#progress = 0
+    /**
+     * @ignore
+     */
+    this.$progress = 0
   }
 
   onAdded() {
-    const content = new Text('Loading... 0%', {
+    const content = new PIXI.Text('Loading... 0%', {
       fontSize: 38,
       fontFamily: 'Arial',
       fill: 0x69e5ff,
     })
+
+    /**
+     * @ignore
+     */
     this.content = content
+
     this.addChild(content)
   }
 
   onUpdate() {
-    const progress = this.#progress.toFixed(0)
+    const progress = this.$progress.toFixed(0)
     this.content.text = `Loading... ${progress}%`
   }
 
   get progress() {
-    return this.#progress
+    return this.$progress
   }
 
   set progress(v) {
-    this.#progress = v
+    this.$progress = v
   }
 }
 

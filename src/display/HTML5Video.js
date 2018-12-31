@@ -4,31 +4,24 @@ import transformDOM from '#/utils/dom'
 import { Timer } from '#/utils'
 import Spinner from './Spinner'
 
-const { Container } = PIXI
-
 /**
  * Video player based on HTML5 `<video>` tag.
  *
  * @example
+ * // create
  * const url = 'https://url/to/video'
- * const video = new Video(url, {
+ * const video = FT.create(Video, url, {
  *   width: 750,
  *   height: 1500,
  * })
  *
- * class Theater extends Scene {
- *   init() {
- *     this.addChild(video)
- *   }
- * }
+ * // unlock
+ * video.unlock()
+ *
+ * // play
+ * video.play()
  */
-class HTML5Video extends Container {
-  #playing
-  #staledCurrentTime
-  #spinner
-  #spinnerTimer
-  #spinnerChecker
-
+class HTML5Video extends PIXI.Container {
   /**
    * @param {string} src='' url of video
    * @param {Object} options
@@ -47,79 +40,92 @@ class HTML5Video extends Container {
     /**
      * @ignore
      */
-    this.mSrc = src
+    this.$src = src
     /**
      * @ignore
      */
-    this.mId = id
+    this.$id = id
     /**
      * @ignore
      */
-    this.mWidth = width
+    this.$width = width
     /**
      * @ignore
      */
-    this.mHeight = height
+    this.$height = height
     /**
      * @ignore
      */
-    this.mLoop = loop
+    this.$loop = loop
     /**
      * @ignore
      */
-    this.mHide = hide
-
+    this.$hide = hide
     /**
      * @ignore
      */
-    this.mVideo = this.createVideoDOM()
+    this.$video = this.createVideoDOM()
     /**
      * @ignore
      */
-    this.mContainer = null
+    this.$container = null
     /**
      * @ignore
      */
-    this.mPreplayPromise = null
+    this.$preplayPromise = null
     /**
      * @ignore
      */
-    this.mReady = false
+    this.$ready = false
     /**
      * @ignore
      */
-    this.mReadyTime = 0
-
-    this.#playing = false
-    this.#staledCurrentTime = 0
-    this.#spinner = FT.create(Spinner)
-    this.#spinnerTimer = new Timer(500)
-    this.#spinnerChecker = null
+    this.$readyTime = 0
+    /**
+     * @ignore
+     */
+    this.$playing = false
+    /**
+     * @ignore
+     */
+    this.$staledCurrentTime = 0
+    /**
+     * @ignore
+     */
+    this.$spinner = FT.create(Spinner)
+    /**
+     * @ignore
+     */
+    this.$spinnerTimer = new Timer(500)
+    /**
+     * @ignore
+     */
+    this.$spinnerChecker = null
   }
 
   /**
    * Create video DOM.
-   * @access private
+   * @ignore
    */
   createVideoDOM() {
     const video = document.createElement('video')
-    video.src = this.mSrc
+    video.src = this.$src
 
     // identifiers
     video.className = 'ft-video'
-    if (this.mId) video.id = this.mId
+    if (this.$id) video.id = this.$id
 
     // standard adaptation
     video.style.position = 'absolute'
     video.style.top = '0'
     video.style.left = '0'
-    video.style.zIndex = this.mHide
+    video.style.zIndex = this.$hide
       ? Layer.DOM_DISPLAY_HIDDEN
       : Layer.DOM_DISPLAY
-    if (this.mWidth) video.style.width = `${this.mWidth}px`
-    if (this.mHeight) video.style.height = `${this.mHeight}px`
+    if (this.$width) video.style.width = `${this.$width}px`
+    if (this.$height) video.style.height = `${this.$height}px`
 
-    video.loop = this.mLoop
+    video.loop = this.$loop
     video.crossorigin = 'anonymous'
     video.setAttribute('preload', 'auto')
     video.setAttribute('playsinline', '')
@@ -145,22 +151,22 @@ class HTML5Video extends Container {
    * @ignore
    */
   onAdded() {
-    this.mContainer = FT.container
+    this.$container = FT.container
 
-    const { mVideo: video } = this
-    this.transformVideo()
+    const { $video: video } = this
+    this.transfor$video()
 
     video.addEventListener('ended', this.onEnd)
-    this.mContainer.appendChild(video)
+    this.$container.appendChild(video)
   }
 
   /**
    * Resize and position current video DOM according stage's setting.
    * @access private
    */
-  transformVideo = () => {
+  transfor$video = () => {
     const { localTransform: matrix } = FT.internal.stage
-    transformDOM(this.mVideo, matrix)
+    transformDOM(this.$video, matrix)
   }
 
   /**
@@ -169,30 +175,33 @@ class HTML5Video extends Container {
    * @emits {progress}
    */
   onUpdate() {
-    const { currentTime } = this.mVideo
+    const { currentTime } = this.$video
     this.emit('progress', currentTime)
 
-    this.transformVideo()
+    this.transfor$video()
   }
 
   /**
    * @ignore
    */
   onRemoved() {
-    const { mVideo: video } = this
+    const { $video: video } = this
     if (!video) return
 
     video.removeEventListener('ended', this.onEnd)
-    this.mContainer.removeChild(video)
+    this.$container.removeChild(video)
   }
 
+  /**
+   * @ignore
+   */
   addSpinnerChecker() {
-    const timer = this.#spinnerTimer
+    const timer = this.$spinnerTimer
     timer.start()
 
     const spinnerChecker = () => {
       // stuck due to lacking of data
-      if (this.#playing && this.currentTime === this.#staledCurrentTime) {
+      if (this.$playing && this.currentTime === this.$staledCurrentTime) {
         timer.tick()
 
         if (timer.exceed()) {
@@ -200,41 +209,56 @@ class HTML5Video extends Container {
         }
       } else {
         timer.reset()
-        this.#staledCurrentTime = this.currentTime
+        this.$staledCurrentTime = this.currentTime
         this.hideSpinner()
       }
     }
 
-    this.#spinnerChecker = spinnerChecker
+    this.$spinnerChecker = spinnerChecker
     FT.ticker.add(spinnerChecker, this)
   }
 
+  /**
+   * @ignore
+   */
   removeSpinnerChecker() {
-    if (!this.#spinnerChecker) return
-    FT.ticker.remove(this.#spinnerChecker, this)
+    if (!this.$spinnerChecker) return
+    FT.ticker.remove(this.$spinnerChecker, this)
   }
 
+  /**
+   * @ignore
+   */
   showSpinner() {
-    if (this.#spinner.added) return
-    this.#spinner.position.set(FT.stage.centerX, FT.stage.centerY)
-    FT.internal.stage.addChild(this.#spinner)
+    if (this.$spinner.added) return
+    this.$spinner.position.set(FT.stage.centerX, FT.stage.centerY)
+    FT.internal.stage.addChild(this.$spinner)
   }
 
+  /**
+   * @ignore
+   */
   hideSpinner() {
-    if (!this.#spinner.added) return
-    FT.internal.stage.removeChild(this.#spinner)
+    if (!this.$spinner.added) return
+    FT.internal.stage.removeChild(this.$spinner)
   }
 
+  /**
+   * @ignore
+   */
   nativePlay() {
-    this.#playing = true
+    this.$playing = true
     this.addSpinnerChecker()
-    return this.mVideo.play()
+    return this.$video.play()
   }
 
+  /**
+   * @ignore
+   */
   nativePause() {
-    this.#playing = false
+    this.$playing = false
     this.removeSpinnerChecker()
-    return this.mVideo.pause()
+    return this.$video.pause()
   }
 
   /**
@@ -261,7 +285,7 @@ class HTML5Video extends Container {
    * @see https://stackoverflow.com/a/50480115/1793548
    */
   async unlock() {
-    const { mVideo: video } = this
+    const { $video: video } = this
     const { paused: isPausedBeforeUnlock } = video
 
     await this.nativePlay()
@@ -282,22 +306,22 @@ class HTML5Video extends Container {
    * @return {Promise} same as DOM API - `play()`
    */
   play() {
-    const { mVideo: video } = this
+    const { $video: video } = this
 
-    if (this.mReady) {
+    if (this.$ready) {
       this.emit('play')
       return this.nativePlay()
     }
 
-    this.mPreplayPromise =
-      this.mPreplayPromise ||
+    this.$preplayPromise =
+      this.$preplayPromise ||
       new Promise(resolve => {
         const listener = () => {
           const { currentTime } = video
           if (currentTime > 0) {
             video.removeEventListener('timeupdate', listener)
-            this.mReady = true
-            this.mReadyTime = currentTime
+            this.$ready = true
+            this.$readyTime = currentTime
             video.muted = false
             this.emit('play')
             resolve()
@@ -307,7 +331,7 @@ class HTML5Video extends Container {
         video.muted = true
         this.nativePlay()
       })
-    return this.mPreplayPromise
+    return this.$preplayPromise
   }
 
   /**
@@ -337,21 +361,21 @@ class HTML5Video extends Container {
    */
   reset() {
     this.emit('reset')
-    this.mVideo.currentTime = this.mReadyTime
+    this.$video.currentTime = this.$readyTime
   }
 
   /**
    * Get duration of video.
    */
   get duration() {
-    return this.mVideo.duration
+    return this.$video.duration
   }
 
   /**
    * Get current time of video.
    */
   get currentTime() {
-    return this.mVideo.currentTime
+    return this.$video.currentTime
   }
 
   /**
@@ -361,7 +385,7 @@ class HTML5Video extends Container {
    */
   show() {
     this.emit('show')
-    this.mVideo.style.zIndex = Layer.DOM_DISPLAY
+    this.$video.style.zIndex = Layer.DOM_DISPLAY
   }
 
   /**
@@ -371,7 +395,7 @@ class HTML5Video extends Container {
    */
   hide() {
     this.emit('hide')
-    this.mVideo.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
+    this.$video.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
   }
 }
 
