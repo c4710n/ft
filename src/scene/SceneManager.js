@@ -9,17 +9,6 @@ import { classname, qs } from '#/utils'
  * // default instance of SceneManager.
  * const { default: sceneManager } = SceneManager
  *
- * // register scenes
- * sceneManager.register('preloader', Preloader)
- * sceneManager.register('playground', Playground)
- *
- * class Game extends GameObject {
- *   constructor() {
- *     super()
- *     sceneManager.load('preloader')
- *   }
- * }
- *
  * class Preloader extends Scene {
  *   onAdded() {
  *     // ...
@@ -32,6 +21,13 @@ import { classname, qs } from '#/utils'
  *     // ...
  *   }
  * }
+ *
+ * // register scenes
+ * sceneManager.register('preloader', Preloader)
+ * sceneManager.register('playground', Playground)
+ *
+ * // load scene
+ * sceneManager.load('preloader')
  */
 class SceneManager {
   constructor() {
