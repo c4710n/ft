@@ -9,12 +9,13 @@
   "scripts": {
     "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
     "test": "ava",
+    "doc": "esdoc",
     "code-quality": "npm run lint && npm run test",
     "cleanup": "rm -rf dist",
     "transpile": "babel src -d dist",
     "copy-files": "cp -r package.json README.md dist",
     "build": "npm run cleanup && npm run transpile && npm run copy-files",
-    "dev": "nodemon --watch src --exec npm run build",
+    "build:watch": "nodemon --watch src --exec 'npm run build && npm run doc'",
     "release": "npm run code-quality && npm run build && cd dist && npm publish"
   },
   "files": [
@@ -48,6 +49,9 @@
     "ava": "1.0.0-rc.1",
     "babel-eslint": "^10.0.1",
     "babel-plugin-root-import": "^5.1.0",
+    "esdoc": "^1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^5.2.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
