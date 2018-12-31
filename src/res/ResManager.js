@@ -1,13 +1,12 @@
 import 'pixi-sound'
 import PIXI from '#/pixi'
 import { classname } from '#/utils'
-import { advancedImageLoader } from './spine'
+import { imageLoader as spineImageLoader } from './loader/spine'
 import fontLoader from './loader/font'
 
 let $res
 
-const { loaders } = PIXI
-class ResManager extends loaders.Loader {
+class ResManager extends PIXI.loaders.Loader {
   constructor(...args) {
     super(...args)
 
@@ -67,7 +66,7 @@ class ResManager extends loaders.Loader {
     this.add(name, json, {
       metadata: {
         spineAtlasFile: atlas,
-        imageLoader: advancedImageLoader,
+        imageLoader: spineImageLoader,
       },
     })
   }

@@ -7,6 +7,9 @@ function generateFontFace(name, url) {
 `
 }
 
+/**
+ * @ignore
+ */
 function fontLoader(resource, next) {
   const extensions = ['ttf', 'otf']
 
