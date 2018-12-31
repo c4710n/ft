@@ -14,6 +14,6 @@ if (!Tween.prototype.loop) {
 export { Tween, Easing, Interpolation } from 'es6-tween'
 
 /**
- * @ignore
+ * @external {TWEEN} https://github.com/tweenjs/es6-tween
  */
 export default TWEEN
