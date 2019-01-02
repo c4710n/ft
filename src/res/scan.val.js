@@ -80,19 +80,23 @@ objects.url = function(name, { type, basename = false } = {}) {
     }
   })
 
+  if (!resource) {
+    throw new Error("[res scanner] can't find resource - " + name + "(" + type + ")")
+  }
+
   const { url } = resource
   return url
+}
+
+objects.nu = function(name, { type } = {}) {
+  const url = this.url(name, { type })
+  return [name, url]
 }
 
 objects.type = function(name) {
   const resource = this.find(resource => resource.name === name)
   const { type } = resource
   return type
-}
-
-objects.nu = function(name, { type } = {}) {
-  const url = this.url(name, { type })
-  return [name, url]
 }
 
 objects.group = function(prefix, { type } = {}) {
