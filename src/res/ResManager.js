@@ -1,5 +1,6 @@
-import 'pixi-sound'
 import PIXI from '#/pixi'
+import 'pixi-sound'
+import 'pixi-spine'
 import { classname } from '#/utils'
 import { imageLoader as spineImageLoader } from './loader/spine'
 import fontLoader from './loader/font'
@@ -83,8 +84,8 @@ class ResManager extends PIXI.loaders.Loader {
   /**
    * Get url of resource.
    */
-  url(name) {
-    return $res.url(name)
+  url(...args) {
+    return $res.url(...args)
   }
 
   /**
