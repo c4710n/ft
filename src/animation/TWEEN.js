@@ -1,7 +1,7 @@
 // delegate es6-tween
-import { update, Tween } from 'es6-tween'
+import { update, add, remove, has, Tween } from 'es6-tween'
 
-const TWEEN = { update }
+const TWEEN = { update, add, remove, has }
 
 if (!Tween.prototype.loop) {
   // candy for repeat forever
