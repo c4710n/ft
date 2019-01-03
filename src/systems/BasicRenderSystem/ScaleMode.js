@@ -123,6 +123,41 @@ function calculatorContain(
   return stage
 }
 
+function calculatorFullHeight(
+  designWidth,
+  designHeight,
+  deviceWidth,
+  deviceHeight
+) {
+  const scale = deviceHeight / designHeight
+
+  const x = 0
+  const _height = designHeight * scale
+  const y = (deviceHeight - _height) / 2
+
+  const width = designWidth
+  const height = designHeight
+  const centerX = width / 2
+  const centerY = height / 2
+
+  const boundsX = -x / scale
+  const boundsY = -y / scale
+  const bounds = new Rectangle(
+    boundsX,
+    boundsY,
+    designWidth - 2 * boundsX,
+    designHeight - 2 * boundsY
+  )
+
+  const stage = new Rectangle(x, y, width, height)
+  stage.scale = scale
+  stage.centerX = centerX
+  stage.centerY = centerY
+  stage.bounds = bounds
+
+  return stage
+}
+
 export function COVER(designWidth, designHeight, deviceWidth, deviceHeight) {
   return generate(
     designWidth,
@@ -143,7 +178,23 @@ export function CONTAIN(designWidth, designHeight, deviceWidth, deviceHeight) {
   )
 }
 
+export function FULL_HEIGHT(
+  designWidth,
+  designHeight,
+  deviceWidth,
+  deviceHeight
+) {
+  return generate(
+    designWidth,
+    designHeight,
+    deviceWidth,
+    deviceHeight,
+    calculatorFullHeight
+  )
+}
+
 export default {
   COVER,
   CONTAIN,
+  FULL_HEIGHT,
 }
