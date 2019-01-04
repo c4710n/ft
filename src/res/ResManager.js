@@ -20,8 +20,10 @@ let $res
  * import resources from '!val-loader?basedir=./res!ft/res/scan.val'
  * ResManager.register(resources)
  *
- * // Above code should be placed in a standalone file.
- * // Then, import `register-resources` at first line of the entry file.
+ * // Above code should be placed in a standalone file,
+ * // Then, import `register-resources.js` after importing FT.
+ * import { FT } from 'ft'
+ * import './register-resources'
  */
 class ResManager extends PIXI.loaders.Loader {
   constructor(...args) {
