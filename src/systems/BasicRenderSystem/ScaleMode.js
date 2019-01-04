@@ -44,6 +44,14 @@ function generate(
   const stage = calculator(designWidth, designHeight, deviceWidth, deviceHeight)
   stage.center = [stage.centerX, stage.centerY] // shortcut for center
 
+  const device = new Rectangle(
+    0,
+    0,
+    deviceWidth / stage.scale,
+    deviceHeight / stage.scale
+  )
+  stage.device = device
+
   const values = {
     stage,
     viewportWidth: Math.round(Device.size.width),

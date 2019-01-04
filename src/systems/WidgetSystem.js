@@ -11,18 +11,40 @@ class WidgetSystem extends System {
 
       if (!widget) return
 
-      let $x, $y
-      const { left, right, top, bottom } = widget.meta
-      const { bounds } = FT.stage
-
-      if (left !== undefined) $x = bounds.left + left
-      if (right !== undefined) $x = bounds.right - right
-      if (top !== undefined) $y = bounds.top + top
-      if (bottom !== undefined) $y = bounds.bottom - bottom
-
-      if ($x) entity.x = $x
-      if ($y) entity.y = $y
+      const { meta } = widget
+      const { type } = meta
+      if (type === 'device') {
+        this.setDeviceWidget(entity, meta)
+      } else {
+        this.setBoundsWidget(entity, meta)
+      }
     })
+  }
+
+  setDeviceWidget(entity, meta) {
+    let $x, $y
+    const { x, y } = meta
+    const { device } = FT.stage
+
+    if (x !== undefined) $x = device.width * x
+    if (y !== undefined) $y = device.height * y
+
+    if ($x) entity.x = $x
+    if ($y) entity.y = $y
+  }
+
+  setBoundsWidget(entity, meta) {
+    let $x, $y
+    const { left, right, top, bottom } = meta
+    const { bounds } = FT.stage
+
+    if (left !== undefined) $x = bounds.left + left
+    if (right !== undefined) $x = bounds.right - right
+    if (top !== undefined) $y = bounds.top + top
+    if (bottom !== undefined) $y = bounds.bottom - bottom
+
+    if ($x) entity.x = $x
+    if ($y) entity.y = $y
   }
 }
 
