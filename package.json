@@ -10,12 +10,13 @@
     "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
     "test": "ava",
     "doc": "esdoc",
+    "doc:watch": "nodemon --watch src --exec 'npm run doc'",
     "code-quality": "npm run lint && npm run test",
     "cleanup": "rm -rf dist",
     "transpile": "babel src -d dist",
     "copy-files": "cp -r package.json README.md dist",
     "build": "npm run cleanup && npm run transpile && npm run copy-files",
-    "build:watch": "nodemon --watch src --exec 'npm run build && npm run doc'",
+    "build:watch": "nodemon --watch src --exec 'npm run build'",
     "release": "npm run code-quality && npm run build && cd dist && npm publish"
   },
   "files": [
