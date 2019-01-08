@@ -12,7 +12,7 @@ function scaleMatrix(matrix, scale) {
   )
 }
 
-class DOM extends PIXI.Container {
+class DomMirror extends PIXI.Container {
   constructor(displayObject, { tag = 'div', debug = false } = {}) {
     super()
 
@@ -20,16 +20,14 @@ class DOM extends PIXI.Container {
     this.$dom = dom
     this.$displayObject = displayObject
     this.$debug = debug
-
-    this.position()
   }
 
   onAdded() {
-    document.body.appendChild(this.$dom)
+    FT.container.appendChild(this.$dom)
   }
 
   onRemoved() {
-    document.body.removeChild(this.$dom)
+    FT.container.removeChild(this.$dom)
   }
 
   onUpdate() {
@@ -40,7 +38,7 @@ class DOM extends PIXI.Container {
     return this.$dom
   }
 
-  position() {
+  position = () => {
     const dom = this.$dom
     const displayObject = this.$displayObject
 
@@ -84,13 +82,12 @@ class DOM extends PIXI.Container {
     dom.style.webkitTransformOrigin = transformOrigin
 
     if (this.$debug) {
-      dom.style.backgroundColor = 'red'
-      dom.style.opacity = 0.5
+      dom.style.backgroundColor = '#ff0000'
+      dom.style.opacity = 0.2
     } else {
-      dom.style.backgroundColor = ''
-      dom.style.opacity = 0.001
+      dom.style.opacity = 0.0001
     }
   }
 }
 
-export default DOM
+export default DomMirror

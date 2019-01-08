@@ -8,6 +8,7 @@ const defaultOptions = {
   width: 750,
   height: 1500,
   scaleMode: 'COVER',
+  eventMode: 'canvas',
   backgroundColor: '#ffffff',
 }
 
@@ -83,10 +84,13 @@ class FT {
    * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
    */
   init(selector, options) {
-    const { width, height, scaleMode, backgroundColor } = Object.assign(
-      defaultOptions,
-      options
-    )
+    const {
+      width,
+      height,
+      scaleMode,
+      eventMode,
+      backgroundColor,
+    } = Object.assign(defaultOptions, options)
 
     const container = createContainer(selector)
     this.container = container
@@ -98,12 +102,13 @@ class FT {
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
 
-    const scaleOptions = {
+    const renderOptions = {
       width,
       height,
-      mode: scaleMode,
+      scaleMode,
+      eventMode,
     }
-    this.addSystem(new BasicRenderSystem(container, stage, scaleOptions))
+    this.addSystem(new BasicRenderSystem(container, stage, renderOptions))
 
     this.ticker.add(dt => {
       this.update(dt)

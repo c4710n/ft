@@ -15,9 +15,13 @@ class BasicRenderSystem extends System {
   #stage
   #designWidth
   #designHeight
-  #mode
+  #scaleMode
 
-  constructor(container, stage, { width, height, mode }) {
+  constructor(
+    container,
+    stage,
+    { width, height, scaleMode, eventMode = 'canvas' } = {}
+  ) {
     super()
 
     const renderer = autoDetectRenderer({
@@ -31,7 +35,11 @@ class BasicRenderSystem extends System {
     this.#stage = stage
     this.#designWidth = width
     this.#designHeight = height
-    this.#mode = mode
+    this.#scaleMode = scaleMode
+
+    if (eventMode === 'dom') {
+      this.enableDomEventMode()
+    }
 
     window.addEventListener('resize', this.onResize)
     this.onResize()
@@ -40,7 +48,7 @@ class BasicRenderSystem extends System {
   onResize = () => {
     const { width: deviceWidth, height: deviceHeight } = Device.size.clone()
 
-    const mode = this.#mode
+    const mode = this.#scaleMode
     const scale = ScaleMode[mode]
     if (!scale) {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
@@ -73,6 +81,26 @@ class BasicRenderSystem extends System {
     }
 
     FT.stage = stage
+  }
+
+  enableDomEventMode() {
+    const renderer = this.#renderer
+    const interaction = renderer.plugins.interaction
+    const target = document.body
+    interaction.setTargetElement(target, renderer.resolution)
+
+    interaction.autoPreventDefault = false
+
+    const { normalizeToPointerData } = interaction
+    interaction.normalizeToPointerData = function(event) {
+      this.interactionDOMElement = event.target
+      return normalizeToPointerData.call(this, event)
+    }
+
+    interaction.mapPositionToPoint = function(point, x, y) {
+      point.x = x * Device.DPR
+      point.y = y * Device.DPR
+    }
   }
 
   update() {
