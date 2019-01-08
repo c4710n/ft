@@ -16,7 +16,7 @@ import Spinner from './Spinner'
  * })
  *
  * // unlock
- * video.unlock()
+ * await video.unlock()
  *
  * // play
  * video.play()
@@ -26,14 +26,20 @@ class HTML5Video extends PIXI.Container {
    * @param {string} src='' url of video
    * @param {Object} options
    * @param {string} [options.id=''] id of video
-   * @param {number} [options.width=640] width of video
-   * @param {number} [options.height=320] height of video
+   * @param {number} [options.width=FT.stage.width] width of video
+   * @param {number} [options.height=FT.stage.height] height of video
    * @param {boolean} [options.loop=false] enable loop
    * @param {boolean} [options.hide=false] hide video after creating it
    */
   constructor(
     src,
-    { id = '', width = 640, height = 320, loop = false, hide = false } = {}
+    {
+      id = '',
+      width = FT.stage.width,
+      height = FT.stage.height,
+      loop = false,
+      hide = false,
+    } = {}
   ) {
     super()
 
