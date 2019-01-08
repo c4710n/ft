@@ -12,13 +12,35 @@ function scaleMatrix(matrix, scale) {
   )
 }
 
+/**
+ * Create a DOM element with same size of given displayObject.
+ *
+ * @example
+ * const sprite = new Sprite()
+ * const cover = FT.create(DomMirror, sprite, { tag: 'img'})
+ * cover.dom.src = '<valid dataURL>'
+ * this.addChild(cover)
+ */
+
 class DomMirror extends PIXI.Container {
   constructor(displayObject, { tag = 'div', debug = false } = {}) {
     super()
 
     const dom = document.createElement(tag)
+
+    /**
+     * @access private
+     */
     this.$dom = dom
+
+    /**
+     * @access private
+     */
     this.$displayObject = displayObject
+
+    /**
+     * @access private
+     */
     this.$debug = debug
   }
 
@@ -38,6 +60,9 @@ class DomMirror extends PIXI.Container {
     return this.$dom
   }
 
+  /**
+   * @ignore
+   */
   position = () => {
     const dom = this.$dom
     const displayObject = this.$displayObject

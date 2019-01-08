@@ -87,6 +87,9 @@ class Scroller extends PIXI.Container {
     this.resetScrollVelocity()
   }
 
+  /**
+   * @access private
+   */
   onPointerDown = event => {
     this.isScrolling = true
     this.stopTween()
@@ -97,6 +100,9 @@ class Scroller extends PIXI.Container {
     this.previousTimestamp = event.data.originalEvent.timeStamp
   }
 
+  /**
+   * @access private
+   */
   onPointerMove = event => {
     if (!this.isScrolling) return
 
@@ -137,6 +143,9 @@ class Scroller extends PIXI.Container {
     this.previousTimestamp = currentTimestamp
   }
 
+  /**
+   * @access private
+   */
   onPointerUp = () => {
     this.isScrolling = false
     this.data = null
@@ -145,6 +154,9 @@ class Scroller extends PIXI.Container {
     this.handleMomentum()
   }
 
+  /**
+   * @access private
+   */
   handleBounce = () => {
     const { x, y } = this.content
 
@@ -193,6 +205,9 @@ class Scroller extends PIXI.Container {
     }
   }
 
+  /**
+   * @access private
+   */
   stopTween = () => {
     if (this.bounceX) this.bounceX.stop()
     if (this.bounceY) this.bounceY.stop()
@@ -200,6 +215,9 @@ class Scroller extends PIXI.Container {
     if (this.momentumY) this.momentumY.stop()
   }
 
+  /**
+   * @access private
+   */
   resetScrollVelocity() {
     this.previousPosition = null
     this.previousTimestamp = 0
@@ -207,6 +225,9 @@ class Scroller extends PIXI.Container {
     this.scrollVelocityY = 0
   }
 
+  /**
+   * @access private
+   */
   handleMomentum = () => {
     const absScrollVelocityX = Math.abs(this.scrollVelocityX)
     const absScrollVelocityY = Math.abs(this.scrollVelocityY)
