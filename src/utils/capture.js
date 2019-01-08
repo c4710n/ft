@@ -1,5 +1,14 @@
-const renderer = PIXI.autoDetectRenderer(750, 1500)
-const rt = PIXI.RenderTexture.create(750, 1500)
+import PIXI from '#/pixi'
 
-renderer.render(this, rt)
-const dataURL = renderer.extract.base64(this)
+function capture(displayObject) {
+  const { width, height } = displayObject
+
+  const renderer = PIXI.autoDetectRenderer(width, height)
+  const rt = PIXI.RenderTexture.create(width, height)
+  renderer.render(displayObject, rt)
+  const dataURL = renderer.extract.base64(displayObject)
+
+  return dataURL
+}
+
+export default capture
