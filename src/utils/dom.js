@@ -1,10 +1,10 @@
 import { Device } from '#/core'
 
 /**
- * Transform DOM with given matrix.
+ * Transform DOMElement with given matrix.
  *
- * @param {DOM} dom
- * @param {Matrix} matrix
+ * @param {DOMElement} dom DOM to be transformed.
+ * @param {Matrix} matrix matrix used for transforming.
  */
 function transformDOM(dom, matrix) {
   const scaleFactor = 1 / Device.DPR

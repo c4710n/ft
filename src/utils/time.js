@@ -1,5 +1,11 @@
 import { FT } from '#/core'
 
+/**
+ * A delay timer based on FT.ticker.
+ *
+ * @param {number} ms specified time in millionseconds.
+ * @return {Promise} a promise will be resolved when timeout.
+ */
 export function delay(ms) {
   return new Promise(resolve => {
     const start = performance.now()

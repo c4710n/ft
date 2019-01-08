@@ -202,8 +202,6 @@ class HTML5Video extends PIXI.Container {
     const spinnerChecker = () => {
       // stuck due to lacking of data
       if (this.$playing && this.currentTime === this.$staledCurrentTime) {
-        timer.tick()
-
         if (timer.exceed()) {
           this.showSpinner()
         }

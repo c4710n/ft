@@ -1,35 +1,57 @@
 import classname from './classname'
 
+/**
+ * A timer via
+ *
+ * @example
+ * const timer = new Timer(500)
+ *
+ * // start timer
+ * timer.start()
+ *
+ * // check if timer is exceed the timeout
+ * if (timer.exceed()) {
+ *   console.log('exceed...')
+ * }
+ *
+ * //reset timer
+ * timer.reset()
+ */
 class Timer {
-  #start
-  #now
-  #limit
-
-  constructor(limit) {
-    if (typeof limit !== 'number') {
-      throw new Error(`[${classname(this)}] limit is required`)
+  /**
+   * @param {number} timeout timeout in millionseconds.
+   */
+  constructor(timeout) {
+    if (typeof timeout !== 'number') {
+      throw new Error(`[${classname(this)}] timeout is required`)
     }
-    this.#limit = limit
+
+    /**
+     * @access private
+     */
+    this.$timeout = timeout
+
+    /**
+     * @access private
+     */
+    this.$start = 0
   }
 
   start() {
-    this.#start = performance.now()
+    this.$start = performance.now()
   }
 
   reset() {
     this.start()
   }
 
-  tick() {
-    this.#now = performance.now()
-  }
-
   get duration() {
-    return this.#now - this.#start
+    const now = performance.now()
+    return now - this.$start
   }
 
   exceed() {
-    return this.duration > this.#limit
+    return this.duration > this.$timeout
   }
 }
 

@@ -1,3 +1,8 @@
+/**
+ * Faster version of array.splice().
+ *
+ * @return {Array} spliced array.
+ */
 export function splice(array, startIndex, removeCount) {
   let len = array.length
   let removeLen = 0

@@ -1,5 +1,4 @@
 export { default as classname } from './classname'
-export { default as object } from './object'
 export { default as qs } from './qs'
 export { default as time } from './time'
 export { default as Timer } from './Timer'
