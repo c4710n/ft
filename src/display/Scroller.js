@@ -29,6 +29,7 @@ class Scroller extends PIXI.Container {
    * @param {boolean} [options.enableY=true] enable scrolling in Y direction
    * @param {number} [options.resistance=20] the resistance of scrolling, valid value: 0 - 99
    * @param {number} [options.overflow=100] overflow distance of bounce
+   * @param {number} [options.bgColor=0xffffff] background color
    */
   constructor(
     content,
@@ -39,11 +40,19 @@ class Scroller extends PIXI.Container {
       enableY = true,
       resistance = 20,
       overflow = 100,
+      bgColor = 0xffffff,
     } = {}
   ) {
     super()
 
     const { WHITE } = PIXI.Texture
+
+    const bg = new PIXI.Sprite(WHITE)
+    bg.width = width
+    bg.height = height
+    bg.tint = bgColor
+    this.addChild(bg)
+
     const mask = new PIXI.Sprite(WHITE)
     mask.width = width
     mask.height = height
