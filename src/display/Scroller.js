@@ -2,16 +2,45 @@ import { Tween, Easing } from '#/animation'
 import TWEEN from '#/animation/TWEEN'
 import PIXI from '#/pixi'
 
+/**
+ * A general scroller.
+ *
+ * @example
+ * const content = new DisplayObject()
+ * const scroller = FT.create(Scroller, content, {
+ *   width: 640,
+ *   height: 320,
+ *   enableX: false,
+ *   enableY: true,
+ * })
+ *
+ * scroller.position.set(pos)
+ *
+ * container.addChild(scroller)
+ */
+
 class Scroller extends PIXI.Container {
-  constructor({
-    width = 1500,
-    height = 750,
-    enableX = true,
-    enableY = false,
+  /**
+   * @param {DisplayObject} content the content will be scrolled
+   * @param {Object} options
+   * @param {number} [options.width=750] the width of scroller
+   * @param {number} [options.height=1500] the height of scroller
+   * @param {boolean} [options.enableX=false] enable scrolling in X direction
+   * @param {boolean} [options.enableY=true] enable scrolling in Y direction
+   * @param {number} [options.resistance=20] the resistance of scrolling, valid value: 0 - 99
+   * @param {number} [options.overflow=100] overflow distance of bounce
+   */
+  constructor(
     content,
-    resistance = 20,
-    overflow = 100,
-  } = {}) {
+    {
+      width = 750,
+      height = 1500,
+      enableX = false,
+      enableY = true,
+      resistance = 20,
+      overflow = 100,
+    } = {}
+  ) {
     super()
 
     const { WHITE } = PIXI.Texture
