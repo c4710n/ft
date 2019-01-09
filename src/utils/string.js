@@ -6,7 +6,7 @@ export const length = stringLength
  * Safe substring of Unicode characters.
  *
  * @param {string} string a string.
- * @param {number} index index for start point.
+ * @param {number} start index for start point.
  * @param {number} end index for end point.
  * @return {string} a new string containing the specified part of the given string.
  */
