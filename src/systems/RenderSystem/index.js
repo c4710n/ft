@@ -12,7 +12,7 @@ utils.skipHello()
 /**
  * System for render.
  */
-class BasicRenderSystem extends System {
+class RenderSystem extends System {
   #view
   #renderer
   #stage
@@ -122,4 +122,4 @@ class BasicRenderSystem extends System {
   }
 }
 
-export default BasicRenderSystem
+export default RenderSystem
