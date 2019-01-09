@@ -54,17 +54,20 @@ class BasicRenderSystem extends System {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
     }
 
-    const {
-      stage,
-      viewportWidth,
-      viewportHeight,
-      viewportCSSWidth,
-      viewportCSSHeight,
-      shouldRotate,
-    } = scale(this.#designWidth, this.#designHeight, deviceWidth, deviceHeight)
+    const { stage, viewport, shouldRotate } = scale(
+      this.#designWidth,
+      this.#designHeight,
+      deviceWidth,
+      deviceHeight
+    )
 
     this.#view.style.zIndex = Layer.VIEW
     this.#view.style.position = 'absolute'
+
+    const viewportWidth = Math.round(Device.size.width)
+    const viewportHeight = Math.round(Device.size.height)
+    const viewportCSSWidth = Math.round(Device.cssSize.width)
+    const viewportCSSHeight = Math.round(Device.cssSize.height)
     this.#view.style.width = `${viewportCSSWidth}px`
     this.#view.style.height = `${viewportCSSHeight}px`
     this.#renderer.resize(viewportWidth, viewportHeight)
@@ -84,6 +87,7 @@ class BasicRenderSystem extends System {
     }
 
     FT.stage = stage
+    FT.viewport = viewport
   }
 
   enableDomEventMode() {

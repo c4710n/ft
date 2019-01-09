@@ -1,5 +1,5 @@
 import PIXI from '#/pixi'
-import { Device, Orientation } from '#/core'
+import { Orientation } from '#/core'
 
 const { Rectangle } = PIXI
 
@@ -28,7 +28,7 @@ function generate(
   designHeight,
   deviceWidth,
   deviceHeight,
-  calculator
+  calcFunction
 ) {
   const shouldRotate = !isOrientationMatched(
     designWidth,
@@ -41,7 +41,15 @@ function generate(
     ;[deviceWidth, deviceHeight] = [deviceHeight, deviceWidth]
   }
 
-  const stage = calculator(designWidth, designHeight, deviceWidth, deviceHeight)
+  const stageSize = calcFunction(
+    designWidth,
+    designHeight,
+    deviceWidth,
+    deviceHeight
+  )
+  const { x, y, width, height, scale } = stageSize
+  const stage = new Rectangle(x, y, width, height)
+  stage.scale = scale
 
   const centerX = stage.width / 2
   const centerY = stage.height / 2
@@ -58,27 +66,23 @@ function generate(
   )
   stage.bounds = bounds
 
-  const device = new Rectangle(
+  const viewport = new Rectangle(
     -stage.x,
     -stage.y,
-    deviceWidth * stage.scale,
-    deviceHeight * stage.scale
+    deviceWidth / scale,
+    deviceHeight / scale
   )
-  stage.device = device
 
   const values = {
     stage,
-    viewportWidth: Math.round(Device.size.width),
-    viewportHeight: Math.round(Device.size.height),
-    viewportCSSWidth: Math.round(Device.cssSize.width),
-    viewportCSSHeight: Math.round(Device.cssSize.height),
+    viewport,
     shouldRotate,
   }
 
   return values
 }
 
-function calculatorCover(designWidth, designHeight, deviceWidth, deviceHeight) {
+function calcCover(designWidth, designHeight, deviceWidth, deviceHeight) {
   const scale = Math.max(deviceWidth / designWidth, deviceHeight / designHeight)
 
   const x = (deviceWidth / scale - designWidth) / 2
@@ -86,18 +90,10 @@ function calculatorCover(designWidth, designHeight, deviceWidth, deviceHeight) {
   const width = designWidth
   const height = designHeight
 
-  const stage = new Rectangle(x, y, width, height)
-  stage.scale = scale
-
-  return stage
+  return { scale, x, y, width, height }
 }
 
-function calculatorContain(
-  designWidth,
-  designHeight,
-  deviceWidth,
-  deviceHeight
-) {
+function calcContain(designWidth, designHeight, deviceWidth, deviceHeight) {
   const scale = Math.min(deviceWidth / designWidth, deviceHeight / designHeight)
 
   const x = (deviceWidth / scale - designWidth) / 2
@@ -105,18 +101,10 @@ function calculatorContain(
   const width = designWidth
   const height = designHeight
 
-  const stage = new Rectangle(x, y, width, height)
-  stage.scale = scale
-
-  return stage
+  return { scale, x, y, width, height }
 }
 
-function calculatorFullHeight(
-  designWidth,
-  designHeight,
-  deviceWidth,
-  deviceHeight
-) {
+function calcFullHeight(designWidth, designHeight, deviceWidth, deviceHeight) {
   const scale = deviceHeight / designHeight
 
   const x = 0
@@ -124,10 +112,7 @@ function calculatorFullHeight(
   const width = designWidth
   const height = designHeight
 
-  const stage = new Rectangle(x, y, width, height)
-  stage.scale = scale
-
-  return stage
+  return { scale, x, y, width, height }
 }
 
 export function COVER(designWidth, designHeight, deviceWidth, deviceHeight) {
@@ -136,7 +121,7 @@ export function COVER(designWidth, designHeight, deviceWidth, deviceHeight) {
     designHeight,
     deviceWidth,
     deviceHeight,
-    calculatorCover
+    calcCover
   )
 }
 
@@ -146,7 +131,7 @@ export function CONTAIN(designWidth, designHeight, deviceWidth, deviceHeight) {
     designHeight,
     deviceWidth,
     deviceHeight,
-    calculatorContain
+    calcContain
   )
 }
 
@@ -161,7 +146,7 @@ export function FULL_HEIGHT(
     designHeight,
     deviceWidth,
     deviceHeight,
-    calculatorFullHeight
+    calcFullHeight
   )
 }
 
