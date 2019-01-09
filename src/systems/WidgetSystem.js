@@ -2,6 +2,9 @@ import { FT } from '#/core'
 import { Widget } from '#/components'
 import System from './System'
 
+/**
+ * System for Widget component.
+ */
 class WidgetSystem extends System {
   update() {
     this.entities.forEach(entity => {

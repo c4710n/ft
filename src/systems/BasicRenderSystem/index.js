@@ -9,6 +9,9 @@ const { autoDetectRenderer, utils } = PIXI
 // keep quiet!
 utils.skipHello()
 
+/**
+ * System for render.
+ */
 class BasicRenderSystem extends System {
   #view
   #renderer
@@ -93,7 +96,7 @@ class BasicRenderSystem extends System {
   enableDomEventMode() {
     /**
      * Visit following link for more details.
-     * https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
+     * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
      */
     const renderer = this.#renderer
     const interaction = renderer.plugins.interaction

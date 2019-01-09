@@ -1,21 +1,25 @@
 import { splice } from '#/utils/fast'
 
+/**
+ * Basic class for system.
+ */
 class System {
   /**
-   * @class  System
-   * @constructor
-   * @param [frequency=1] {Number} Frequency of execution.
+   * @param [frequency=1] {number} frequency of execution.
    */
   constructor(frequency = 1) {
     /**
      * Frequency of update execution, a frequency of `1` run the system every
      * update, `2` will run the system every 2 updates, etc.
-     * @property {Number} frequency
+     *
+     * @property {number} frequency
      */
     this.frequency = frequency
 
     /**
      * Entities of current system.
+     *
+     * @property {Array} entities
      */
     this.entities = []
   }
@@ -32,6 +36,9 @@ class System {
     }
   }
 
+  /**
+   * @override
+   */
   // eslint-disable-next-line no-unused-vars
   update(dt) {}
 }
