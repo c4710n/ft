@@ -70,14 +70,17 @@ class BasicRenderSystem extends System {
     this.#renderer.resize(viewportWidth, viewportHeight)
 
     this.#stage.scale.set(stage.scale)
+    const x = stage.x * stage.scale
+    const y = stage.y * stage.scale
+
     if (shouldRotate) {
       this.#stage.rotation = 0.5 * Math.PI
-      this.#stage.x = viewportWidth - stage.y
-      this.#stage.y = stage.x
+      this.#stage.x = viewportWidth - y
+      this.#stage.y = x
     } else {
       this.#stage.rotation = 0
-      this.#stage.x = stage.x
-      this.#stage.y = stage.y
+      this.#stage.x = x
+      this.#stage.y = y
     }
 
     FT.stage = stage

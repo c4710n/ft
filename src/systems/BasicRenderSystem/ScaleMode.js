@@ -42,13 +42,27 @@ function generate(
   }
 
   const stage = calculator(designWidth, designHeight, deviceWidth, deviceHeight)
-  stage.center = [stage.centerX, stage.centerY] // shortcut for center
+
+  const centerX = stage.width / 2
+  const centerY = stage.height / 2
+  const center = [centerX, centerY]
+  stage.centerX = centerX
+  stage.centerY = centerY
+  stage.center = center
+
+  const bounds = new Rectangle(
+    -stage.x,
+    -stage.y,
+    designWidth + 2 * stage.x,
+    designHeight + 2 * stage.y
+  )
+  stage.bounds = bounds
 
   const device = new Rectangle(
-    0,
-    0,
-    deviceWidth / stage.scale,
-    deviceHeight / stage.scale
+    -stage.x,
+    -stage.y,
+    deviceWidth * stage.scale,
+    deviceHeight * stage.scale
   )
   stage.device = device
 
@@ -67,30 +81,13 @@ function generate(
 function calculatorCover(designWidth, designHeight, deviceWidth, deviceHeight) {
   const scale = Math.max(deviceWidth / designWidth, deviceHeight / designHeight)
 
-  const _width = designWidth * scale
-  const _height = designHeight * scale
-  const x = (deviceWidth - _width) / 2
-  const y = (deviceHeight - _height) / 2
-
+  const x = (deviceWidth / scale - designWidth) / 2
+  const y = (deviceHeight / scale - designHeight) / 2
   const width = designWidth
   const height = designHeight
-  const centerX = width / 2
-  const centerY = height / 2
-
-  const boundsX = -x / scale
-  const boundsY = -y / scale
-  const bounds = new Rectangle(
-    boundsX,
-    boundsY,
-    designWidth - 2 * boundsX,
-    designHeight - 2 * boundsY
-  )
 
   const stage = new Rectangle(x, y, width, height)
   stage.scale = scale
-  stage.centerX = centerX
-  stage.centerY = centerY
-  stage.bounds = bounds
 
   return stage
 }
@@ -103,30 +100,13 @@ function calculatorContain(
 ) {
   const scale = Math.min(deviceWidth / designWidth, deviceHeight / designHeight)
 
-  const _width = designWidth * scale
-  const _height = designHeight * scale
-  const x = (deviceWidth - _width) / 2
-  const y = (deviceHeight - _height) / 2
-
+  const x = (deviceWidth / scale - designWidth) / 2
+  const y = (deviceHeight / scale - designHeight) / 2
   const width = designWidth
   const height = designHeight
-  const centerX = width / 2
-  const centerY = height / 2
-
-  const boundsX = -x / scale
-  const boundsY = -y / scale
-  const bounds = new Rectangle(
-    boundsX,
-    boundsY,
-    designWidth - 2 * boundsX,
-    designHeight - 2 * boundsY
-  )
 
   const stage = new Rectangle(x, y, width, height)
   stage.scale = scale
-  stage.centerX = centerX
-  stage.centerY = centerY
-  stage.bounds = bounds
 
   return stage
 }
@@ -140,28 +120,12 @@ function calculatorFullHeight(
   const scale = deviceHeight / designHeight
 
   const x = 0
-  const _height = designHeight * scale
-  const y = (deviceHeight - _height) / 2
-
+  const y = (deviceHeight / scale - designHeight) / 2
   const width = designWidth
   const height = designHeight
-  const centerX = width / 2
-  const centerY = height / 2
-
-  const boundsX = -x / scale
-  const boundsY = -y / scale
-  const bounds = new Rectangle(
-    boundsX,
-    boundsY,
-    designWidth - 2 * boundsX,
-    designHeight - 2 * boundsY
-  )
 
   const stage = new Rectangle(x, y, width, height)
   stage.scale = scale
-  stage.centerX = centerX
-  stage.centerY = centerY
-  stage.bounds = bounds
 
   return stage
 }
