@@ -19,7 +19,7 @@ import classname from './classname'
  */
 class Timer {
   /**
-   * @param {number} timeout timeout in millionseconds.
+   * @param {number} timeout timeout in milliseconds.
    */
   constructor(timeout) {
     if (typeof timeout !== 'number') {

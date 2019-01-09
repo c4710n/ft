@@ -1,10 +1,37 @@
 import Component from './Component'
 
+/**
+ * Make a display object draggable.
+ *
+ * @example
+ * const displayObject = FT.create(Text, 'Hello World')
+ * const draggable = new Draggable()
+ * displayObject.addComponent(draggable)
+ */
 class Draggable extends Component {
+  constructor() {
+    super()
+
+    /**
+     * @access private
+     */
+    this.$dragging = false
+
+    /**
+     * @access private
+     */
+    this.$eventData = null
+
+    /**
+     * @access private
+     */
+    this.$pointerdownPosition = null
+  }
+
   onAdded(displayObject) {
     super.onAdded(displayObject)
-    displayObject.interactive = true
 
+    displayObject.interactive = true
     displayObject.on('pointerdown', this.onDragStart)
     displayObject.on('pointerup', this.onDragEnd)
     displayObject.on('pointerupoutside', this.onDragEnd)
@@ -21,26 +48,35 @@ class Draggable extends Component {
     super.onRemoved(displayObject)
   }
 
+  /**
+   * @access private
+   */
   onDragStart(event) {
-    this.dragging = true
-    this.data = event.data
+    this.$dragging = true
+    this.$eventData = event.data
 
     // click position relative to current displayObject
-    this.pointerDownPosition = this.data.getLocalPosition(this)
+    this.$pointerdownPosition = this.$eventData.getLocalPosition(this)
   }
 
+  /**
+   * @access private
+   */
   onDragEnd() {
-    this.dragging = false
-    this.data = null
+    this.$dragging = false
+    this.$eventData = null
   }
 
+  /**
+   * @access private
+   */
   onDragMove() {
-    if (!this.dragging) return
+    if (!this.$dragging) return
 
     // click position relative to the parent of current displayObject
-    const currentPosition = this.data.getLocalPosition(this.parent)
-    const x = currentPosition.x - this.pointerDownPosition.x
-    const y = currentPosition.y - this.pointerDownPosition.y
+    const currentPosition = this.$eventData.getLocalPosition(this.parent)
+    const x = currentPosition.x - this.$pointerdownPosition.x
+    const y = currentPosition.y - this.$pointerdownPosition.y
     this.position.set(x, y)
   }
 }

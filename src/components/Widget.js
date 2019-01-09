@@ -3,8 +3,22 @@ import { WidgetSystem } from '#/systems'
 import { classname } from '#/utils'
 import Component from './Component'
 
+/**
+ * A component for widget system.
+ */
 class Widget extends Component {
-  constructor({ x, y, left, right, top, bottom, type } = {}) {
+  /**
+   * @param {Object} options
+   * @param {string} [options.type='bounds'] type of widget, bounds / device.
+   * @param {number} options.left left position for bounds.
+   * @param {number} options.right right position for bounds.
+   * @param {number} options.top top position for bounds.
+   * @param {number} options.bottom bottom position for bounds.
+   * @param {number} options.x x position for device.
+   * @param {number} options.y y position for device.
+   *
+   */
+  constructor({ type, left, right, top, bottom, x, y } = {}) {
     super()
 
     this.system = FT.systems.find(system => system instanceof WidgetSystem)

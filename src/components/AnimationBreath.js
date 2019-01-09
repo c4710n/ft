@@ -1,12 +1,26 @@
 import Animation from './Animation'
 import { Easing } from '#/animation'
 
+/**
+ * Breath animation.
+ *
+ * @example
+ * const displayObject = FT.create(Text, 'Hello World')
+ * const breath = new AnimationBreath({ duration: 500 })
+ * displayObject.addComponent(breath)
+ */
 class AnimationBreath extends Animation {
-  #duration
-
+  /**
+   * @param {Object} options
+   * @param {number} options.duration=1000 duration of animation in milliseconds.
+   */
   constructor({ duration = 1000 } = {}) {
     super()
-    this.#duration = duration
+
+    /**
+     * @access private
+     */
+    this.$duration = duration
   }
 
   onAdded(displayObject) {
@@ -14,7 +28,7 @@ class AnimationBreath extends Animation {
     displayObject.alpha = 0
 
     const alpha = 1
-    const duration = this.#duration
+    const duration = this.$duration
     this.tween
       .to({ alpha }, duration)
       .easing(Easing.Cubic.InOut)
