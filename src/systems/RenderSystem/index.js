@@ -13,13 +13,6 @@ utils.skipHello()
  * System for render.
  */
 class RenderSystem extends System {
-  #view
-  #renderer
-  #stage
-  #designWidth
-  #designHeight
-  #scaleMode
-
   constructor(
     container,
     stage,
@@ -33,72 +26,101 @@ class RenderSystem extends System {
     })
     container.appendChild(renderer.view)
 
-    this.#renderer = renderer
-    this.#view = renderer.view
-    this.#stage = stage
-    this.#designWidth = width
-    this.#designHeight = height
-    this.#scaleMode = scaleMode
+    /**
+     * @access private
+     */
+    this.$renderer = renderer
+
+    /**
+     * @access private
+     */
+    this.$view = renderer.view
+
+    /**
+     * @access private
+     */
+    this.$stage = stage
+
+    /**
+     * @access private
+     */
+    this.$designWidth = width
+
+    /**
+     * @access private
+     */
+    this.$designHeight = height
+
+    /**
+     * @access private
+     */
+    this.$scaleMode = scaleMode
 
     if (eventMode === 'dom') {
       this.enableDomEventMode()
     }
 
-    window.addEventListener('resize', this.onResize)
+    window.addEventListener('resize', this.onResize.bind(this))
     this.onResize()
   }
 
-  onResize = () => {
+  /**
+   * @access private
+   */
+  onResize() {
     const { width: deviceWidth, height: deviceHeight } = Device.size.clone()
 
-    const mode = this.#scaleMode
+    const mode = this.$scaleMode
     const scale = ScaleMode[mode]
     if (!scale) {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
     }
 
     const { stage, viewport, shouldRotate } = scale(
-      this.#designWidth,
-      this.#designHeight,
+      this.$designWidth,
+      this.$designHeight,
       deviceWidth,
       deviceHeight
     )
 
-    this.#view.style.zIndex = Layer.VIEW
-    this.#view.style.position = 'absolute'
+    this.$view.style.zIndex = Layer.VIEW
+    this.$view.style.position = 'absolute'
 
     const viewportWidth = Math.round(Device.size.width)
     const viewportHeight = Math.round(Device.size.height)
     const viewportCSSWidth = Math.round(Device.cssSize.width)
     const viewportCSSHeight = Math.round(Device.cssSize.height)
-    this.#view.style.width = `${viewportCSSWidth}px`
-    this.#view.style.height = `${viewportCSSHeight}px`
-    this.#renderer.resize(viewportWidth, viewportHeight)
+    this.$view.style.width = `${viewportCSSWidth}px`
+    this.$view.style.height = `${viewportCSSHeight}px`
+    this.$renderer.resize(viewportWidth, viewportHeight)
 
-    this.#stage.scale.set(stage.scale)
+    this.$stage.scale.set(stage.scale)
     const x = stage.x * stage.scale
     const y = stage.y * stage.scale
 
     if (shouldRotate) {
-      this.#stage.rotation = 0.5 * Math.PI
-      this.#stage.x = viewportWidth - y
-      this.#stage.y = x
+      this.$stage.rotation = 0.5 * Math.PI
+      this.$stage.x = viewportWidth - y
+      this.$stage.y = x
     } else {
-      this.#stage.rotation = 0
-      this.#stage.x = x
-      this.#stage.y = y
+      this.$stage.rotation = 0
+      this.$stage.x = x
+      this.$stage.y = y
     }
 
     FT.stage = stage
     FT.viewport = viewport
   }
 
+  /**
+   * @access private
+   */
   enableDomEventMode() {
     /**
      * Visit following link for more details.
      * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
      */
-    const renderer = this.#renderer
+    const renderer = this.$renderer
     const interaction = renderer.plugins.interaction
     const target = document.body
     interaction.setTargetElement(target, renderer.resolution)
@@ -107,6 +129,9 @@ class RenderSystem extends System {
 
     const { normalizeToPointerData } = interaction
     interaction.normalizeToPointerData = function(event) {
+      /**
+       * @ignore
+       */
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
     }
@@ -118,7 +143,7 @@ class RenderSystem extends System {
   }
 
   update() {
-    this.#renderer.render(this.#stage)
+    this.$renderer.render(this.$stage)
   }
 }
 
