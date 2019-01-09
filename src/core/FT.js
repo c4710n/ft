@@ -131,11 +131,9 @@ class FT {
    */
   update(dt) {
     for (const system of this.$systems) {
-      if (this.$updates % system.frequency > 0) {
-        break
+      if (this.$updates % system.frequency === 0) {
+        system.update(dt)
       }
-
-      system.update(dt)
     }
 
     this.$updates += 1
