@@ -2,7 +2,7 @@ import patch from '#/patch'
 import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
-import { TweenSystem, WidgetSystem, BasicRenderSystem } from '#/systems'
+import { TweenSystem, WidgetSystem, RenderSystem } from '#/systems'
 
 const defaultOptions = {
   width: 750,
@@ -108,7 +108,7 @@ class FT {
       scaleMode,
       eventMode,
     }
-    this.addSystem(new BasicRenderSystem(container, stage, renderOptions))
+    this.addSystem(new RenderSystem(container, stage, renderOptions))
 
     this.ticker.add(dt => {
       this.update(dt)
