@@ -4,12 +4,17 @@ import { classname } from '#/utils'
 import Component from './Component'
 
 /**
- * Basic class for widgets.
- *
- * @interface
+ * A component for positioning display object according bounds of viewport.
  */
 class Widget extends Component {
-  constructor() {
+  /**
+   * @param {Object} options
+   * @param {number} options.left left position for bounds.
+   * @param {number} options.right right position for bounds.
+   * @param {number} options.top top position for bounds.
+   * @param {number} options.bottom bottom position for bounds.
+   */
+  constructor({ left, right, top, bottom } = {}) {
     super()
 
     this.system = FT.systems.find(system => system instanceof WidgetSystem)
@@ -17,6 +22,11 @@ class Widget extends Component {
     if (!this.system) {
       throw new Error(`[${classname(this)}] can't find usable WidgetSystem`)
     }
+
+    if (left !== undefined) this.meta.left = left
+    if (right !== undefined) this.meta.right = right
+    if (top !== undefined) this.meta.top = top
+    if (bottom !== undefined) this.meta.bottom = bottom
   }
 
   // eslint-disable-next-line

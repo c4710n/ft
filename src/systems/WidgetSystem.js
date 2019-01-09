@@ -13,25 +13,11 @@ class WidgetSystem extends System {
 
       const { meta } = widget
 
-      this.setWidgetStage(entity, meta)
+      this.position(entity, meta)
     })
   }
 
-  setWidgetStage(entity, meta) {
-    let $x, $y
-    const { left, right, top, bottom } = meta
-    const { bounds } = FT.stage
-
-    if (left !== undefined) $x = bounds.left + left
-    if (right !== undefined) $x = bounds.right - right
-    if (top !== undefined) $y = bounds.top + top
-    if (bottom !== undefined) $y = bounds.bottom - bottom
-
-    if ($x) entity.x = $x
-    if ($y) entity.y = $y
-  }
-
-  setWidgetViewport(entity, meta) {
+  position(entity, meta) {
     let $x, $y
     const { left, right, top, bottom } = meta
     const { viewport } = FT
