@@ -9,8 +9,8 @@
   "scripts": {
     "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
     "test": "ava",
-    "doc": "esdoc",
-    "doc:watch": "nodemon --watch src --exec 'npm run doc'",
+    "docs": "esdoc",
+    "docs:watch": "nodemon --watch src --exec 'npm run doc'",
     "code-quality": "npm run lint && npm run test",
     "cleanup": "rm -rf dist",
     "transpile": "babel src -d dist",
