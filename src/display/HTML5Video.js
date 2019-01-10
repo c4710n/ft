@@ -11,6 +11,11 @@ import Spinner from './Spinner'
  * const url = 'https://url/to/video'
  * const video = FT.create(Video, url)
  *
+ * // Setting up width and height is required, or the video's size
+ * // will be 0x0. Then, you can't see the video.
+ * video.width = 1500
+ * video.height = 750
+ *
  * // unlock
  * await video.unlock()
  *
