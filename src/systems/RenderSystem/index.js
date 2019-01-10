@@ -65,6 +65,19 @@ class RenderSystem extends System {
   }
 
   /**
+   * Resize stage.
+   *
+   * @param {number} width
+   * @param {number} height
+   */
+  resize(width, height) {
+    this.$designWidth = width
+    this.$designHeight = height
+
+    this.onResize()
+  }
+
+  /**
    * @access private
    */
   onResize() {

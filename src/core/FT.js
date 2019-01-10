@@ -108,7 +108,12 @@ class FT {
       scaleMode,
       eventMode,
     }
-    this.addSystem(new RenderSystem(container, stage, renderOptions))
+    const renderSystem = new RenderSystem(container, stage, renderOptions)
+    this.addSystem(renderSystem)
+    /**
+     * @ignore
+     */
+    this.renderSystem = renderSystem
 
     this.ticker.add(dt => {
       this.update(dt)
@@ -151,6 +156,13 @@ class FT {
    */
   stop() {
     this.ticker.stop()
+  }
+
+  /**
+   * resize stage after initialization.
+   */
+  resizeStage(...args) {
+    this.renderSystem.resize(...args)
   }
 
   /**
