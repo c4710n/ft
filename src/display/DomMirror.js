@@ -1,4 +1,5 @@
-import { FT, Device, Layer } from '#/core'
+import { FT, Layer } from '#/core'
+import { transformDOM } from '#/utils'
 import PIXI from '#/pixi'
 
 /**
@@ -48,51 +49,21 @@ class DomMirror extends PIXI.Container {
     return this.$dom
   }
 
+  transformDOM() {
+    const dom = this.$dom
+    const displayObject = this.$displayObject
+
+    transformDOM(dom, displayObject)
+  }
+
   /**
    * @ignore
    */
   position = () => {
     const dom = this.$dom
-    const displayObject = this.$displayObject
-
-    const scale = 1 / Device.DPR
-    const { worldTransform: originalMatrix } = FT.internal.stage
-    const matrix = originalMatrix.clone().scale(scale, scale)
-    const { a, b, c, d, tx, ty } = matrix
-
-    const { width, height } = displayObject
-
-    const stagePosition = FT.internal.stage.getGlobalPosition()
-    const displayObjectPosition = displayObject.getGlobalPosition()
-
-    const { x: anchorX, y: anchorY } = displayObject.anchor
-    let pivotX, pivotY
-
-    if (Math.sign(c) >= 0) {
-      // normal
-      pivotX = width * anchorX * a
-      pivotY = height * anchorY * d
-    } else {
-      // rotated
-      pivotX = -width * anchorX * b
-      pivotY = -height * anchorY * c
-    }
-
-    const x = (displayObjectPosition.x - stagePosition.x) * scale - pivotX
-    const y = (displayObjectPosition.y - stagePosition.y) * scale - pivotY
 
     dom.style.zIndex = Layer.DOM_INTERACTION
-    dom.style.position = 'absolute'
-    dom.style.width = `${width}px`
-    dom.style.height = `${height}px`
-    dom.style.left = `${x}px`
-    dom.style.top = `${y}px`
-    const transform = `matrix(${a}, ${b}, ${c}, ${d}, ${tx}, ${ty})`
-    const transformOrigin = '0 0 0'
-    dom.style.transform = transform
-    dom.style.transformOrigin = transformOrigin
-    dom.style.webkitTransform = transform
-    dom.style.webkitTransformOrigin = transformOrigin
+    this.transformDOM(dom)
 
     if (this.$debug) {
       dom.style.backgroundColor = '#ff0000'
