@@ -23,6 +23,16 @@
   - scroller
   - video
 
+## Installation
+
+```sh
+$ npm install @2players/ft
+```
+
+## Usage
+
+Visit [ft-starter](https://github.com/2players/ft-starter) to get examples about how to use this library.
+
 ## Supported By
 
 ft is supported by helpful libraries:
