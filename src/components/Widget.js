@@ -13,8 +13,9 @@ class Widget extends Component {
    * @param {number} options.right right position for bounds.
    * @param {number} options.top top position for bounds.
    * @param {number} options.bottom bottom position for bounds.
+   * @param {number} options.percentage make left, right ,top, bottom represent percentage.
    */
-  constructor({ left, right, top, bottom } = {}) {
+  constructor({ left, right, top, bottom, percentage = true } = {}) {
     super()
 
     this.system = FT.systems.find(system => system instanceof WidgetSystem)
@@ -27,6 +28,7 @@ class Widget extends Component {
     if (right !== undefined) this.meta.right = right
     if (top !== undefined) this.meta.top = top
     if (bottom !== undefined) this.meta.bottom = bottom
+    this.meta.percentage = percentage
   }
 
   // eslint-disable-next-line

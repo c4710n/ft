@@ -26,13 +26,24 @@ class WidgetSystem extends System {
 
   position(entity, meta) {
     let $x, $y
-    const { left, right, top, bottom } = meta
+    const { left, right, top, bottom, percentage } = meta
     const { viewport } = FT
 
-    if (left !== undefined) $x = viewport.left + left
-    if (right !== undefined) $x = viewport.right - right
-    if (top !== undefined) $y = viewport.top + top
-    if (bottom !== undefined) $y = viewport.bottom - bottom
+    if (left !== undefined) {
+      $x = viewport.left + percentage ? viewport.width * left : left
+    }
+
+    if (right !== undefined) {
+      $x = viewport.right - percentage ? viewport.width * right : right
+    }
+
+    if (top !== undefined) {
+      $y = viewport.top + percentage ? viewport.height * top : top
+    }
+
+    if (bottom !== undefined) {
+      $y = viewport.bottom - percentage ? viewport.height * bottom : bottom
+    }
 
     if ($x) entity.x = $x
     if ($y) entity.y = $y
