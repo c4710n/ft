@@ -1,4 +1,4 @@
-import { FT, Layer } from '#/core'
+import { FT, Layer, Device } from '#/core'
 import PIXI from '#/pixi'
 import { transformDOM, Timer } from '#/utils'
 import Spinner from './Spinner'
@@ -114,13 +114,7 @@ class HTML5Video extends PIXI.Sprite {
     video.setAttribute('webkit-playsinline', '') // WebKit-based browser adaptation
 
     // QQ Browser on iOS
-    const ua =
-      window && window.navigator && window.navigator.userAgent
-        ? window.navigator.userAgent
-        : ''
-    const IOS_PATTERN = /ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i
-    const QQ_BROWSER_UA_PATTERN = /m?(qqbrowser)[\/\s]?([\w\.]+)/i // eslint-disable-line
-    if (IOS_PATTERN.test(ua) && QQ_BROWSER_UA_PATTERN.test(ua)) {
+    if (Device.isIOS && Device.isQQBrowser) {
       video.setAttribute('x5-playsinline', '')
     }
 
