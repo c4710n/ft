@@ -30,19 +30,23 @@ class WidgetSystem extends System {
     const { viewport } = FT
 
     if (left !== undefined) {
-      $x = viewport.left + percentage ? viewport.width * left : left
+      const offset = percentage ? viewport.width * left : left
+      $x = viewport.left + offset
     }
 
     if (right !== undefined) {
-      $x = viewport.right - percentage ? viewport.width * right : right
+      const offset = percentage ? viewport.width * right : right
+      $x = viewport.right - offset
     }
 
     if (top !== undefined) {
-      $y = viewport.top + percentage ? viewport.height * top : top
+      const offset = percentage ? viewport.height * top : top
+      $y = viewport.top + offset
     }
 
     if (bottom !== undefined) {
-      $y = viewport.bottom - percentage ? viewport.height * bottom : bottom
+      const offset = percentage ? viewport.height * bottom : bottom
+      $y = viewport.bottom - offset
     }
 
     if ($x) entity.x = $x

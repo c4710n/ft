@@ -15,7 +15,7 @@ class Widget extends Component {
    * @param {number} options.bottom bottom position for bounds.
    * @param {number} options.percentage make left, right ,top, bottom represent percentage.
    */
-  constructor({ left, right, top, bottom, percentage = true } = {}) {
+  constructor({ left, right, top, bottom, percentage = false } = {}) {
     super()
 
     this.system = FT.systems.find(system => system instanceof WidgetSystem)
