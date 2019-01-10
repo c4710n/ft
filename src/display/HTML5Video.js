@@ -1,7 +1,6 @@
 import { FT, Layer } from '#/core'
 import PIXI from '#/pixi'
-import transformDOM from '#/utils/dom'
-import { Timer } from '#/utils'
+import { transformDOM, Timer } from '#/utils'
 import Spinner from './Spinner'
 
 /**
@@ -10,10 +9,7 @@ import Spinner from './Spinner'
  * @example
  * // create
  * const url = 'https://url/to/video'
- * const video = FT.create(Video, url, {
- *   width: 750,
- *   height: 1500,
- * })
+ * const video = FT.create(Video, url)
  *
  * // unlock
  * await video.unlock()
@@ -21,27 +17,17 @@ import Spinner from './Spinner'
  * // play
  * video.play()
  */
-class HTML5Video extends PIXI.Container {
+class HTML5Video extends PIXI.Sprite {
   /**
    * @param {string} src='' url of video
    * @param {Object} options
    * @param {string} [options.id=''] id of video
-   * @param {number} [options.width=FT.stage.width] width of video
-   * @param {number} [options.height=FT.stage.height] height of video
    * @param {boolean} [options.loop=false] enable loop
    * @param {boolean} [options.hide=false] hide video after creating it
    */
-  constructor(
-    src,
-    {
-      id = '',
-      width = FT.stage.width,
-      height = FT.stage.height,
-      loop = false,
-      hide = false,
-    } = {}
-  ) {
-    super()
+  constructor(src, { id = '', loop = false, hide = false } = {}) {
+    super(PIXI.Texture.WHITE)
+    this.alpha = 0
 
     /**
      * @ignore
@@ -51,14 +37,6 @@ class HTML5Video extends PIXI.Container {
      * @ignore
      */
     this.$id = id
-    /**
-     * @ignore
-     */
-    this.$width = width
-    /**
-     * @ignore
-     */
-    this.$height = height
     /**
      * @ignore
      */
@@ -121,23 +99,14 @@ class HTML5Video extends PIXI.Container {
     video.className = 'ft-video'
     if (this.$id) video.id = this.$id
 
-    // standard adaptation
-    video.style.position = 'absolute'
-    video.style.top = '0'
-    video.style.left = '0'
     video.style.zIndex = this.$hide
       ? Layer.DOM_DISPLAY_HIDDEN
       : Layer.DOM_DISPLAY
-    if (this.$width) video.style.width = `${this.$width}px`
-    if (this.$height) video.style.height = `${this.$height}px`
-
     video.loop = this.$loop
     video.crossorigin = 'anonymous'
     video.setAttribute('preload', 'auto')
     video.setAttribute('playsinline', '')
-
-    // WebKit-based browser adaptation
-    video.setAttribute('webkit-playsinline', '')
+    video.setAttribute('webkit-playsinline', '') // WebKit-based browser adaptation
 
     // QQ Browser on iOS
     const ua =
@@ -160,7 +129,7 @@ class HTML5Video extends PIXI.Container {
     this.$container = FT.container
 
     const { $video: video } = this
-    this.transfor$video()
+    this.transformVideo()
 
     video.addEventListener('ended', this.onEnd)
     this.$container.appendChild(video)
@@ -170,9 +139,8 @@ class HTML5Video extends PIXI.Container {
    * Resize and position current video DOM according stage's setting.
    * @access private
    */
-  transfor$video = () => {
-    const { localTransform: matrix } = FT.internal.stage
-    transformDOM(this.$video, matrix)
+  transformVideo = () => {
+    transformDOM(this.$video, this)
   }
 
   /**
@@ -184,7 +152,7 @@ class HTML5Video extends PIXI.Container {
     const { currentTime } = this.$video
     this.emit('progress', currentTime)
 
-    this.transfor$video()
+    this.transformVideo()
   }
 
   /**
