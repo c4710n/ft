@@ -6,10 +6,6 @@ import System from './System'
  * System for Widget component.
  */
 class WidgetSystem extends System {
-  constructor() {
-    super(10)
-  }
-
   update() {
     this.entities.forEach(entity => {
       const widget = entity.components.find(
