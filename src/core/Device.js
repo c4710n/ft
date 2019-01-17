@@ -65,22 +65,22 @@ class Device {
     return !Device.isLandscape
   }
 
-  get isIOS() {
+  static get isIOS() {
     const pattern = /ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i
     return pattern.test(Device.UA)
   }
 
-  get isAndroid() {
+  static get isAndroid() {
     const pattern = /android/i
     return pattern.test(Device.UA)
   }
 
-  get isWeChat() {
+  static get isWeChat() {
     const pattern = /MicroMessenger/i
     return pattern.test(Device.UA)
   }
 
-  get isQQ() {
+  static get isQQ() {
     const pattern_ios = new RegExp(
       '(iPad|iPhone|iPod).*? (IPad)?QQ\\/([\\d\\.]+)'
     )
@@ -91,7 +91,7 @@ class Device {
     return pattern_ios.test(Device.UA) || pattern_android.test(Device.UA)
   }
 
-  get isQQBrowser() {
+  static get isQQBrowser() {
     const pattern = /m?(qqbrowser)[\/\s]?([\w\.]+)/i // eslint-disable-line
     return pattern.test(Device.UA)
   }
