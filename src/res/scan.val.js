@@ -34,9 +34,10 @@ module.exports = ({ basedir } = {}) => {
     const extname = path.extname($path)
     const basename = path.basename($path)
 
+    const sepRE = new RegExp(`${path.sep}`, 'g')
     const name = $path
       .replace(addSep(_dir), '') // remove useless prefix
-      .replace(path.sep, '.')
+      .replace(sepRE, '.')
       .replace(extname, '')
 
     const module = `resource${index}`
