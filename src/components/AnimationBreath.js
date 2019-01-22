@@ -14,23 +14,26 @@ class AnimationBreath extends Animation {
    * @param {Object} options
    * @param {number} options.duration=1000 duration of animation in milliseconds.
    */
-  constructor({ duration = 1000 } = {}) {
+  constructor({ duration = 1000, from = 0, to = 1 } = {}) {
     super()
 
     /**
      * @access private
      */
     this.$duration = duration
+    this.$from = from
+    this.$to = to
   }
 
   onAdded(displayObject) {
     super.onAdded(displayObject)
-    displayObject.alpha = 0
+    displayObject.alpha = this.$from
 
-    const alpha = 1
+    const alpha = this.$to
     const duration = this.$duration
     this.tween
-      .to({ alpha }, duration)
+      .to({ alpha })
+      .duration(duration)
       .easing(Easing.Cubic.InOut)
       .yoyo(true)
       .repeat(Infinity)
