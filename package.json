@@ -34,7 +34,7 @@
     "fast-glob": "^2.2.4",
     "pixi-sound": "^2.0.4",
     "pixi-spine": "^1.5.19",
-    "pixi.js": "^4.8.3",
+    "pixi.js": "^4.8.5",
     "qs": "^6.6.0",
     "string-length": "^2.0.0",
     "vconsole": "^3.2.0"
