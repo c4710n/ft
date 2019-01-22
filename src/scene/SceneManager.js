@@ -64,13 +64,18 @@ class SceneManager {
    * @param {Object} [options]
    * @param {boolean} [options.sticky=false] scene will not be removed unless
    *                                         you unload it explicitly
+   * @param {boolean} [options.oneOff=false] scene is one-off, when the scene is removed,
+   *                                         related textures will be destroyed
    * @param {boolean} [options.transition=false] enable transition when switching
    *                                            scene
    * @param {number} [options.transitionTime=500] transition's duration, unit in
    *                                            seconds
    * @return {boolean} load is done or not
    */
-  load(name, { sticky = false, transition = false, duration = 500 } = {}) {
+  load(
+    name,
+    { sticky = false, oneOff = false, transition = false, duration = 500 } = {}
+  ) {
     this.cleanup()
     const scene = this.availableScenes.find(s => s.name === name)
     if (!scene) {
@@ -86,6 +91,7 @@ class SceneManager {
     const { Class, name: $name } = scene
     const activeScene = FT.create(Class, $name)
     activeScene.sticky = sticky
+    activeScene.oneOff = oneOff
 
     this.activeScenes.push(activeScene)
 
@@ -119,7 +125,13 @@ class SceneManager {
         return true
       } else {
         FT.internal.stage.removeChild(scene)
-        scene.destroy({ children: true })
+
+        scene.destroy({
+          children: true,
+          texture: scene.oneOff,
+          baseTexture: scene.oneOff,
+        })
+
         return false
       }
     })
