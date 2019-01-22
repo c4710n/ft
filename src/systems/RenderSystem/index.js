@@ -115,10 +115,14 @@ class RenderSystem extends System {
       this.$stage.rotation = 0.5 * Math.PI
       this.$stage.x = viewportWidth - y
       this.$stage.y = x
+
+      FT.rotated = true
     } else {
       this.$stage.rotation = 0
       this.$stage.x = x
       this.$stage.y = y
+
+      FT.rotated = false
     }
 
     FT.stage = stage
@@ -149,9 +153,39 @@ class RenderSystem extends System {
       return normalizeToPointerData.call(this, event)
     }
 
-    interaction.mapPositionToPoint = function(point, x, y) {
-      point.x = x * Device.DPR
-      point.y = y * Device.DPR
+    interaction.mapPositionToPoint = function(
+      point,
+      // the unit of x, y is CSS pixel
+      x,
+      y
+    ) {
+      const rect = this.interactionDOMElement.getBoundingClientRect()
+      const resolutionMultiplier = 1.0 / this.resolution
+
+      let $height
+      let $x
+      let $y
+      let $offsetX
+      let $offsetY
+
+      if (FT.rotated) {
+        $height = rect.width
+        $x = y
+        $y = $height - x
+        $offsetX = -rect.y
+        $offsetY = rect.x
+      } else {
+        $height = rect.height
+        $x = x
+        $y = y
+        $offsetX = -rect.x
+        $offsetY = -rect.y
+      }
+
+      const scale = this.interactionDOMElement.height / $height
+
+      point.x = ($x + $offsetX) * scale * resolutionMultiplier
+      point.y = ($y + $offsetY) * scale * resolutionMultiplier
     }
   }
 
