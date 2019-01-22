@@ -5,7 +5,7 @@ import PIXI from '#/pixi'
  * A mask whose size is equal to viewport's size.
  *
  * @example
- * const mask = FT.create(Mask, { color: 0xff0000 })
+ * const mask = FT.create(Mask, { color: 0xff0000, alpha: 0.8 })
  * container.addChild(mask)
  */
 class Mask extends PIXI.Graphics {
@@ -17,19 +17,11 @@ class Mask extends PIXI.Graphics {
     super()
 
     this.beginFill(color)
-    const { left, top, width, height } = FT.stage.bounds
-    this.drawRect(left, top, width, height)
+    const { width, height } = FT.stage
+    this.drawRect(0, 0, width, height)
     this.endFill()
 
     this.alpha = alpha
-  }
-
-  onUpdate() {
-    const { left, top, width, height } = FT.stage.bounds
-    this.x = left
-    this.y = top
-    this.width = width
-    this.height = height
   }
 }
 
