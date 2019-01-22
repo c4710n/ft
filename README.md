@@ -15,6 +15,7 @@
 - built-in scene manager
 - built-in component system
 - responsive stage
+- GPU memory sensitive code
 - common systems
   - tween system
   - widget system
