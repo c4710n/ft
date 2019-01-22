@@ -24,7 +24,12 @@ function capture(
   const renderer = PIXI.autoDetectRenderer($width, $height)
   const rt = PIXI.RenderTexture.create($width, $height)
   renderer.render(displayObject, rt)
+
   const dataURL = renderer.extract.canvas(rt).toDataURL(format, quality)
+
+  // cleanup
+  rt.destroy(true)
+  renderer.destroy()
 
   return dataURL
 }
