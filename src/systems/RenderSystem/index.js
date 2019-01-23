@@ -172,14 +172,14 @@ class RenderSystem extends System {
         $height = rect.width
         $x = y
         $y = $height - x
-        $offsetX = -rect.y
-        $offsetY = rect.x
+        $offsetX = -rect.top
+        $offsetY = rect.left
       } else {
         $height = rect.height
         $x = x
         $y = y
-        $offsetX = -rect.x
-        $offsetY = -rect.y
+        $offsetX = -rect.left
+        $offsetY = -rect.top
       }
 
       const scale = this.interactionDOMElement.height / $height
