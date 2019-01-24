@@ -41,6 +41,8 @@ class SpineTrackController extends Component {
   }
 
   onPointerDown(event) {
+    if (this.isScrolling) return
+
     this.isScrolling = true
 
     this.data = event.data
