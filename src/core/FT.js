@@ -2,7 +2,12 @@ import patch from '#/patch'
 import PIXI from '#/pixi'
 import ResManager from '#/res/ResManager'
 import SceneManager from '#/scene/SceneManager'
-import { TweenSystem, WidgetSystem, RenderSystem } from '#/systems'
+import {
+  TweenSystem,
+  WidgetSystem,
+  RenderSystem,
+  VisibilitySystem,
+} from '#/systems'
 
 const defaultOptions = {
   width: 750,
@@ -101,6 +106,7 @@ class FT {
 
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
+    this.addSystem(new VisibilitySystem())
 
     const renderOptions = {
       width,
