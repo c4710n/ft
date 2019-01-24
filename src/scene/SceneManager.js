@@ -74,7 +74,13 @@ class SceneManager {
    */
   load(
     name,
-    { sticky = false, oneOff = false, transition = false, duration = 500 } = {}
+    {
+      sticky = false,
+      oneOff = false,
+      transition = false,
+      duration = 500,
+      index,
+    } = {}
   ) {
     this.cleanup()
     const scene = this.availableScenes.find(s => s.name === name)
@@ -102,7 +108,12 @@ class SceneManager {
       tween.start()
     }
 
-    FT.internal.stage.addChild(activeScene)
+    if (index) {
+      FT.internal.stage.addChildAt(activeScene, index)
+    } else {
+      FT.internal.stage.addChild(activeScene)
+    }
+
     return true
   }
 
