@@ -4,6 +4,7 @@ class SpineTrackController extends Component {
   constructor(track) {
     super()
 
+    this.track = track
     this.trackDuration = track.animationEnd - track.animationStart
     this.currentTrackTime = 0
     this.cacheTrackTime = this.currentTrackTime
@@ -33,6 +34,10 @@ class SpineTrackController extends Component {
     displayObject.off('pointerupoutside', this.onPointerUp)
 
     super.onRemoved(displayObject)
+  }
+
+  onUpdate() {
+    this.track.trackTime = this.currentTime
   }
 
   onPointerDown(event) {
