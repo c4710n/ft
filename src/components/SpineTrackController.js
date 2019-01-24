@@ -7,6 +7,8 @@ class SpineTrackController extends Component {
     this.track = track
     this.trackDuration = track.animationEnd - track.animationStart
     this.currentTrackTime = 0
+    this.minTrackTime = this.currentTrackTime
+    this.maxTrackTime = this.trackDuration
     this.cacheTrackTime = this.currentTrackTime
   }
 
@@ -40,6 +42,10 @@ class SpineTrackController extends Component {
     this.track.trackTime = this.currentTime
   }
 
+  setMinTrackTime(v) {
+    this.minTrackTime = v
+  }
+
   onPointerDown(event) {
     if (this.isScrolling) return
 
@@ -62,10 +68,10 @@ class SpineTrackController extends Component {
 
     const trackTime = controller.cacheTrackTime + time
 
-    if (trackTime < 0) {
+    if (trackTime < controller.minTrackTime) {
       // exceed the start point
-      controller.currentTrackTime = 0
-    } else if (trackTime > controller.trackDuration) {
+      controller.currentTrackTime = controller.minTrackTime
+    } else if (trackTime > controller.maxTrackTime) {
       // exceed the end point
       controller.currentTrackTime = controller.trackDuration
     } else {
