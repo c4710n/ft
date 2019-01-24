@@ -48,6 +48,17 @@ class Spine extends PIXI.spine.Spine {
     })
   }
 
+  addCompleteListener(animationName, callback) {
+    const cb = track => {
+      const { name } = track.animation
+      if (name === animationName) {
+        callback(track)
+      }
+    }
+
+    this.state.addListener({ complete: cb })
+  }
+
   addEventListener(eventName, callback) {
     const cb = (track, event) => {
       const { name } = event.data
