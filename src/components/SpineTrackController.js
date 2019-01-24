@@ -61,7 +61,7 @@ class SpineTrackController extends Component {
     const currentPosition = this.data.getLocalPosition(this)
     const x = currentPosition.x - this.pointerDownPosition.x
 
-    const factor = 0.005
+    const factor = 0.008
     const time = x * factor * -1
 
     const controller = this.spineTrackController

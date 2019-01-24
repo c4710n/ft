@@ -104,8 +104,6 @@ class SceneManager {
     if (transition) {
       // a simple transition
       activeScene.alpha = 0
-      const tween = new Tween(activeScene).to({ alpha: 1 }, duration)
-      tween.start()
     }
 
     if (index) {
@@ -114,7 +112,15 @@ class SceneManager {
       FT.internal.stage.addChild(activeScene)
     }
 
-    return true
+    if (transition) {
+      return new Promise(resolve => {
+        const tween = new Tween(activeScene).to({ alpha: 1 }, duration)
+        tween.on('complete', resolve)
+        tween.start()
+      })
+    } else {
+      return true
+    }
   }
 
   /**
