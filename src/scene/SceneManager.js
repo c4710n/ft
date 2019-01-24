@@ -157,7 +157,11 @@ class SceneManager {
     if (index >= 0) {
       const scene = this.activeScenes[index]
       FT.internal.stage.removeChild(scene)
-      scene.destroy({ children: true })
+      scene.destroy({
+        children: true,
+        texture: scene.oneOff,
+        baseTexture: scene.oneOff,
+      })
       this.activeScenes.splice(index, 1)
     }
   }
