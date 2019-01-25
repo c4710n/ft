@@ -106,7 +106,7 @@ class SceneManager {
       activeScene.alpha = 0
     }
 
-    if (index) {
+    if (typeof index === 'number') {
       FT.internal.stage.addChildAt(activeScene, index)
     } else {
       FT.internal.stage.addChild(activeScene)
