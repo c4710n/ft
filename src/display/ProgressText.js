@@ -11,21 +11,39 @@ import PIXI from '#/pixi'
  * @todo add arguments for customizing template of text.
  */
 class ProgressText extends PIXI.Container {
-  constructor() {
+  constructor(
+    template = '#%',
+    textStyle = {
+      fontSize: 42,
+      fontFamily: 'sans-serif',
+      fill: 0x000000,
+    }
+  ) {
     super()
 
     /**
      * @ignore
      */
     this.$progress = 0
+
+    /**
+     * @ignore
+     */
+    this.$template = template
+
+    /**
+     * @ignore
+     */
+    this.$textStyle = textStyle
+  }
+
+  genLine(progress) {
+    return this.$template.replace('#', progress)
   }
 
   onAdded() {
-    const content = new PIXI.Text('Loading... 0%', {
-      fontSize: 38,
-      fontFamily: 'Arial',
-      fill: 0x69e5ff,
-    })
+    const content = new PIXI.Text(this.genLine(0), this.$textStyle)
+    content.anchor.set(0.5)
 
     /**
      * @ignore
@@ -37,7 +55,7 @@ class ProgressText extends PIXI.Container {
 
   onUpdate() {
     const progress = this.$progress.toFixed(0)
-    this.content.text = `Loading... ${progress}%`
+    this.content.text = this.genLine(progress)
   }
 
   get progress() {
