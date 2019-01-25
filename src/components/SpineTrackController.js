@@ -16,6 +16,12 @@ class SpineTrackController extends Component {
     return this.currentTrackTime
   }
 
+  set currentTime(v) {
+    this.currentTrackTime = v
+    this.minTrackTimeTime = v
+    this.cacheTrackTime = v
+  }
+
   onAdded(displayObject) {
     super.onAdded(displayObject)
 
