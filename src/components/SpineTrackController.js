@@ -1,25 +1,17 @@
+import { Tween, Easing } from '#/animation'
 import Component from './Component'
 
 class SpineTrackController extends Component {
-  constructor(track) {
+  constructor(track, { enableControl = true } = {}) {
     super()
 
-    this.track = track
-    this.trackDuration = track.animationEnd - track.animationStart
-    this.currentTrackTime = 0
-    this.minTrackTime = this.currentTrackTime
-    this.maxTrackTime = this.trackDuration
-    this.cacheTrackTime = this.currentTrackTime
-  }
+    this.$track = track
+    this.$enableControl = enableControl
+    this.$currentTrackTime = 0
+    this.$minTrackTime = this.$currentTrackTime
+    this.$maxTrackTime = track.animationEnd - track.animationStart
 
-  get currentTime() {
-    return this.currentTrackTime
-  }
-
-  set currentTime(v) {
-    this.currentTrackTime = v
-    this.minTrackTimeTime = v
-    this.cacheTrackTime = v
+    this.resetMomentumVelocity()
   }
 
   onAdded(displayObject) {
@@ -27,7 +19,9 @@ class SpineTrackController extends Component {
 
     displayObject.spineTrackController = this
 
-    displayObject.interactive = true
+    if (this.$enableControl) {
+      displayObject.interactive = true
+    }
     displayObject.on('pointerdown', this.onPointerDown)
     displayObject.on('pointermove', this.onPointerMove)
     displayObject.on('pointerup', this.onPointerUp)
@@ -45,55 +39,131 @@ class SpineTrackController extends Component {
   }
 
   onUpdate() {
-    this.track.trackTime = this.currentTime
+    this.$track.trackTime = this.$currentTrackTime
   }
 
-  setMinTrackTime(v) {
-    this.minTrackTime = v
+  enableControl() {
+    this.displayObject.interactive = true
+  }
+
+  disableControl() {
+    this.displayObject.interactive = false
+  }
+
+  get currentTrackTime() {
+    return this.$currentTrackTime
+  }
+
+  set currentTrackTime(time) {
+    this.$currentTrackTime = time
+  }
+
+  set minTrackTime(time) {
+    this.$minTrackTime = time
+  }
+
+  mapShiftToTime(shift) {
+    // shift x is too big, scale it with an factor
+    const factor = 0.01
+    // convert a shift into a time
+    const time = shift * factor * -1
+    return time
   }
 
   onPointerDown(event) {
-    if (this.isScrolling) return
-
-    this.isScrolling = true
-
-    this.data = event.data
-    this.pointerDownPosition = this.data.getLocalPosition(this)
-  }
-
-  onPointerMove() {
-    if (!this.isScrolling) return
-
-    const currentPosition = this.data.getLocalPosition(this)
-    const x = currentPosition.x - this.pointerDownPosition.x
-
-    const factor = 0.008
-    const time = x * factor * -1
-
     const controller = this.spineTrackController
 
-    const trackTime = controller.cacheTrackTime + time
+    if (controller.isScrolling) return
+    controller.isScrolling = true
 
-    if (trackTime < controller.minTrackTime) {
-      // exceed the start point
-      controller.currentTrackTime = controller.minTrackTime
-    } else if (trackTime > controller.maxTrackTime) {
-      // exceed the end point
-      controller.currentTrackTime = controller.trackDuration
+    controller.stopMomentum()
+    controller.previousTimestamp = event.data.originalEvent.timeStamp
+    controller.previousPosition = event.data.getLocalPosition(this)
+    controller.data = event.data
+  }
+
+  onPointerMove(event) {
+    const controller = this.spineTrackController
+
+    if (!controller.isScrolling) return
+
+    const currentTimestamp = event.data.originalEvent.timeStamp
+    const currentPosition = controller.data.getLocalPosition(this)
+
+    const scrollTime = currentTimestamp - controller.previousTimestamp
+    const shiftX = currentPosition.x - controller.previousPosition.x
+    const changedTime = controller.mapShiftToTime(shiftX)
+
+    controller.momentumVelocity =
+      scrollTime === 0 ? 0 : changedTime / scrollTime
+
+    const trackTime = controller.$currentTrackTime + changedTime
+    if (trackTime < controller.$minTrackTime) {
+      controller.$currentTrackTime = controller.$minTrackTime
+    } else if (trackTime > controller.$maxTrackTime) {
+      controller.$currentTrackTime = controller.$maxTrackTime
     } else {
-      // between start point and end point
-      controller.currentTrackTime = trackTime
+      controller.$currentTrackTime = trackTime
     }
+
+    controller.previousTimestamp = currentTimestamp
+    controller.previousPosition = currentPosition
   }
 
   onPointerUp() {
-    this.isScrolling = false
-
     const controller = this.spineTrackController
 
-    controller.cacheTrackTime = controller.currentTrackTime
+    if (!controller.isScrolling) return
+    controller.isScrolling = false
 
-    this.data = null
+    controller.data = null
+    controller.handleMomentum()
+  }
+
+  handleMomentum = () => {
+    const { momentumVelocity } = this
+    const absMomentumVelocity = Math.abs(momentumVelocity)
+
+    const minVelocity = 0.01
+    if (absMomentumVelocity >= minVelocity) {
+      const from = { velocity: momentumVelocity * 10 }
+      const to = { velocity: 0 }
+      const duration = absMomentumVelocity * 50000 // magic number ;)
+
+      const momentum = new Tween(from)
+        .to(to)
+        .duration(duration)
+        .easing(Easing.Quintic.Out)
+
+      let cacheTrackTime = this.currentTrackTime
+      momentum.on('update', ({ velocity }) => {
+        cacheTrackTime += velocity
+
+        if (
+          cacheTrackTime <= this.$maxTrackTime &&
+          cacheTrackTime >= this.$minTrackTime
+        ) {
+          this.$currentTrackTime = cacheTrackTime
+        } else {
+          momentum.halt()
+        }
+      })
+
+      momentum.start()
+      this.momentum = momentum
+    }
+
+    this.resetMomentumVelocity()
+  }
+
+  resetMomentumVelocity = () => {
+    this.previousTimestamp = 0
+    this.previousPosition = null
+    this.momentumVelocity = 0
+  }
+
+  stopMomentum = () => {
+    if (this.momentum) this.momentum.halt()
   }
 }
 
