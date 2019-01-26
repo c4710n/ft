@@ -1,5 +1,4 @@
 import { Tween, Easing } from '#/animation'
-import TWEEN from '#/animation/TWEEN'
 import PIXI from '#/pixi'
 
 /**
@@ -218,10 +217,10 @@ class Scroller extends PIXI.Container {
    * @access private
    */
   stopTween = () => {
-    if (this.bounceX) this.bounceX.stop()
-    if (this.bounceY) this.bounceY.stop()
-    if (this.momentumX) this.momentumX.stop()
-    if (this.momentumY) this.momentumY.stop()
+    if (this.bounceX) this.bounceX.halt()
+    if (this.bounceY) this.bounceY.halt()
+    if (this.momentumX) this.momentumX.halt()
+    if (this.momentumY) this.momentumY.halt()
   }
 
   /**
@@ -263,12 +262,7 @@ class Scroller extends PIXI.Container {
         if (cacheX <= this.maxOverflowX && cacheX >= this.minOverflowX) {
           this.content.x = cacheX
         } else {
-          /**
-           * This is a workaround for stop tween.
-           * When calling tween.stop(), it will trigger an error.
-           */
-          momentum.pause()
-          TWEEN.remove(momentum)
+          momentum.halt()
           this.handleBounce()
         }
       })
@@ -300,12 +294,7 @@ class Scroller extends PIXI.Container {
         if (cacheY <= this.maxOverflowY && cacheY >= this.minOverflowY) {
           this.content.y = cacheY
         } else {
-          /**
-           * This is a workaround for stop tween.
-           * When calling tween.stop(), it will trigger an error.
-           */
-          momentum.pause()
-          TWEEN.remove(momentum)
+          momentum.halt()
           this.handleBounce()
         }
       })

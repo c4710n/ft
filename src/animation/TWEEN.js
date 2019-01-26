@@ -9,6 +9,16 @@ if (!Tween.prototype.loop) {
     this.repeat(Number.POSITIVE_INFINITY)
     return this
   }
+
+  /**
+   * This is a workaround for stop().
+   * When calling tween.stop(), it will trigger an error sometimes.
+   */
+  Tween.prototype.halt = function halt() {
+    this.pause()
+    remove(this)
+    return this.emit('stop', this.object)
+  }
 }
 
 export { Tween, Easing, Interpolation } from 'es6-tween'
