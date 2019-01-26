@@ -10,6 +10,8 @@ class SpineTrackController extends Component {
     this.$currentTrackTime = 0
     this.$minTrackTime = this.$currentTrackTime
     this.$maxTrackTime = track.animationEnd - track.animationStart
+    this.$isPlaying = false
+    this.$playingSpeed = 0
 
     this.resetMomentumVelocity()
   }
@@ -39,6 +41,10 @@ class SpineTrackController extends Component {
   }
 
   onUpdate() {
+    if (this.$isPlaying) {
+      this.$currentTrackTime += this.$playingSpeed
+    }
+
     this.$track.trackTime = this.$currentTrackTime
   }
 
@@ -60,6 +66,16 @@ class SpineTrackController extends Component {
 
   set minTrackTime(time) {
     this.$minTrackTime = time
+  }
+
+  play(speed = 0.025) {
+    this.$playingSpeed = speed
+    this.$isPlaying = true
+  }
+
+  pause() {
+    this.$playingSpeed = 0
+    this.$isPlaying = false
   }
 
   mapShiftToTime(shift) {
