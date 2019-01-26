@@ -1,6 +1,10 @@
 import { Tween, Easing } from '#/animation'
 import Component from './Component'
 
+/**
+ * A controllor for controlling the trackTime of Spine tracks.
+ */
+
 class SpineTrackController extends Component {
   constructor(track, { enableControl = true } = {}) {
     super()
