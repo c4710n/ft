@@ -68,8 +68,20 @@ class SpineTrackController extends Component {
     this.$currentTrackTime = time
   }
 
+  get minTrackTime() {
+    return this.$minTrackTime
+  }
+
   set minTrackTime(time) {
     this.$minTrackTime = time
+  }
+
+  get maxTrackTime() {
+    return this.$maxTrackTime
+  }
+
+  set maxTrackTime(time) {
+    this.$maxTrackTime = time
   }
 
   play(speed = 0.025) {
@@ -84,7 +96,7 @@ class SpineTrackController extends Component {
 
   mapShiftToTime(shift) {
     // shift x is too big, scale it with an factor
-    const factor = 0.01
+    const factor = 0.005
     // convert a shift into a time
     const time = shift * factor * -1
     return time
@@ -148,7 +160,7 @@ class SpineTrackController extends Component {
     if (absMomentumVelocity >= minVelocity) {
       const from = { velocity: momentumVelocity * 10 }
       const to = { velocity: 0 }
-      const duration = absMomentumVelocity * 50000 // magic number ;)
+      const duration = absMomentumVelocity * 70000 // magic number ;)
 
       const momentum = new Tween(from)
         .to(to)
