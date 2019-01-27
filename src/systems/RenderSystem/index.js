@@ -182,10 +182,8 @@ class RenderSystem extends System {
         $offsetY = -rect.top
       }
 
-      const scale = this.interactionDOMElement.height / $height
-
-      point.x = ($x + $offsetX) * scale * resolutionMultiplier
-      point.y = ($y + $offsetY) * scale * resolutionMultiplier
+      point.x = ($x + $offsetX) * Device.DPR * resolutionMultiplier
+      point.y = ($y + $offsetY) * Device.DPR * resolutionMultiplier
     }
   }
 
