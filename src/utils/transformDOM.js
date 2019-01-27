@@ -33,8 +33,8 @@ function transformDOM(dom, displayObject) {
     pivotY = $pivotY * d
   } else {
     // rotated
-    pivotX = -$pivotX * b
-    pivotY = -$pivotY * c
+    pivotX = $pivotY * c
+    pivotY = $pivotX * b
   }
 
   const stagePosition = FT.internal.stage.getGlobalPosition()
