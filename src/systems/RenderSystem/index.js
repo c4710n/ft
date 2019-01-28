@@ -153,46 +153,21 @@ class RenderSystem extends System {
       return normalizeToPointerData.call(this, event)
     }
 
-    interaction.mapPositionToPoint = function(
+    interaction.mapPositionToPointXXX = function(
       point,
       // the unit of x, y is CSS pixel
       x,
       y
     ) {
-      const rect = this.interactionDOMElement.getBoundingClientRect()
+      const dom = this.interactionDOMElement
+
+      const rect = dom.getBoundingClientRect()
       const resolutionMultiplier = 1.0 / this.resolution
+      const scaleX = dom.width / rect.width
+      const scaleY = dom.height / rect.height
 
-      let $height
-      let $x
-      let $y
-      let $offsetX
-      let $offsetY
-
-      if (FT.rotated) {
-        $height = rect.width
-        $x = y
-        $y = $height - x
-        $offsetX = -rect.top
-        $offsetY = rect.left
-      } else {
-        $height = rect.height
-        $x = x
-        $y = y
-        $offsetX = -rect.left
-        $offsetY = -rect.top
-      }
-
-      /**
-       * WARNING: scale isn't always equal to Device.DPR, DO NOT write:
-       *
-       *   const scale = Device.DPR
-       *
-       * Above code is wrong.
-       */
-      const scale = this.interactionDOMElement.height / $height
-
-      point.x = ($x + $offsetX) * scale * resolutionMultiplier
-      point.y = ($y + $offsetY) * scale * resolutionMultiplier
+      point.x = (x - rect.left) * scaleX * resolutionMultiplier
+      point.y = (y - rect.top) * scaleY * resolutionMultiplier
     }
   }
 
