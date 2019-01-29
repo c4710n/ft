@@ -21,8 +21,8 @@ class RenderSystem extends System {
     super()
 
     const renderer = autoDetectRenderer({
-      transparent: true,
-      antialias: true,
+      transparent: false,
+      antialias: false,
     })
     container.appendChild(renderer.view)
 
