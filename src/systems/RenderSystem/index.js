@@ -139,8 +139,8 @@ class RenderSystem extends System {
      */
     const renderer = this.$renderer
     const { interaction } = renderer.plugins
-    const target = document.body
-    interaction.setTargetElement(target, renderer.resolution)
+    const interactiveTarget = document.body
+    interaction.setTargetElement(interactiveTarget, renderer.resolution)
 
     const { normalizeToPointerData } = interaction
     interaction.normalizeToPointerData = function(event) {
@@ -157,7 +157,7 @@ class RenderSystem extends System {
       x,
       y
     ) {
-      const rect = target.getBoundingClientRect()
+      const rect = interactiveTarget.getBoundingClientRect()
       const resolutionMultiplier = 1.0 / this.resolution
 
       point.x = (x - rect.left) * Device.DPR * resolutionMultiplier
