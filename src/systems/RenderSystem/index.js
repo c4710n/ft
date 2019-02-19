@@ -1,6 +1,7 @@
 import PIXI from '#/pixi'
 import { FT, Device, Layer } from '#/core'
 import { classname } from '#/utils'
+import { UPDATE_PRIORITY } from '#/const'
 import System from '../System'
 import ScaleMode from './ScaleMode'
 
@@ -18,7 +19,7 @@ class RenderSystem extends System {
     stage,
     { width, height, scaleMode, eventMode = 'canvas' } = {}
   ) {
-    super()
+    super(UPDATE_PRIORITY.LOW)
 
     const renderer = autoDetectRenderer({
       transparent: false,

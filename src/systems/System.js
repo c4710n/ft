@@ -1,4 +1,5 @@
 import { splice } from '#/utils/fast'
+import { UPDATE_PRIORITY } from '#/const'
 
 /**
  * Basic class for system.
@@ -7,14 +8,8 @@ class System {
   /**
    * @param [frequency=1] {number} frequency of execution.
    */
-  constructor(frequency = 1) {
-    /**
-     * Frequency of update execution, a frequency of `1` run the system every
-     * update, `2` will run the system every 2 updates, etc.
-     *
-     * @property {number} frequency
-     */
-    this.frequency = frequency
+  constructor(updatePriority = UPDATE_PRIORITY.NORMAL) {
+    this.updatePriority = updatePriority
 
     /**
      * Entities of current system.

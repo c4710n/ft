@@ -43,11 +43,6 @@ class FT {
      */
     this.$systems = []
     /**
-     * @ignore
-     */
-    this.$updates = 0
-
-    /**
      * place to store conflict variables.
      */
     this.internal = {}
@@ -121,9 +116,7 @@ class FT {
      */
     this.renderSystem = renderSystem
 
-    this.ticker.add(dt => {
-      this.update(dt)
-    })
+    this.enqueueSystems()
   }
 
   get systems() {
@@ -140,14 +133,10 @@ class FT {
   /**
    * @access private
    */
-  update(dt) {
+  enqueueSystems() {
     for (const system of this.$systems) {
-      if (this.$updates % system.frequency === 0) {
-        system.update(dt)
-      }
+      this.ticker.add(system.update, system, system.updatePriority)
     }
-
-    this.$updates += 1
   }
 
   /**
