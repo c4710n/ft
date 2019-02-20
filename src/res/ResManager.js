@@ -30,6 +30,8 @@ class ResManager extends PIXI.loaders.Loader {
     super(...args)
 
     this.use(fontLoader)
+
+    this.liveSounds = {}
   }
 
   /**
@@ -65,6 +67,14 @@ class ResManager extends PIXI.loaders.Loader {
   addSound(name) {
     if (this.resources[name]) return
     this.add(...$res.nu(name))
+  }
+
+  /**
+   * Add a live sound.
+   */
+  addLiveSound(name) {
+    const url = this.url(name)
+    this.liveSounds[name] = new Audio(url)
   }
 
   /**
@@ -107,7 +117,23 @@ class ResManager extends PIXI.loaders.Loader {
    */
   sound(name) {
     const resource = this.resources[name]
-    return resource.sound
+    if (!resource) {
+      throw new Error(`[${classname(this)}] missing sound - ${name}`)
+    } else {
+      return resource.sound
+    }
+  }
+
+  /**
+   * Get a live sound by name.
+   */
+  liveSound(name) {
+    const sound = this.liveSounds[name]
+    if (!sound) {
+      throw new Error(`[${classname(this)}] missing live sound - ${name}`)
+    } else {
+      return sound
+    }
   }
 
   /**
