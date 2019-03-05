@@ -1,7 +1,7 @@
 {
   "name": "@2players/ft",
   "description": "A simple framework in EC pattern for HTML5 marketing pages.",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "repository": "2players/ft",
   "engines": {
     "node": ">=8"
