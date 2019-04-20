@@ -1,118 +1,91 @@
-import PIXI from '#/pixi'
 import { Orientation } from '#/core'
 
-const { Rectangle } = PIXI
-
-function getRendererOrientation(width, height) {
+function getGameOrientation(width, height) {
   return width >= height ? Orientation.LANDSCAPE : Orientation.PORTRAIT
 }
 
-function getDeviceOrientation(width, height) {
+function getViewportOrientation(width, height) {
   return width >= height ? Orientation.LANDSCAPE : Orientation.PORTRAIT
 }
 
 function isOrientationMatched(
-  rendererWidth,
-  rendererHeight,
-  devicePixelWidth,
-  devicePixelHeight
+  gameWidth,
+  gameHeight,
+  viewportCSSWidth,
+  viewportCSSHeight
 ) {
   return (
-    getRendererOrientation(rendererWidth, rendererHeight) ===
-    getDeviceOrientation(devicePixelWidth, devicePixelHeight)
+    getGameOrientation(gameWidth, gameHeight) ===
+    getViewportOrientation(viewportCSSWidth, viewportCSSHeight)
   )
 }
 
 function generate(
-  designWidth,
-  designHeight,
-  deviceWidth,
-  deviceHeight,
+  gameWidth,
+  gameHeight,
+  viewportCSSWidth,
+  viewportCSSHeight,
   calcFunction
 ) {
   const shouldRotate = !isOrientationMatched(
-    designWidth,
-    designHeight,
-    deviceWidth,
-    deviceHeight
+    gameWidth,
+    gameHeight,
+    viewportCSSWidth,
+    viewportCSSHeight
   )
 
   if (shouldRotate) {
-    ;[deviceWidth, deviceHeight] = [deviceHeight, deviceWidth]
+    ;[viewportCSSWidth, viewportCSSHeight] = [
+      viewportCSSHeight,
+      viewportCSSWidth,
+    ]
   }
 
-  const stageSize = calcFunction(
-    designWidth,
-    designHeight,
-    deviceWidth,
-    deviceHeight
-  )
-  const { x, y, width, height, scale } = stageSize
-  const stage = new Rectangle(x, y, width, height)
-  stage.scale = scale
+  const viewport = {
+    width: viewportCSSWidth,
+    height: viewportCSSHeight,
+  }
 
-  const centerX = stage.width / 2
-  const centerY = stage.height / 2
-  const center = [centerX, centerY]
-  stage.centerX = centerX
-  stage.centerY = centerY
-  stage.center = center
-
-  const bounds = new Rectangle(
-    -stage.x,
-    -stage.y,
-    designWidth + 2 * stage.x,
-    designHeight + 2 * stage.y
-  )
-  stage.bounds = bounds
-
-  const viewport = new Rectangle(
-    -stage.x,
-    -stage.y,
-    deviceWidth / scale,
-    deviceHeight / scale
+  const game = calcFunction(
+    gameWidth,
+    gameHeight,
+    viewportCSSWidth,
+    viewportCSSHeight
   )
 
-  const values = {
-    stage,
+  return {
+    game,
     viewport,
     shouldRotate,
   }
-
-  return values
 }
 
-function calcCover(designWidth, designHeight, deviceWidth, deviceHeight) {
-  const scale = Math.max(deviceWidth / designWidth, deviceHeight / designHeight)
+function calcCover(gameWidth, gameHeight, viewportCSSWidth, viewportCSSHeight) {
+  const scale = Math.max(
+    viewportCSSWidth / gameWidth,
+    viewportCSSHeight / gameHeight
+  )
 
-  const x = (deviceWidth / scale - designWidth) / 2
-  const y = (deviceHeight / scale - designHeight) / 2
-  const width = designWidth
-  const height = designHeight
+  const offsetCSSX = (viewportCSSWidth - gameWidth * scale) / 2
+  const offsetCSSY = (viewportCSSHeight - gameHeight * scale) / 2
 
-  return { scale, x, y, width, height }
+  return { scale, offsetCSSX, offsetCSSY }
 }
 
-function calcContain(designWidth, designHeight, deviceWidth, deviceHeight) {
-  const scale = Math.min(deviceWidth / designWidth, deviceHeight / designHeight)
+function calcContain(
+  gameWidth,
+  gameHeight,
+  viewportCSSWidth,
+  viewportCSSHeight
+) {
+  const scale = Math.min(
+    viewportCSSWidth / gameWidth,
+    viewportCSSHeight / gameHeight
+  )
 
-  const x = (deviceWidth / scale - designWidth) / 2
-  const y = (deviceHeight / scale - designHeight) / 2
-  const width = designWidth
-  const height = designHeight
-
-  return { scale, x, y, width, height }
-}
-
-function calcFullHeight(designWidth, designHeight, deviceWidth, deviceHeight) {
-  const scale = deviceHeight / designHeight
-
-  const x = 0
-  const y = (deviceHeight / scale - designHeight) / 2
-  const width = designWidth
-  const height = designHeight
-
-  return { scale, x, y, width, height }
+  const offsetCSSX = (viewportCSSWidth - gameWidth * scale) / 2
+  const offsetCSSY = (viewportCSSHeight - gameHeight * scale) / 2
+  return { scale, offsetCSSX, offsetCSSY }
 }
 
 export function COVER(designWidth, designHeight, deviceWidth, deviceHeight) {
@@ -135,23 +108,7 @@ export function CONTAIN(designWidth, designHeight, deviceWidth, deviceHeight) {
   )
 }
 
-export function FULL_HEIGHT(
-  designWidth,
-  designHeight,
-  deviceWidth,
-  deviceHeight
-) {
-  return generate(
-    designWidth,
-    designHeight,
-    deviceWidth,
-    deviceHeight,
-    calcFullHeight
-  )
-}
-
 export default {
   COVER,
   CONTAIN,
-  FULL_HEIGHT,
 }

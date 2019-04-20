@@ -1,5 +1,5 @@
 import PIXI from '#/pixi'
-import { FT, Device, Layer } from '#/core'
+import { Device, Layer } from '#/core'
 import { classname } from '#/utils'
 import { UPDATE_PRIORITY } from '#/const'
 import System from '../System'
@@ -30,6 +30,11 @@ class RenderSystem extends System {
     /**
      * @access private
      */
+    this.$container = container
+
+    /**
+     * @access private
+     */
     this.$renderer = renderer
 
     /**
@@ -45,12 +50,12 @@ class RenderSystem extends System {
     /**
      * @access private
      */
-    this.$designWidth = width
+    this.$gameWidth = width
 
     /**
      * @access private
      */
-    this.$designHeight = height
+    this.$gameHeight = height
 
     /**
      * @access private
@@ -72,8 +77,8 @@ class RenderSystem extends System {
    * @param {number} height
    */
   resize(width, height) {
-    this.$designWidth = width
-    this.$designHeight = height
+    this.$gameWidth = width
+    this.$gameHeight = height
 
     this.onResize()
   }
@@ -82,52 +87,52 @@ class RenderSystem extends System {
    * @access private
    */
   onResize() {
-    const { width: deviceWidth, height: deviceHeight } = Device.size.clone()
+    const gameWidth = this.$gameWidth
+    const gameHeight = this.$gameHeight
+    const {
+      width: viewportCSSWidth,
+      height: viewportCSSHeight,
+    } = Device.cssSize.clone()
 
     const mode = this.$scaleMode
-    const scale = ScaleMode[mode]
-    if (!scale) {
+    const scaleMode = ScaleMode[mode]
+
+    if (!scaleMode) {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
     }
 
-    const { stage, viewport, shouldRotate } = scale(
-      this.$designWidth,
-      this.$designHeight,
-      deviceWidth,
-      deviceHeight
+    const { game, viewport, shouldRotate } = scaleMode(
+      gameWidth,
+      gameHeight,
+      viewportCSSWidth,
+      viewportCSSHeight
     )
+
+    let { scale, offsetCSSX, offsetCSSY } = game
+    let rotation = 0
+
+    if (shouldRotate) {
+      rotation = 90
+      const baseOffsetCSSX = 0
+      const baseOffsetCSSY = viewport.height
+
+      offsetCSSX = baseOffsetCSSX + offsetCSSX
+      offsetCSSY = baseOffsetCSSY - offsetCSSY
+      ;[offsetCSSX, offsetCSSY] = [offsetCSSY, offsetCSSX]
+    }
+
+    this.$container.style.position = 'absolute'
+    this.$container.style.width = `${gameWidth}px`
+    this.$container.style.height = `${gameHeight}px`
+    this.$container.style.transformOrigin = '0 0'
+    this.$container.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${offsetCSSX}, ${offsetCSSY}) rotate(${rotation}deg)`
 
     this.$view.style.zIndex = Layer.VIEW
     this.$view.style.position = 'absolute'
+    this.$view.style.width = '100%'
+    this.$view.style.height = '100%'
 
-    const viewportWidth = Math.round(Device.size.width)
-    const viewportHeight = Math.round(Device.size.height)
-    const viewportCSSWidth = Math.round(Device.cssSize.width)
-    const viewportCSSHeight = Math.round(Device.cssSize.height)
-    this.$view.style.width = `${viewportCSSWidth}px`
-    this.$view.style.height = `${viewportCSSHeight}px`
-    this.$renderer.resize(viewportWidth, viewportHeight)
-
-    this.$stage.scale.set(stage.scale)
-    const x = stage.x * stage.scale
-    const y = stage.y * stage.scale
-
-    if (shouldRotate) {
-      this.$stage.rotation = 0.5 * Math.PI
-      this.$stage.x = viewportWidth - y
-      this.$stage.y = x
-
-      FT.rotated = true
-    } else {
-      this.$stage.rotation = 0
-      this.$stage.x = x
-      this.$stage.y = y
-
-      FT.rotated = false
-    }
-
-    FT.stage = stage
-    FT.viewport = viewport
+    this.$renderer.resize(gameWidth, gameHeight)
   }
 
   /**
