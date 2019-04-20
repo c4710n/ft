@@ -1,3 +1,4 @@
+import FT from '#/core/FT'
 import PIXI from '#/pixi'
 import { Device, Layer } from '#/core'
 import { classname } from '#/utils'
@@ -121,6 +122,11 @@ class RenderSystem extends System {
       ;[offsetCSSX, offsetCSSY] = [offsetCSSY, offsetCSSX]
     }
 
+    this.$offsetCSSX = offsetCSSX
+    this.$offsetCSSY = offsetCSSY
+    this.$scale = scale
+    this.$rotate = shouldRotate
+
     this.$container.style.position = 'absolute'
     this.$container.style.width = `${gameWidth}px`
     this.$container.style.height = `${gameHeight}px`
@@ -133,6 +139,13 @@ class RenderSystem extends System {
     this.$view.style.height = '100%'
 
     this.$renderer.resize(gameWidth, gameHeight)
+
+    FT.stage = {
+      width: gameWidth,
+      height: gameHeight,
+      centerX: gameWidth / 2,
+      centerY: gameHeight / 2,
+    }
   }
 
   /**
@@ -143,6 +156,8 @@ class RenderSystem extends System {
      * Visit following link for more details.
      * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
      */
+    const _this = this
+
     const renderer = this.$renderer
     const { interaction } = renderer.plugins
     const interactiveTarget = document.body
@@ -163,11 +178,18 @@ class RenderSystem extends System {
       x,
       y
     ) {
-      const rect = interactiveTarget.getBoundingClientRect()
       const resolutionMultiplier = 1.0 / this.resolution
-
-      point.x = (x - rect.left) * Device.DPR * resolutionMultiplier
-      point.y = (y - rect.top) * Device.DPR * resolutionMultiplier
+      if (_this.$rotate) {
+        point.x =
+          ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
+        point.y =
+          ((_this.$offsetCSSX - x) / _this.$scale) * resolutionMultiplier
+      } else {
+        point.x =
+          ((x - _this.$offsetCSSX) / _this.$scale) * resolutionMultiplier
+        point.y =
+          ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
+      }
     }
   }
 
