@@ -94,10 +94,54 @@ function patchDisplayObject() {
   DisplayObject.prototype._onRemoved = _onRemoved
 }
 
+function setOrigin(originX, originY) {
+  if (originX !== undefined) this.anchor.x = originX
+  if (originY !== undefined) this.anchor.y = originY
+
+  if (originY === undefined) {
+    this.anchor.x = this.anchor.y = originX
+  }
+
+  return this
+}
+
+function setSize(width, height) {
+  if (width !== undefined) this.width = width
+  if (height !== undefined) this.height = height
+
+  return this
+}
+
+function setPosition(x, y) {
+  if (x !== undefined) this.x = x
+  if (y !== undefined) this.y = y
+
+  return this
+}
+
+function setAlpha(alpha) {
+  this.alpha = alpha
+
+  return this
+}
+
+function setInteractive(enabled = true) {
+  this.interactive = enabled
+
+  return this
+}
+
 function createDisplayObject(Class, ...args) {
   const instance = new Class(...args)
   instance.on('added', instance._onAdded, instance)
   instance.on('removed', instance._onRemoved, instance)
+
+  instance.setOrigin = setOrigin
+  instance.setSize = setSize
+  instance.setPosition = setPosition
+  instance.setAlpha = setAlpha
+  instance.setInteractive = setInteractive
+
   return instance
 }
 
