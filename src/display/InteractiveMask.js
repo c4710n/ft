@@ -7,6 +7,13 @@ class InteractiveMask extends PIXI.Container {
   constructor(...args) {
     super()
 
+    // always enable interactive in order to catch all inputs
+    this.interactive = true
+
+    this.isFading = false
+    this.animationFadeIn = new AnimationFade('in', { duration: 300 })
+    this.animationFadeOut = new AnimationFade('out', { duration: 300 })
+
     const mask = FT.create(Mask, ...args)
     this.addChild(mask)
 
@@ -14,28 +21,28 @@ class InteractiveMask extends PIXI.Container {
   }
 
   async onAdded() {
-    const fade = new AnimationFade('in', { duration: 300 })
-    this.addComponent(fade)
+    if (!this.isFading) {
+      this.isFading = true
 
-    await fade.complete()
-    this.enableInteraction()
+      this.addComponent(this.animationFadeIn)
+      await this.animationFadeIn.complete()
+      this.removeComponent(this.animationFadeIn)
+
+      this.isFading = false
+    }
   }
 
   async $remove() {
-    this.disableInteraction()
-    const fade = new AnimationFade('out', { duration: 300 })
-    this.addComponent(fade)
-    await fade.complete()
+    if (!this.isFading) {
+      this.isFading = true
 
-    this.parent.removeChild(this)
-  }
+      this.addComponent(this.animationFadeOut)
+      await this.animationFadeOut.complete()
+      this.removeComponent(this.animationFadeOut)
+      this.parent.removeChild(this)
 
-  enableInteraction() {
-    this.interactive = true
-  }
-
-  disableInteraction() {
-    this.interactive = false
+      this.isFading = false
+    }
   }
 }
 
