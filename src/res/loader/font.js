@@ -1,3 +1,5 @@
+import WebFont from 'webfontloader'
+
 function generateFontFace(name, url) {
   return `
 @font-face {
@@ -11,25 +13,27 @@ function generateFontFace(name, url) {
  * @ignore
  */
 function fontLoader(resource, next) {
-  const extensions = ['ttf', 'otf']
+  const extensions = ['ttf']
 
   const { extension } = resource
   if (extensions.includes(extension)) {
-    const { name, data } = resource
-    const blob = new Blob([new Uint8Array(data)])
-    const blobURL = URL.createObjectURL(blob)
+    const { name, url } = resource
 
     const style = document.createElement('style')
-    style.type = 'text/css'
-    style.media = 'all'
-    style.rel = 'stylesheet'
+    document.head.appendChild(style)
+    const styles = generateFontFace(name, url)
+    style.sheet.insertRule(styles, 0)
 
-    const head = document.getElementsByTagName('head')[0]
-    head.appendChild(style)
-    style.innerHTML = generateFontFace(name, blobURL)
+    const config = {}
+    config.timeout = Number.POSITIVE_INFINITY
+    config.custom = { families: [name] }
+    config.active = next
+    config.inactive = next
+
+    WebFont.load(config)
+  } else {
+    next()
   }
-
-  next()
 }
 
 export default fontLoader
