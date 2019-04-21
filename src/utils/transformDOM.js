@@ -30,7 +30,6 @@ function transformDOM(dom, displayObject) {
   dom.style.height = `${height}px`
   dom.style.left = `${x}px`
   dom.style.top = `${y}px`
-  dom.style.opacity = displayObject.alpha
 }
 
 export default transformDOM

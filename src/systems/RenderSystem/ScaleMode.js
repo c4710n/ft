@@ -41,17 +41,28 @@ function generate(
     ]
   }
 
-  const viewport = {
-    width: viewportCSSWidth,
-    height: viewportCSSHeight,
-  }
-
   const game = calcFunction(
     gameWidth,
     gameHeight,
     viewportCSSWidth,
     viewportCSSHeight
   )
+
+  const { scale, offsetCSSX, offsetCSSY } = game
+
+  const viewportLeftBounds = -offsetCSSX / scale
+  const viewportRightBounds = (viewportCSSWidth - offsetCSSX) / scale
+  const viewportTopBounds = -offsetCSSY / scale
+  const viewportBottomBounds = (viewportCSSHeight - offsetCSSY) / scale
+
+  const viewport = {
+    left: viewportLeftBounds,
+    right: viewportRightBounds,
+    top: viewportTopBounds,
+    bottom: viewportBottomBounds,
+    cssWidth: viewportCSSWidth,
+    cssHeight: viewportCSSHeight,
+  }
 
   return {
     game,

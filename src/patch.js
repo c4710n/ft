@@ -125,6 +125,17 @@ function setAlpha(alpha) {
   return this
 }
 
+function setScale(scaleX, scaleY) {
+  if (scaleX !== undefined) this.scale.x = scaleX
+  if (scaleY !== undefined) this.scale.y = scaleY
+
+  if (scaleY === undefined) {
+    this.scale.set(scaleX)
+  }
+
+  return this
+}
+
 function setInteractive(enabled = true) {
   this.interactive = enabled
 
@@ -140,6 +151,7 @@ function createDisplayObject(Class, ...args) {
   instance.setSize = setSize
   instance.setPosition = setPosition
   instance.setAlpha = setAlpha
+  instance.setScale = setScale
   instance.setInteractive = setInteractive
 
   return instance

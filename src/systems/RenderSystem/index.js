@@ -23,7 +23,7 @@ class RenderSystem extends System {
     super(UPDATE_PRIORITY.LOW)
 
     const renderer = autoDetectRenderer({
-      transparent: false,
+      transparent: true,
       antialias: false,
     })
     container.appendChild(renderer.view)
@@ -115,7 +115,7 @@ class RenderSystem extends System {
     if (shouldRotate) {
       rotation = 90
       const baseOffsetCSSX = 0
-      const baseOffsetCSSY = viewport.height
+      const baseOffsetCSSY = viewport.cssHeight
 
       offsetCSSX = baseOffsetCSSX + offsetCSSX
       offsetCSSY = baseOffsetCSSY - offsetCSSY
@@ -145,7 +145,10 @@ class RenderSystem extends System {
       height: gameHeight,
       centerX: gameWidth / 2,
       centerY: gameHeight / 2,
+      center: [gameWidth / 2, gameHeight / 2],
     }
+
+    FT.viewport = viewport
   }
 
   /**
