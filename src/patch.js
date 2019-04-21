@@ -34,6 +34,12 @@ function _onAdded() {
     })
   }
 
+  this.children.forEach(child => {
+    if (child.onAdded) {
+      child.onAdded()
+    }
+  })
+
   if (this.onAdded) {
     this.onAdded()
   }
@@ -51,6 +57,12 @@ function _onRemoved() {
       _unbindComponent(this, component)
     })
   }
+
+  this.children.forEach(child => {
+    if (child.onRemoved) {
+      child.onRemoved()
+    }
+  })
 
   if (this.onRemoved) {
     this.onRemoved()
