@@ -16,6 +16,7 @@ const { WHITE } = PIXI.Texture
 class DOM extends PIXI.Sprite {
   constructor(tag = 'div', { debug = false } = {}) {
     super(WHITE)
+    this.alpha = 0
 
     const dom = document.createElement(tag)
 
