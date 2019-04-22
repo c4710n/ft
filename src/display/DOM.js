@@ -14,7 +14,7 @@ const { WHITE } = PIXI.Texture
  * this.addChild(cover)
  */
 class DOM extends PIXI.Sprite {
-  constructor(tag = 'div', { debug = false } = {}) {
+  constructor(tag = 'div', { debug = false, enableLifecycle = true } = {}) {
     super(WHITE)
     this.alpha = 0
 
@@ -29,14 +29,23 @@ class DOM extends PIXI.Sprite {
      * @access private
      */
     this.$debug = debug
+
+    /**
+     * @access private
+     */
+    this.$enableLifecycle = enableLifecycle
   }
 
   onAdded() {
-    FT.container.appendChild(this.$dom)
+    if (this.$enableLifecycle) {
+      FT.container.appendChild(this.$dom)
+    }
   }
 
   onRemoved() {
-    FT.container.removeChild(this.$dom)
+    if (this.$enableLifecycle) {
+      FT.container.removeChild(this.$dom)
+    }
   }
 
   onUpdate() {
