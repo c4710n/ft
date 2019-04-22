@@ -1,9 +1,12 @@
 import PIXI from '#/pixi'
-import 'pixi-sound'
+// import 'pixi-sound'
 import 'pixi-spine'
 import { classname } from '#/utils'
 import { imageLoader as spineImageLoader } from './loader/spine'
 import fontLoader from './loader/font'
+import { patch as patchSpritesheetLoader } from './loader/spritesheet'
+
+patchSpritesheetLoader()
 
 let $res
 
@@ -25,7 +28,7 @@ let $res
  * import { FT } from 'ft'
  * import './register-resources'
  */
-class ResManager extends PIXI.loaders.Loader {
+class ResManager extends PIXI.Loader {
   constructor(...args) {
     super(...args)
 
@@ -51,6 +54,21 @@ class ResManager extends PIXI.loaders.Loader {
   addImage(name) {
     if (this.resources[name]) return
     this.add(...$res.nu(name))
+  }
+
+  /**
+   * Add a spritesheet to loading queue.
+   */
+  addSpritesheet(name) {
+    const json = this.url(name, { type: 'json' })
+    const image = this.url(name, { type: 'image' })
+
+    this.add(name, json, {
+      data: {
+        meta: { image },
+      },
+      metadata: { image },
+    })
   }
 
   /**
@@ -110,6 +128,26 @@ class ResManager extends PIXI.loaders.Loader {
     } else {
       return resource.texture
     }
+  }
+  /**
+   * Get textures for animation.
+   */
+  animationTextures(name, animationName) {
+    const spritesheet = this.resources[name]?.spritesheet
+    if (!spritesheet) {
+      throw new Error(`[${classname(this)}] missing spritesheet - ${name}`)
+    }
+
+    const animationTextures = spritesheet?.animations[animationName]
+    if (!animationTextures) {
+      throw new Error(
+        `[${classname(
+          this
+        )}] missing animation textures - ${name}:${animationName}`
+      )
+    }
+
+    return animationTextures
   }
 
   /**

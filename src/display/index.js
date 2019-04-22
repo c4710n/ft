@@ -1,7 +1,7 @@
 export { default as Mask } from './Mask'
 export { default as InteractiveMask } from './InteractiveMask'
 export { default as Spinner } from './Spinner'
-export { default as Spine } from './Spine'
+// export { default as Spine } from './Spine'
 export { default as ProgressLine } from './ProgressLine'
 export { default as ProgressText } from './ProgressText'
 export { default as Scroller } from './Scroller'

@@ -50,7 +50,7 @@ class FT {
     /**
      * ticker for game loop.
      */
-    this.ticker = new PIXI.ticker.Ticker()
+    this.ticker = new PIXI.Ticker()
 
     /**
      * DOM container of FT's canvas.
