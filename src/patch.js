@@ -72,6 +72,8 @@ function addComponent(component) {
 
   this.components.push(component)
   _bindComponent(this, component)
+
+  return this
 }
 
 function removeComponent(component) {
@@ -79,10 +81,14 @@ function removeComponent(component) {
 
   const index = this.components.indexOf(component)
   const exist = index !== -1
-  if (!exist) return
+  if (!exist) {
+    return this
+  }
 
   splice(this.components, index, 1)
   _unbindComponent(this, component)
+
+  return this
 }
 
 function patchDisplayObject() {
@@ -112,6 +118,18 @@ function setSize(width, height) {
   return this
 }
 
+function setWidth(width) {
+  this.width = width
+
+  return this
+}
+
+function setHeight(height) {
+  this.height = height
+
+  return this
+}
+
 function setPosition(x, y) {
   if (x !== undefined) this.x = x
   if (y !== undefined) this.y = y
@@ -119,8 +137,14 @@ function setPosition(x, y) {
   return this
 }
 
-function setAlpha(alpha) {
-  this.alpha = alpha
+function setPositionX(x) {
+  this.x = x
+
+  return this
+}
+
+function setPositionY(y) {
+  this.y = y
 
   return this
 }
@@ -136,8 +160,26 @@ function setScale(scaleX, scaleY) {
   return this
 }
 
-function setInteractive(enabled = true) {
-  this.interactive = enabled
+function setScaleX(scaleX) {
+  this.scale.x = scaleX
+
+  return this
+}
+
+function setScaleY(scaleY) {
+  this.scale.y = scaleY
+
+  return this
+}
+
+function setAlpha(alpha) {
+  this.alpha = alpha
+
+  return this
+}
+
+function setInteractive(value = true) {
+  this.interactive = value
 
   return this
 }
@@ -149,9 +191,15 @@ function createDisplayObject(Class, ...args) {
 
   instance.setOrigin = setOrigin
   instance.setSize = setSize
+  instance.setWidth = setWidth
+  instance.setHeight = setHeight
   instance.setPosition = setPosition
-  instance.setAlpha = setAlpha
+  instance.setPositionX = setPositionX
+  instance.setPositionY = setPositionY
   instance.setScale = setScale
+  instance.setScaleX = setScaleX
+  instance.setScaleY = setScaleY
+  instance.setAlpha = setAlpha
   instance.setInteractive = setInteractive
 
   return instance
