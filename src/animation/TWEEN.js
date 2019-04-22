@@ -9,15 +9,25 @@ if (!Tween.prototype.loop) {
     this.repeat(Number.POSITIVE_INFINITY)
     return this
   }
+}
 
-  /**
-   * This is a workaround for stop().
-   * When calling tween.stop(), it will trigger an error sometimes.
-   */
+/**
+ * This is a workaround for stop().
+ * When calling tween.stop(), it will trigger an error sometimes.
+ */
+if (!Tween.prototype.halt) {
   Tween.prototype.halt = function halt() {
     this.pause()
     remove(this)
     return this.emit('stop', this.object)
+  }
+}
+
+if (!Tween.prototype.startAsync) {
+  Tween.prototype.startAsync = function() {
+    return new Promise(resolve => {
+      this.on('complete', resolve).start()
+    })
   }
 }
 
