@@ -4,9 +4,6 @@ import { splice } from '#/utils/fast'
 
 import patchDisplayObjectMethods from './patchDisplayObjectMethods'
 
-// const addChild = PIXI.Container.prototype.addChild
-// const removeChild = PIXI.Container.prototype.removeChild
-
 function _bindComponent(displayObject, component) {
   if (displayObject.added && component.added === false) {
     component.added = true
@@ -30,41 +27,76 @@ function _unbindComponent(displayObject, component) {
   }
 }
 
-function _onAdded() {
-  this.added = true
+PIXI.Container.prototype.$addChild = PIXI.Container.prototype.addChild
+PIXI.Container.prototype.$removeChild = PIXI.Container.prototype.removeChild
 
-  if (this.components) {
-    this.components.forEach(component => {
-      _bindComponent(this, component)
+function callPostAdd(container) {
+  container.added = true
+
+  if (container.components) {
+    container.components.forEach(component => {
+      _bindComponent(container, component)
     })
   }
 
-  if (this.onAdded) {
-    this.onAdded()
-  }
+  if (container.onAdded) container.onAdded()
+  if (container.postAdd) container.postAdd()
 
-  if (this.onUpdate) {
-    FT.ticker.add(this.onUpdate, this)
+  if (container.onUpdate) {
+    FT.ticker.add(container.onUpdate, container)
   }
 }
 
-function _onRemoved() {
-  this.added = false
+function callPostRemove(container) {
+  container.added = false
 
-  if (this.components) {
-    this.components.forEach(component => {
-      _unbindComponent(this, component)
+  if (container.components) {
+    container.components.forEach(component => {
+      _unbindComponent(container, component)
     })
   }
 
-  if (this.onRemoved) {
-    this.onRemoved()
-  }
+  if (container.onRemoved) container.onRemoved()
+  if (container.postRemove) container.postRemove()
 
-  if (this.onUpdate) {
-    FT.ticker.remove(this.onUpdate, this)
+  if (container.onUpdate) {
+    FT.ticker.remove(container.onUpdate, container)
   }
 }
+
+function recursiveCallPostAdd(container) {
+  callPostAdd(container)
+  container.children.forEach(c => {
+    recursiveCallPostAdd(c)
+  })
+}
+
+function recursiveCallPostRemove(container) {
+  container.children.forEach(c => {
+    recursiveCallPostRemove(c)
+  })
+
+  callPostRemove(container)
+}
+
+function _addChild(child) {
+  this.$addChild(child)
+
+  if (this.added) {
+    recursiveCallPostAdd(child)
+  }
+}
+
+function _removeChild(child) {
+  this.$removeChild(child)
+
+  if (this.added) {
+    recursiveCallPostRemove(child)
+  }
+}
+
+PIXI.Container.prototype.addChild = _addChild
+PIXI.Container.prototype.removeChild = _removeChild
 
 function initComponents() {
   if (!this.components) {
@@ -101,14 +133,10 @@ function patchDisplayObject() {
   DisplayObject.prototype.initComponents = initComponents
   DisplayObject.prototype.addComponent = addComponent
   DisplayObject.prototype.removeComponent = removeComponent
-  DisplayObject.prototype._onAdded = _onAdded
-  DisplayObject.prototype._onRemoved = _onRemoved
 }
 
 function createDisplayObject(Class, ...args) {
   const displayObject = new Class(...args)
-  displayObject.on('added', displayObject._onAdded, displayObject)
-  displayObject.on('removed', displayObject._onRemoved, displayObject)
 
   patchDisplayObjectMethods(displayObject)
 

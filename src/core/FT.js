@@ -97,6 +97,7 @@ class FT {
     this.backgroundColor = backgroundColor
 
     const stage = new PIXI.Container()
+    stage.added = true
     this.internal.stage = stage
 
     this.addSystem(new TweenSystem())
