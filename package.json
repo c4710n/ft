@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "@m31271n/random-number": "^1.0.0",
-    "core-js": "^2.5.7",
+    "core-js": "3",
     "es6-tween": "^5.3.1",
     "fast-glob": "^2.2.4",
     "pixi-sound": "^2.1.0",

@@ -72,7 +72,7 @@ class SceneManager {
    *                                            seconds
    * @return {boolean} load is done or not
    */
-  load(
+  async load(
     name,
     {
       sticky = false,
@@ -113,11 +113,11 @@ class SceneManager {
     }
 
     if (transition) {
-      return new Promise(resolve => {
-        const tween = new Tween(activeScene).to({ alpha: 1 }, duration)
-        tween.on('complete', resolve)
-        tween.start()
-      })
+      await new Tween(activeScene).to({ alpha: 1 }, duration).startAsync()
+
+      if (activeScene.afterTransition) {
+        activeScene.afterTransition()
+      }
     } else {
       return true
     }

@@ -345,6 +345,13 @@ class HTML5Video extends PIXI.Sprite {
   }
 
   /**
+   * Set current time of video.
+   */
+  set currentTime(value) {
+    this.$video.currentTime = value
+  }
+
+  /**
    * Show current video.
    *
    * @emits {show}

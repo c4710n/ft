@@ -82,6 +82,10 @@ function setInteractive(value = true) {
   return this
 }
 
+function removeSelf() {
+  this.parent.removeChild(this)
+}
+
 export default function patchDisplayObjectMethods(instance) {
   instance.setOrigin = setOrigin
   instance.setSize = setSize
@@ -95,4 +99,6 @@ export default function patchDisplayObjectMethods(instance) {
   instance.setScaleY = setScaleY
   instance.setAlpha = setAlpha
   instance.setInteractive = setInteractive
+
+  instance.removeSelf = removeSelf
 }

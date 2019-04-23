@@ -3,7 +3,7 @@ module.exports = function generateConfig(api) {
   api.cache(true)
 
   const presets = [
-    ['@babel/preset-env', { useBuiltIns: 'usage', modules: false }],
+    ['@babel/preset-env', { useBuiltIns: 'entry', corejs: 3, modules: false }],
   ]
 
   const plugins = [
