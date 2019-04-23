@@ -1,4 +1,4 @@
-import PIXI from '#/pixi'
+// import PIXI from '#/pixi'
 import System from './System'
 
 /**
@@ -12,11 +12,11 @@ class VisibilitySystem extends System {
   }
 
   mute() {
-    PIXI.sound.muteAll()
+    // PIXI.sound.muteAll()
   }
 
   unmute() {
-    PIXI.sound.unmuteAll()
+    // PIXI.sound.unmuteAll()
   }
 
   onChange() {
