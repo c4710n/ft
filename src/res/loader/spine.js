@@ -1,4 +1,4 @@
-import { FT } from '#/core'
+import { FT } from '../../core'
 
 /**
  * @ignore

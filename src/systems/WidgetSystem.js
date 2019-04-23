@@ -1,5 +1,5 @@
-import { FT } from '#/core'
-import { Widget } from '#/components'
+import { FT } from '../core'
+import { Widget } from '../components'
 import System from './System'
 
 /**

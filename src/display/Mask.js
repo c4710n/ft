@@ -1,5 +1,5 @@
-import { FT } from '#/core'
-import PIXI from '#/pixi'
+import { FT } from '../core'
+import PIXI from '../pixi'
 
 /**
  * A mask whose size is equal to viewport's size.

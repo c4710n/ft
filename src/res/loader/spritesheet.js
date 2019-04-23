@@ -1,4 +1,4 @@
-import PIXI from '#/pixi'
+import PIXI from '../../pixi'
 
 export function patch() {
   PIXI.SpritesheetLoader.getResourcePath = (resource, baseUrl) => {

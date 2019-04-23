@@ -1,4 +1,4 @@
-import TWEEN from '#/animation/TWEEN'
+import TWEEN from '../animation/TWEEN'
 import System from './System'
 
 /**

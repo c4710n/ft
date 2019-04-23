@@ -1,5 +1,5 @@
 import 'pixi-spine'
-import PIXI from '#/pixi'
+import PIXI from '../pixi'
 
 /**
  * @external {Spine} https://github.com/pixijs/pixi-spine

@@ -1,13 +1,13 @@
-import patch from '#/patch'
-import PIXI from '#/pixi'
-import ResManager from '#/res/ResManager'
-import SceneManager from '#/scene/SceneManager'
+import patch from '../patch'
+import PIXI from '../pixi'
+import ResManager from '../res/ResManager'
+import SceneManager from '../scene/SceneManager'
 import {
   TweenSystem,
   WidgetSystem,
   RenderSystem,
   VisibilitySystem,
-} from '#/systems'
+} from '../systems'
 
 const defaultOptions = {
   width: 750,

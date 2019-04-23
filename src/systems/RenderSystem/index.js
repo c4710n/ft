@@ -1,8 +1,7 @@
-import FT from '#/core/FT'
-import PIXI from '#/pixi'
-import { Device, Layer } from '#/core'
-import { classname } from '#/utils'
-import { UPDATE_PRIORITY } from '#/const'
+import { FT, Device, Layer } from '../../core'
+import PIXI from '../../pixi'
+import { classname } from '../../utils'
+import { UPDATE_PRIORITY } from '../../const'
 import System from '../System'
 import ScaleMode from './ScaleMode'
 

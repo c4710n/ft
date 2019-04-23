@@ -1,6 +1,6 @@
-import { FT, Layer } from '#/core'
-import { transformDOM } from '#/utils'
-import PIXI from '#/pixi'
+import { FT, Layer } from '../core'
+import { transformDOM } from '../utils'
+import PIXI from '../pixi'
 
 const { WHITE } = PIXI.Texture
 

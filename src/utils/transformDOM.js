@@ -1,4 +1,4 @@
-import { FT } from '#/core'
+import { FT } from '../core'
 
 /**
  * Transform DOMElement's position and size according given DisplayObject.

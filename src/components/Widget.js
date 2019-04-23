@@ -1,6 +1,6 @@
-import { FT } from '#/core'
-import { WidgetSystem } from '#/systems'
-import { classname } from '#/utils'
+import { FT } from '../core'
+import { WidgetSystem } from '../systems'
+import { classname } from '../utils'
 import Component from './Component'
 
 /**

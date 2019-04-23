@@ -1,4 +1,4 @@
-import { Orientation } from '#/core'
+import { Orientation } from '../../core'
 
 function getGameOrientation(width, height) {
   return width >= height ? Orientation.LANDSCAPE : Orientation.PORTRAIT

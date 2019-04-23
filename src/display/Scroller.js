@@ -1,5 +1,5 @@
-import { Tween, Easing } from '#/animation'
-import PIXI from '#/pixi'
+import { Tween, Easing } from '../animation'
+import PIXI from '../pixi'
 
 /**
  * A general scroller.

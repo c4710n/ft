@@ -1,6 +1,6 @@
-import { FT, Layer, Device } from '#/core'
-import PIXI from '#/pixi'
-import { transformDOM, Timer } from '#/utils'
+import { FT, Layer, Device } from '../core'
+import PIXI from '../pixi'
+import { transformDOM, Timer } from '../utils'
 import Spinner from './Spinner'
 
 /**

@@ -1,6 +1,6 @@
-import PIXI from '#/pixi'
-import { FT } from '#/core'
-import { splice } from '#/utils/fast'
+import PIXI from '../pixi'
+import { FT } from '../core'
+import { splice } from '../utils/fast'
 
 const DEBUG = false
 const { Container, DisplayObject } = PIXI

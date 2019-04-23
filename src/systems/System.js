@@ -1,5 +1,5 @@
-import { splice } from '#/utils/fast'
-import { UPDATE_PRIORITY } from '#/const'
+import { splice } from '../utils/fast'
+import { UPDATE_PRIORITY } from '../const'
 
 /**
  * Basic class for system.
