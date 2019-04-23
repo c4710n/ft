@@ -28,8 +28,6 @@
     ""
   ],
   "dependencies": {
-    "@m31271n/random-number": "^1.0.0",
-    "core-js": "3",
     "es6-tween": "^5.3.1",
     "fast-glob": "^2.2.4",
     "pixi-sound": "^2.1.0",
@@ -51,6 +49,7 @@
     "ava": "1.0.0-rc.1",
     "babel-eslint": "^10.0.1",
     "babel-plugin-root-import": "^5.1.0",
+    "core-js": "3",
     "esdoc": "^1.1.0",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-standard-plugin": "^1.0.0",
