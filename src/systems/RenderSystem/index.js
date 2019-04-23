@@ -159,12 +159,12 @@ class RenderSystem extends System {
      * Visit following link for more details.
      * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
      */
-    const _this = this
 
     const renderer = this.$renderer
+    const container = this.$container
     const { interaction } = renderer.plugins
-    const interactiveTarget = FT.container
-    interaction.setTargetElement(interactiveTarget, renderer.resolution)
+
+    interaction.setTargetElement(container, renderer.resolution)
 
     const { normalizeToPointerData } = interaction
     interaction.normalizeToPointerData = function(event) {
@@ -172,6 +172,7 @@ class RenderSystem extends System {
       return normalizeToPointerData.call(this, event)
     }
 
+    const _this = this
     interaction.mapPositionToPoint = function(point, x, y) {
       // the unit of x, y is CSS pixel
       const resolutionMultiplier = 1.0 / this.resolution
