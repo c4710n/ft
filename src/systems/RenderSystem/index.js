@@ -18,14 +18,26 @@ class RenderSystem extends System {
   constructor(
     container,
     stage,
-    { width, height, scaleMode, eventMode = 'canvas' } = {}
+    {
+      width = 750,
+      height = 1500,
+      forceCanvas = false,
+      transparent = true,
+      antialias = false,
+      scaleMode = 'COVER',
+      enableDOMEventMode = true,
+    } = {}
   ) {
     super(UPDATE_PRIORITY.LOW)
 
     const renderer = autoDetectRenderer({
-      transparent: true,
-      antialias: false,
+      width,
+      height,
+      forceCanvas,
+      transparent,
+      antialias,
     })
+
     container.appendChild(renderer.view)
 
     /**
@@ -63,7 +75,7 @@ class RenderSystem extends System {
      */
     this.$scaleMode = scaleMode
 
-    if (eventMode === 'dom') {
+    if (enableDOMEventMode) {
       this.enableDomEventMode()
     }
 

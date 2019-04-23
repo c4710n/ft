@@ -78,39 +78,25 @@ class FT {
    *
    * @param {string} selector - selector of DOM container.
    * @param {Object} options
-   * @param {number} [options.width=750] - stage's width.
-   * @param {number} [options.height=1500] - stage's height.
-   * @param {string} [options.scaleMode='COVER'] - stage's scale mode.
+   * @param {number} [options.renderer] - renderer's default options.
    * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
    */
   init(selector, options) {
-    const {
-      width,
-      height,
-      scaleMode,
-      eventMode,
-      backgroundColor,
-    } = Object.assign(defaultOptions, options)
+    const { backgroundColor } = Object.assign(defaultOptions, options)
 
     const container = createContainer(selector)
     this.container = container
     this.backgroundColor = backgroundColor
 
     const stage = new PIXI.Container()
-    stage.added = true
     this.internal.stage = stage
+    stage.added = true // in order to make patchDisplayObjectLifecycle work.
 
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
     this.addSystem(new VisibilitySystem())
 
-    const renderOptions = {
-      width,
-      height,
-      scaleMode,
-      eventMode,
-    }
-    const renderSystem = new RenderSystem(container, stage, renderOptions)
+    const renderSystem = new RenderSystem(container, stage, options.renderer)
     this.addSystem(renderSystem)
     /**
      * @ignore
