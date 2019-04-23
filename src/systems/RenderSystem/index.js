@@ -175,6 +175,7 @@ class RenderSystem extends System {
     const container = this.$container
     const { interaction } = renderer.plugins
 
+    interaction.autoPreventDefault = false
     interaction.setTargetElement(container, renderer.resolution)
 
     const { normalizeToPointerData } = interaction
