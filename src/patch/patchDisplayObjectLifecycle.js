@@ -2,7 +2,7 @@ import PIXI from '#/pixi'
 import { FT } from '#/core'
 import { splice } from '#/utils/fast'
 
-const DEBUG = true
+const DEBUG = false
 const { Container, DisplayObject } = PIXI
 
 Container.prototype.$addChild = Container.prototype.addChild

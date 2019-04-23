@@ -163,25 +163,19 @@ class RenderSystem extends System {
 
     const renderer = this.$renderer
     const { interaction } = renderer.plugins
-    const interactiveTarget = document.body
+    const interactiveTarget = FT.container
     interaction.setTargetElement(interactiveTarget, renderer.resolution)
 
     const { normalizeToPointerData } = interaction
     interaction.normalizeToPointerData = function(event) {
-      /**
-       * @ignore
-       */
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
     }
 
-    interaction.mapPositionToPoint = function(
-      point,
+    interaction.mapPositionToPoint = function(point, x, y) {
       // the unit of x, y is CSS pixel
-      x,
-      y
-    ) {
       const resolutionMultiplier = 1.0 / this.resolution
+
       if (_this.$rotate) {
         point.x =
           ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
