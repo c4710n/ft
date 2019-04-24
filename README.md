@@ -20,9 +20,10 @@
   - tween system
   - widget system
 - common display object for developing marketing page
-  - progress
-  - scroller
-  - video
+  - Scroller
+  - Video
+  - DOM
+  - ...
 
 ## Installation
 
