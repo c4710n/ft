@@ -27,17 +27,17 @@ class DOM extends Sprite {
   }
 
   onUpdate() {
-    this.renderDOM()
+    this.renderDOM(Layer.DOM_INTERACTION)
   }
 
   /**
    * @ignore
    */
-  renderDOM = () => {
+  renderDOM(layer) {
     const dom = this.dom
     const displayObject = this
 
-    transformDOM(dom, displayObject, Layer.DOM_INTERACTION)
+    transformDOM(dom, displayObject, layer)
   }
 }
 

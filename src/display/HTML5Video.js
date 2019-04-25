@@ -1,6 +1,6 @@
 import { FT, Layer, Device } from '../core'
-import PIXI from '../pixi'
-import { transformDOM, Timer } from '../utils'
+import DOM from './DOM'
+import { Timer } from '../utils'
 import Spinner from './Spinner'
 
 /**
@@ -17,7 +17,7 @@ import Spinner from './Spinner'
  * // play
  * video.play()
  */
-class HTML5Video extends PIXI.Sprite {
+class HTML5Video extends DOM {
   /**
    * @param {string} src='' url of video
    * @param {Object} options
@@ -26,9 +26,12 @@ class HTML5Video extends PIXI.Sprite {
    * @param {boolean} [options.hide=false] hide video after creating it
    */
   constructor(src, { id = '', loop = false, hide = false } = {}) {
-    super(PIXI.Texture.WHITE)
-    this.alpha = 0
+    super('video')
 
+    /**
+     * @ignore
+     */
+    this.$layer = Layer.DOM_DISPLAY_HIDDEN
     /**
      * @ignore
      */
@@ -48,11 +51,7 @@ class HTML5Video extends PIXI.Sprite {
     /**
      * @ignore
      */
-    this.$video = this.createVideoDOM()
-    /**
-     * @ignore
-     */
-    this.$container = null
+    this.$video = this.patchVideoDOM(this.dom)
     /**
      * @ignore
      */
@@ -91,17 +90,13 @@ class HTML5Video extends PIXI.Sprite {
    * Create video DOM.
    * @ignore
    */
-  createVideoDOM() {
-    const video = document.createElement('video')
-    video.src = this.$src
+  patchVideoDOM(video) {
+    this.$layer = this.$hide ? Layer.DOM_DISPLAY_HIDDEN : Layer.DOM_DISPLAY
 
     // identifiers
-    video.className = 'ft-video'
     if (this.$id) video.id = this.$id
 
-    video.style.zIndex = this.$hide
-      ? Layer.DOM_DISPLAY_HIDDEN
-      : Layer.DOM_DISPLAY
+    video.src = this.$src
     video.loop = this.$loop
     video.crossorigin = 'anonymous'
     video.setAttribute('preload', 'auto')
@@ -120,21 +115,10 @@ class HTML5Video extends PIXI.Sprite {
    * @ignore
    */
   onAdded() {
-    this.$container = FT.container
-
     const { $video: video } = this
-    this.transformVideo()
 
     video.addEventListener('ended', this.onEnd)
-    this.$container.appendChild(video)
-  }
-
-  /**
-   * Resize and position current video DOM according stage's setting.
-   * @access private
-   */
-  transformVideo = () => {
-    transformDOM(this.$video, this)
+    FT.container.appendChild(video)
   }
 
   /**
@@ -143,10 +127,10 @@ class HTML5Video extends PIXI.Sprite {
    * @emits {progress}
    */
   onUpdate() {
+    super.renderDOM(this.$layer)
+
     const { currentTime } = this.$video
     this.emit('progress', currentTime)
-
-    this.transformVideo()
   }
 
   /**
@@ -154,10 +138,11 @@ class HTML5Video extends PIXI.Sprite {
    */
   onRemoved() {
     const { $video: video } = this
-    if (!video) return
 
-    video.removeEventListener('ended', this.onEnd)
-    this.$container.removeChild(video)
+    if (video) {
+      video.removeEventListener('ended', this.onEnd)
+      FT.container.removeChild(video)
+    }
   }
 
   /**
@@ -188,25 +173,28 @@ class HTML5Video extends PIXI.Sprite {
    * @ignore
    */
   removeSpinnerChecker() {
-    if (!this.$spinnerChecker) return
-    FT.ticker.remove(this.$spinnerChecker, this)
+    if (this.$spinnerChecker) {
+      FT.ticker.remove(this.$spinnerChecker, this)
+    }
   }
 
   /**
    * @ignore
    */
   showSpinner() {
-    if (this.$spinner.added) return
-    this.$spinner.position.set(FT.stage.centerX, FT.stage.centerY)
-    FT.internal.stage.addChild(this.$spinner)
+    if (!this.$spinner.added) {
+      this.$spinner.position.set(FT.stage.centerX, FT.stage.centerY)
+      FT.internal.stage.addChild(this.$spinner)
+    }
   }
 
   /**
    * @ignore
    */
   hideSpinner() {
-    if (!this.$spinner.added) return
-    FT.internal.stage.removeChild(this.$spinner)
+    if (this.$spinner.added) {
+      FT.internal.stage.removeChild(this.$spinner)
+    }
   }
 
   /**
