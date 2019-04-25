@@ -52,8 +52,11 @@ class ResManager extends PIXI.Loader {
    * Add an image to loading queue.
    */
   addImage(name) {
-    if (this.resources[name]) return
-    this.add(...$res.nu(name))
+    if (!this.resources[name]) {
+      this.add(...$res.nu(name))
+    }
+
+    return name
   }
 
   /**
@@ -69,22 +72,30 @@ class ResManager extends PIXI.Loader {
       },
       metadata: { image },
     })
+
+    return name
   }
 
   /**
    * Add a font to loading queue.
    */
   addFont(name) {
-    if (this.resources[name]) return
-    this.add(...$res.nu(name))
+    if (!this.resources[name]) {
+      this.add(...$res.nu(name))
+    }
+
+    return name
   }
 
   /**
    * Add a sound to loading queue.
    */
   addSound(name) {
-    if (this.resources[name]) return
-    this.add(...$res.nu(name))
+    if (!this.resources[name]) {
+      this.add(...$res.nu(name))
+    }
+
+    return name
   }
 
   /**
@@ -93,6 +104,8 @@ class ResManager extends PIXI.Loader {
   addLiveSound(name) {
     const url = this.url(name)
     this.liveSounds[name] = new Audio(url)
+
+    return name
   }
 
   /**
@@ -109,6 +122,8 @@ class ResManager extends PIXI.Loader {
         imageLoader: spineImageLoader,
       },
     })
+
+    return name
   }
 
   /**
