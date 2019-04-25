@@ -34,6 +34,8 @@ function _unbindComponent(displayObject, component) {
   if (component.added === true) {
     component.added = false
 
+    component.onRemoved(displayObject)
+
     if (DEBUG) {
       // eslint-disable-next-line
       console.log(
@@ -42,8 +44,6 @@ function _unbindComponent(displayObject, component) {
         }`
       )
     }
-
-    component.onRemoved(displayObject)
 
     if (component.onUpdate) {
       FT.ticker.remove(component.onUpdate, component)
@@ -148,8 +148,8 @@ function removeComponent(component) {
   const index = this.components.indexOf(component)
   const exist = index !== -1
   if (exist) {
-    splice(this.components, index, 1)
     _unbindComponent(this, component)
+    splice(this.components, index, 1)
   }
 
   return this
