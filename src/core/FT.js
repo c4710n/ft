@@ -17,7 +17,7 @@ const defaultOptions = {
   backgroundColor: '#ffffff',
 }
 
-function createContainer(selector) {
+function createContainer(selector, { disableScroll = true } = {}) {
   const container = document.querySelector(selector)
   if (!container) {
     throw new Error(`[FT] invalid selector of container`)
@@ -27,6 +27,24 @@ function createContainer(selector) {
   container.style.touchAction = 'none'
   container.style.cursor = 'auto'
   container.style.WebkitTapHighlightColor = 'rgba(0, 0, 0, 0)'
+
+  if (disableScroll) {
+    document.body.addEventListener(
+      'touchmove',
+      function(e) {
+        e.preventDefault()
+      },
+      { passive: false }
+    )
+
+    document.body.addEventListener(
+      'scroll',
+      function(e) {
+        e.preventDefault()
+      },
+      { passive: false }
+    )
+  }
 
   return container
 }
