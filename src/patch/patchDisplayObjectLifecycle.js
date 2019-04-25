@@ -41,7 +41,6 @@ function callPostAdd(container) {
   }
 
   if (container.onAdded) container.onAdded()
-  if (container.postAdd) container.postAdd()
 
   if (container.onUpdate) {
     FT.ticker.add(container.onUpdate, container)
@@ -58,7 +57,6 @@ function callPostRemove(container) {
   }
 
   if (container.onRemoved) container.onRemoved()
-  if (container.postRemove) container.postRemove()
 
   if (container.onUpdate) {
     FT.ticker.remove(container.onUpdate, container)
@@ -125,12 +123,10 @@ function removeComponent(component) {
 
   const index = this.components.indexOf(component)
   const exist = index !== -1
-  if (!exist) {
-    return this
+  if (exist) {
+    splice(this.components, index, 1)
+    _unbindComponent(this, component)
   }
-
-  splice(this.components, index, 1)
-  _unbindComponent(this, component)
 
   return this
 }
