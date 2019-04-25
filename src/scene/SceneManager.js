@@ -1,5 +1,5 @@
 import { FT } from '../core'
-import { Tween } from '../animation'
+import { Tween } from '../systems/TweenSystem/TWEEN'
 import { classname, qs } from '../utils'
 
 /**

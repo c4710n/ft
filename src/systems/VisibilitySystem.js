@@ -2,7 +2,7 @@
 import System from './System'
 
 /**
- * System for Tween.
+ * System for Visibility.
  */
 class VisibilitySystem extends System {
   constructor(...args) {

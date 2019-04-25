@@ -1,4 +1,4 @@
-import { Tween, Easing } from '../animation'
+import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import PIXI from '../pixi'
 
 /**

@@ -1,5 +1,5 @@
-import TWEEN from '../animation/TWEEN'
-import System from './System'
+import System from '../System'
+import TWEEN from './TWEEN'
 
 /**
  * System for Tween.
