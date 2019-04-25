@@ -6,7 +6,7 @@ import { FT } from '../core'
  * @param {DOMElement} dom the DOM to be transformed.
  * @param {DisplayObject} displayObject the display object which provides position and size.
  */
-function transformDOM(dom, displayObject) {
+function transformDOM(dom, displayObject, layer) {
   const { width, height } = displayObject
 
   const { x: $x, y: $y } = displayObject.getGlobalPosition()
@@ -30,6 +30,7 @@ function transformDOM(dom, displayObject) {
   dom.style.height = `${height}px`
   dom.style.left = `${x}px`
   dom.style.top = `${y}px`
+  dom.style.zIndex = layer
 }
 
 export default transformDOM
