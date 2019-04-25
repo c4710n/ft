@@ -1,5 +1,6 @@
 import patch from '../patch'
 import PIXI from '../pixi'
+import { Factory as DisplayFactory } from '../display'
 import ResManager from '../res/ResManager'
 import SceneManager from '../scene/SceneManager'
 import {
@@ -9,11 +10,9 @@ import {
   VisibilitySystem,
 } from '../systems'
 
+patch()
+
 const defaultOptions = {
-  width: 750,
-  height: 1500,
-  scaleMode: 'COVER',
-  eventMode: 'canvas',
   backgroundColor: '#ffffff',
 }
 
@@ -86,9 +85,9 @@ class FT {
     this.sm = SceneManager.default
 
     /**
-     * helper for extending PIXI's classes.
+     * helper for creating DisplayObject faster.
      */
-    this.create = patch.createDisplayObject
+    this.create = DisplayFactory.create
   }
 
   /**

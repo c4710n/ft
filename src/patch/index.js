@@ -1,16 +1,9 @@
-import patchDisplayObjectMethods from './patchDisplayObjectMethods'
 import patchDisplayObjectLifecycle from './patchDisplayObjectLifecycle'
 
-function createDisplayObject(Class, ...args) {
-  const displayObject = new Class(...args)
+export {
+  default as patchDisplayObjectMethods,
+} from './patchDisplayObjectMethods'
 
-  patchDisplayObjectMethods(displayObject)
-
-  return displayObject
-}
-
-patchDisplayObjectLifecycle()
-
-export default {
-  createDisplayObject,
+export default function patch() {
+  patchDisplayObjectLifecycle()
 }

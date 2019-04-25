@@ -1,3 +1,4 @@
+export { default as Factory } from './Factory'
 export { default as Mask } from './Mask'
 export { default as Spinner } from './Spinner'
 // export { default as Spine } from './Spine'
