@@ -1,9 +1,27 @@
 function setOrigin(originX, originY) {
-  if (originX !== undefined) this.anchor.x = originX
-  if (originY !== undefined) this.anchor.y = originY
+  if (this.anchor) {
+    if (originX !== undefined) this.anchor.x = originX
+    if (originY !== undefined) this.anchor.y = originY
 
-  if (originY === undefined) {
-    this.anchor.x = this.anchor.y = originX
+    if (originY === undefined) {
+      const origin = originX
+      this.anchor.x = origin
+      this.anchor.y = origin
+    }
+  } else if (this.pivot) {
+    if (originX !== undefined) {
+      this.pivot.x = (originX * this.width) / this.scale.x
+    }
+
+    if (originY !== undefined) {
+      this.pivot.y = (originX * this.height) / this.scale.x
+    }
+
+    if (originY === undefined) {
+      const origin = originX
+      this.pivot.x = (origin * this.width) / this.scale.x
+      this.pivot.y = (origin * this.height) / this.scale.x
+    }
   }
 
   return this
