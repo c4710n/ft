@@ -9,18 +9,9 @@ import { classname, qs } from '../utils'
  * // default instance of SceneManager.
  * const { default: sceneManager } = SceneManager
  *
- * class Preloader extends Scene {
- *   onAdded() {
- *     // ...
- *     sceneManager.load('playground')
- *   }
- * }
+ * class Preloader extends Scene {}
  *
- * class Playground extends Scene {
- *   onAdded() {
- *     // ...
- *   }
- * }
+ * class Playground extends Scene {}
  *
  * // register scenes
  * sceneManager.register('preloader', Preloader)
@@ -118,9 +109,9 @@ class SceneManager {
       if (activeScene.afterTransition) {
         activeScene.afterTransition()
       }
-    } else {
-      return true
     }
+
+    return true
   }
 
   /**
@@ -129,7 +120,12 @@ class SceneManager {
   qsload() {
     const qo = qs.parse()
     const { scene: name } = qo
-    return this.load(name)
+
+    if (name) {
+      return this.load(name)
+    } else {
+      return false
+    }
   }
 
   /**
