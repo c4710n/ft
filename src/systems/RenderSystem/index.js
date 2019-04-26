@@ -81,6 +81,9 @@ class RenderSystem extends System {
    * @param {number} height
    */
   resize(width, height) {
+    this.width = width
+    this.height = height
+
     this.renderer.resize(width, height)
     events.resize.emit()
   }
