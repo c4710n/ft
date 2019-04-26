@@ -14,6 +14,15 @@ resize.on = function(...args) {
 }
 resize.emit = emitResizeEvent
 
+const EVENT_SCALE = 'scale'
+const scale = {}
+scale.on = function(...args) {
+  EE.on(EVENT_SCALE, ...args)
+}
+scale.emit = function(...args) {
+  EE.emit(EVENT_SCALE, ...args)
+}
+
 function start() {
   window.addEventListener('resize', resize.emit)
   resize.emit()
@@ -22,4 +31,5 @@ function start() {
 export default {
   start,
   resize,
+  scale,
 }
