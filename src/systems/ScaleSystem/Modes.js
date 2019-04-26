@@ -41,28 +41,59 @@ function generate(
     ]
   }
 
-  const game = calcFunction(width, height, viewportCSSWidth, viewportCSSHeight)
+  const position = calcFunction(
+    width,
+    height,
+    viewportCSSWidth,
+    viewportCSSHeight
+  )
+  const { scale, offsetCSSX, offsetCSSY } = position
 
-  const { scale, offsetCSSX, offsetCSSY } = game
+  let boundsLeft
+  let boundsRight
+  let boundsTop
+  let boundsBottom
+  let boundsWidth
+  let boundsHeight
+  if (offsetCSSX >= 0) {
+    boundsLeft = 0
+    boundsRight = width
+    boundsWidth = width
+  } else {
+    boundsLeft = -offsetCSSX / scale
+    boundsRight = (viewportCSSWidth - offsetCSSX) / scale
+    boundsWidth = viewportCSSWidth / scale
+  }
 
-  const viewportLeftBounds = -offsetCSSX / scale
-  const viewportRightBounds = (viewportCSSWidth - offsetCSSX) / scale
-  const viewportTopBounds = -offsetCSSY / scale
-  const viewportBottomBounds = (viewportCSSHeight - offsetCSSY) / scale
+  if (offsetCSSY >= 0) {
+    boundsTop = 0
+    boundsBottom = height
+    boundsHeight = height
+  } else {
+    boundsTop = -offsetCSSY / scale
+    boundsBottom = (viewportCSSHeight - offsetCSSY) / scale
+    boundsHeight = viewportCSSHeight / scale
+  }
+
+  const bounds = {
+    left: boundsLeft,
+    right: boundsRight,
+    top: boundsTop,
+    bottom: boundsBottom,
+    width: boundsWidth,
+    height: boundsHeight,
+  }
 
   const viewport = {
-    left: viewportLeftBounds,
-    right: viewportRightBounds,
-    top: viewportTopBounds,
-    bottom: viewportBottomBounds,
     cssWidth: viewportCSSWidth,
     cssHeight: viewportCSSHeight,
   }
 
   return {
-    game,
-    viewport,
     shouldRotate,
+    position,
+    bounds,
+    viewport,
   }
 }
 

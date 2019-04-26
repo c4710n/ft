@@ -38,14 +38,19 @@ class ScaleSystem extends System {
     if (!scaleMode) {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
     }
-    const { game, viewport, shouldRotate } = scaleMode(
+    const { shouldRotate, position, bounds, viewport } = scaleMode(
       width,
       height,
       viewportCSSWidth,
       viewportCSSHeight
     )
 
-    let { scale, offsetCSSX, offsetCSSY } = game
+    this.rotate = shouldRotate
+    this.position = position
+    this.bounds = bounds
+    this.viewport = viewport
+
+    let { scale, offsetCSSX, offsetCSSY } = position
     let rotation = 0
 
     if (shouldRotate) {
@@ -58,18 +63,11 @@ class ScaleSystem extends System {
       ;[offsetCSSX, offsetCSSY] = [offsetCSSY, offsetCSSX]
     }
 
-    this.offsetCSSX = offsetCSSX
-    this.offsetCSSY = offsetCSSY
-    this.scale = scale
-    this.rotate = shouldRotate
-
     this.container.style.position = 'absolute'
     this.container.style.width = `${width}px`
     this.container.style.height = `${height}px`
     this.container.style.transformOrigin = '0 0'
     this.container.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${offsetCSSX}, ${offsetCSSY}) rotate(${rotation}deg)`
-
-    this.viewport = viewport
   }
 }
 

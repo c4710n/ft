@@ -23,26 +23,26 @@ class HUDSystem extends System {
   position(entity, meta) {
     let $x, $y
     const { left, right, top, bottom, percentage } = meta
-    const { viewport } = FT.systems.scale
+    const { bounds } = FT.systems.scale
 
     if (left !== undefined) {
-      const offset = percentage ? viewport.width * left : left
-      $x = viewport.left + offset
+      const offset = percentage ? bounds.width * left : left
+      $x = bounds.left + offset
     }
 
     if (right !== undefined) {
-      const offset = percentage ? viewport.width * right : right
-      $x = viewport.right - offset
+      const offset = percentage ? bounds.width * right : right
+      $x = bounds.right - offset
     }
 
     if (top !== undefined) {
-      const offset = percentage ? viewport.height * top : top
-      $y = viewport.top + offset
+      const offset = percentage ? bounds.height * top : top
+      $y = bounds.top + offset
     }
 
     if (bottom !== undefined) {
-      const offset = percentage ? viewport.height * bottom : bottom
-      $y = viewport.bottom - offset
+      const offset = percentage ? bounds.height * bottom : bottom
+      $y = bounds.bottom - offset
     }
 
     if ($x) entity.x = $x
