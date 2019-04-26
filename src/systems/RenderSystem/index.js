@@ -1,6 +1,6 @@
 import System from '../System'
 import { UPDATE_PRIORITY } from '../../const'
-import { Layer } from '../../core'
+import { FT, Layer } from '../../core'
 import PIXI from '../../pixi'
 import events from '../../events'
 
@@ -18,7 +18,7 @@ class RenderSystem extends System {
       forceCanvas = false,
       transparent = true,
       antialias = false,
-      // enableDOMEventMode = true,
+      enableDOMEventMode = true,
     } = {}
   ) {
     super('render', UPDATE_PRIORITY.LOW)
@@ -69,9 +69,9 @@ class RenderSystem extends System {
      */
     container.appendChild(this.view)
 
-    // if (enableDOMEventMode) {
-    //   this.enableDomEventMode()
-    // }
+    if (enableDOMEventMode) {
+      this.enableDomEventMode()
+    }
   }
 
   /**
@@ -95,43 +95,40 @@ class RenderSystem extends System {
   /**
    * @access private
    */
-  // enableDomEventMode() {
-  //   /**
-  //    * Visit following link for more details.
-  //    * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
-  //    */
+  enableDomEventMode() {
+    /**
+     * Visit following link for more details.
+     * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
+     */
 
-  //   const renderer = this.renderer
-  //   const container = this.container
-  //   const { interaction } = renderer.plugins
+    const { container, renderer } = this
 
-  //   interaction.autoPreventDefault = false
-  //   interaction.setTargetElement(container, renderer.resolution)
+    const { interaction } = renderer.plugins
+    interaction.autoPreventDefault = false
+    interaction.setTargetElement(container, renderer.resolution)
 
-  //   const { normalizeToPointerData } = interaction
-  //   interaction.normalizeToPointerData = function(event) {
-  //     this.interactionDOMElement = event.target
-  //     return normalizeToPointerData.call(this, event)
-  //   }
+    const { normalizeToPointerData } = interaction
+    interaction.normalizeToPointerData = function(event) {
+      this.interactionDOMElement = event.target
+      return normalizeToPointerData.call(this, event)
+    }
 
-  //   const _this = this
-  //   interaction.mapPositionToPoint = function(point, x, y) {
-  //     // the unit of x, y is CSS pixel
-  //     const resolutionMultiplier = 1.0 / this.resolution
+    interaction.mapPositionToPoint = function(point, x, y) {
+      const { offsetCSSX, offsetCSSY, scale } = FT.systems.scale.position
+      const rotate = FT.systems.scale.rotate
 
-  //     if (_this.rotate) {
-  //       point.x =
-  //         ((y - _this.offsetCSSY) / _this.scale) * resolutionMultiplier
-  //       point.y =
-  //         ((_this.offsetCSSX - x) / _this.scale) * resolutionMultiplier
-  //     } else {
-  //       point.x =
-  //         ((x - _this.offsetCSSX) / _this.scale) * resolutionMultiplier
-  //       point.y =
-  //         ((y - _this.offsetCSSY) / _this.scale) * resolutionMultiplier
-  //     }
-  //   }
-  // }
+      // the unit of x, y is CSS pixel
+      const resolutionMultiplier = 1.0 / this.resolution
+
+      if (rotate) {
+        point.x = ((y - offsetCSSY) / scale) * resolutionMultiplier
+        point.y = ((offsetCSSX - x) / scale) * resolutionMultiplier
+      } else {
+        point.x = ((x - offsetCSSX) / scale) * resolutionMultiplier
+        point.y = ((y - offsetCSSY) / scale) * resolutionMultiplier
+      }
+    }
+  }
 }
 
 export default RenderSystem
