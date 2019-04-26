@@ -1,35 +1,35 @@
-import { Orientation } from '../../core'
+import ORIENTATION from './ORIENTATION'
 
 function getGameOrientation(width, height) {
-  return width >= height ? Orientation.LANDSCAPE : Orientation.PORTRAIT
+  return width >= height ? ORIENTATION.LANDSCAPE : ORIENTATION.PORTRAIT
 }
 
 function getViewportOrientation(width, height) {
-  return width >= height ? Orientation.LANDSCAPE : Orientation.PORTRAIT
+  return width >= height ? ORIENTATION.LANDSCAPE : ORIENTATION.PORTRAIT
 }
 
 function isOrientationMatched(
-  gameWidth,
-  gameHeight,
+  width,
+  height,
   viewportCSSWidth,
   viewportCSSHeight
 ) {
   return (
-    getGameOrientation(gameWidth, gameHeight) ===
+    getGameOrientation(width, height) ===
     getViewportOrientation(viewportCSSWidth, viewportCSSHeight)
   )
 }
 
 function generate(
-  gameWidth,
-  gameHeight,
+  width,
+  height,
   viewportCSSWidth,
   viewportCSSHeight,
   calcFunction
 ) {
   const shouldRotate = !isOrientationMatched(
-    gameWidth,
-    gameHeight,
+    width,
+    height,
     viewportCSSWidth,
     viewportCSSHeight
   )
@@ -41,12 +41,7 @@ function generate(
     ]
   }
 
-  const game = calcFunction(
-    gameWidth,
-    gameHeight,
-    viewportCSSWidth,
-    viewportCSSHeight
-  )
+  const game = calcFunction(width, height, viewportCSSWidth, viewportCSSHeight)
 
   const { scale, offsetCSSX, offsetCSSY } = game
 
@@ -71,50 +66,33 @@ function generate(
   }
 }
 
-function calcCover(gameWidth, gameHeight, viewportCSSWidth, viewportCSSHeight) {
-  const scale = Math.max(
-    viewportCSSWidth / gameWidth,
-    viewportCSSHeight / gameHeight
-  )
+function calcCover(width, height, viewportCSSWidth, viewportCSSHeight) {
+  const scale = Math.max(viewportCSSWidth / width, viewportCSSHeight / height)
 
-  const offsetCSSX = (viewportCSSWidth - gameWidth * scale) / 2
-  const offsetCSSY = (viewportCSSHeight - gameHeight * scale) / 2
+  const offsetCSSX = (viewportCSSWidth - width * scale) / 2
+  const offsetCSSY = (viewportCSSHeight - height * scale) / 2
 
   return { scale, offsetCSSX, offsetCSSY }
 }
 
-function calcContain(
-  gameWidth,
-  gameHeight,
-  viewportCSSWidth,
-  viewportCSSHeight
-) {
-  const scale = Math.min(
-    viewportCSSWidth / gameWidth,
-    viewportCSSHeight / gameHeight
-  )
+function calcContain(width, height, viewportCSSWidth, viewportCSSHeight) {
+  const scale = Math.min(viewportCSSWidth / width, viewportCSSHeight / height)
 
-  const offsetCSSX = (viewportCSSWidth - gameWidth * scale) / 2
-  const offsetCSSY = (viewportCSSHeight - gameHeight * scale) / 2
+  const offsetCSSX = (viewportCSSWidth - width * scale) / 2
+  const offsetCSSY = (viewportCSSHeight - height * scale) / 2
   return { scale, offsetCSSX, offsetCSSY }
 }
 
-export function COVER(designWidth, designHeight, deviceWidth, deviceHeight) {
-  return generate(
-    designWidth,
-    designHeight,
-    deviceWidth,
-    deviceHeight,
-    calcCover
-  )
+export function COVER(width, height, viewportCSSWidth, viewportCSSHeight) {
+  return generate(width, height, viewportCSSWidth, viewportCSSHeight, calcCover)
 }
 
-export function CONTAIN(designWidth, designHeight, deviceWidth, deviceHeight) {
+export function CONTAIN(width, height, viewportCSSWidth, viewportCSSHeight) {
   return generate(
-    designWidth,
-    designHeight,
-    deviceWidth,
-    deviceHeight,
+    width,
+    height,
+    viewportCSSWidth,
+    viewportCSSHeight,
     calcContain
   )
 }

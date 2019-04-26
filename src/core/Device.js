@@ -1,5 +1,4 @@
 import PIXI from '../pixi'
-import Orientation from './Orientation'
 
 /**
  * Get metadata of device.
@@ -41,33 +40,6 @@ class Device {
         : ''
 
     return ua
-  }
-
-  /**
-   * Orientation of current device.
-   */
-  static get orientation() {
-    return Device.isLandscape ? Orientation.LANDSCAPE : Orientation.PORTRAIT
-  }
-
-  /**
-   * Whether current device's orientation is landscape.
-   */
-  static get isLandscape() {
-    const { width, height } = Device.cssSize
-    return width >= height
-  }
-
-  /**
-   * Whether current device's orientation is portrait.
-   */
-  static get isPortrait() {
-    return !Device.isLandscape
-  }
-
-  static get isIOS() {
-    const pattern = /ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i
-    return pattern.test(Device.UA)
   }
 
   static get isAndroid() {
