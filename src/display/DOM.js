@@ -19,11 +19,11 @@ class DOM extends Sprite {
   }
 
   onAdded() {
-    FT.container.appendChild(this.dom)
+    FT.container.dom.appendChild(this.dom)
   }
 
   onRemoved() {
-    FT.container.removeChild(this.dom)
+    FT.container.dom.removeChild(this.dom)
   }
 
   onUpdate() {
