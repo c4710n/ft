@@ -11,16 +11,20 @@ class HUDSystem extends System {
   }
 
   update() {
+    this.positionAll()
+  }
+
+  positionAll() {
     this.entities.forEach(entity => {
       const hud = entity.components.find(component => component instanceof HUD)
 
       if (hud) {
-        this.position(entity, hud.meta)
+        this.positionOne(entity, hud.meta)
       }
     })
   }
 
-  position(entity, meta) {
+  positionOne(entity, meta) {
     let $x, $y
     const { left, right, top, bottom, percentage } = meta
     const { bounds } = FT.systems.scale
