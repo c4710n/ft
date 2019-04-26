@@ -7,7 +7,7 @@ import events from '../events'
 import {
   TweenSystem,
   WidgetSystem,
-  RenderSystem,
+  ScaleSystem,
   VisibilitySystem,
 } from '../systems'
 
@@ -114,7 +114,7 @@ class FT {
     this.addSystem(new WidgetSystem())
     this.addSystem(new VisibilitySystem())
 
-    const renderSystem = new RenderSystem(container, stage, options.renderer)
+    const renderSystem = new ScaleSystem(container, stage, options.renderer)
     this.addSystem(renderSystem)
     /**
      * @ignore

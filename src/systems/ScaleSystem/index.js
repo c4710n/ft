@@ -14,7 +14,7 @@ utils.skipHello()
 /**
  * System for render.
  */
-class RenderSystem extends System {
+class ScaleSystem extends System {
   constructor(
     container,
     stage,
@@ -206,4 +206,4 @@ class RenderSystem extends System {
   }
 }
 
-export default RenderSystem
+export default ScaleSystem
