@@ -115,10 +115,16 @@ class HTML5Video extends DOM {
    * @ignore
    */
   onAdded() {
-    const { $video: video } = this
+    super.onAdded()
+    this.$video.addEventListener('ended', this.onEnd)
+  }
 
-    video.addEventListener('ended', this.onEnd)
-    FT.container.appendChild(video)
+  /**
+   * @ignore
+   */
+  onRemoved() {
+    super.onRemoved()
+    this.$video.removeEventListener('ended', this.onEnd)
   }
 
   /**
@@ -131,18 +137,6 @@ class HTML5Video extends DOM {
 
     const { currentTime } = this.$video
     this.emit('progress', currentTime)
-  }
-
-  /**
-   * @ignore
-   */
-  onRemoved() {
-    const { $video: video } = this
-
-    if (video) {
-      video.removeEventListener('ended', this.onEnd)
-      FT.container.removeChild(video)
-    }
   }
 
   /**
