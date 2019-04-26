@@ -1,5 +1,5 @@
-// import PIXI from '../pixi'
 import System from './System'
+import events from '../events'
 
 /**
  * System for Visibility.
@@ -8,18 +8,10 @@ class VisibilitySystem extends System {
   constructor() {
     super('visibility')
 
-    this.onChange()
+    this.listen()
   }
 
-  mute() {
-    // PIXI.sound.muteAll()
-  }
-
-  unmute() {
-    // PIXI.sound.unmuteAll()
-  }
-
-  onChange() {
+  listen() {
     // Set the name of the hidden property and the change event for visibility
     let hidden, visibilityChange
     if (typeof document.hidden !== 'undefined') {
@@ -38,9 +30,9 @@ class VisibilitySystem extends System {
       const isHidden = document[hidden]
 
       if (isHidden) {
-        this.mute()
+        events.hide.emit()
       } else {
-        this.unmute()
+        events.show.emit()
       }
     }
 
@@ -50,7 +42,7 @@ class VisibilitySystem extends System {
       hidden === undefined
     ) {
       // eslint-disable-next-line
-      console.log("Current browser doesn't support the Page Visibility API.")
+      console.info("Current browser doesn't support the Page Visibility API.")
     } else {
       // Handle page visibility change
       document.addEventListener(visibilityChange, handleVisibilityChange, false)

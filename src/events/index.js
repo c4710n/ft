@@ -23,13 +23,33 @@ scale.emit = function(...args) {
   EE.emit(EVENT_SCALE, ...args)
 }
 
-function start() {
+const EVENT_SHOW = 'show'
+const show = {}
+show.on = function(...args) {
+  EE.on(EVENT_SHOW, ...args)
+}
+show.emit = function(...args) {
+  EE.emit(EVENT_SHOW, ...args)
+}
+
+const EVENT_HIDE = 'hide'
+const hide = {}
+hide.on = function(...args) {
+  EE.on(EVENT_HIDE, ...args)
+}
+hide.emit = function(...args) {
+  EE.emit(EVENT_HIDE, ...args)
+}
+
+function listen() {
   window.addEventListener('resize', resize.emit)
   resize.emit()
 }
 
 export default {
-  start,
+  listen,
   resize,
   scale,
+  show,
+  hide,
 }
