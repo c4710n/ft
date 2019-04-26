@@ -65,6 +65,15 @@ class RenderSystem extends System {
     this.stage.added = true // in order to make patchDisplayObjectLifecycle work.
 
     /**
+     * @access private
+     */
+    this.size = {
+      centerX: width / 2,
+      centerY: height / 2,
+      center: [width / 2, height / 2],
+    }
+
+    /**
      * Add view to DOM tree.
      */
     container.appendChild(this.view)
@@ -100,7 +109,6 @@ class RenderSystem extends System {
      * Visit following link for more details.
      * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
      */
-
     const { container, renderer } = this
 
     const { interaction } = renderer.plugins
@@ -114,18 +122,20 @@ class RenderSystem extends System {
     }
 
     interaction.mapPositionToPoint = function(point, x, y) {
-      const { offsetCSSX, offsetCSSY, scale } = FT.systems.scale.position
+      const { scale } = FT.systems.scale.position
       const rotate = FT.systems.scale.rotate
 
       // the unit of x, y is CSS pixel
       const resolutionMultiplier = 1.0 / this.resolution
 
+      const rect = container.getBoundingClientRect()
+
       if (rotate) {
-        point.x = ((y - offsetCSSY) / scale) * resolutionMultiplier
-        point.y = ((offsetCSSX - x) / scale) * resolutionMultiplier
+        point.x = ((y - rect.y) / scale) * resolutionMultiplier
+        point.y = ((rect.width - (x - rect.x)) / scale) * resolutionMultiplier
       } else {
-        point.x = ((x - offsetCSSX) / scale) * resolutionMultiplier
-        point.y = ((y - offsetCSSY) / scale) * resolutionMultiplier
+        point.x = ((x - rect.x) / scale) * resolutionMultiplier
+        point.y = ((y - rect.y) / scale) * resolutionMultiplier
       }
     }
   }

@@ -76,6 +76,7 @@ class FT {
     // alias some useful objects
     this.container = container
     this.stage = this.systems.render.stage
+    this.size = this.systems.render.size
 
     events.listen()
   }
