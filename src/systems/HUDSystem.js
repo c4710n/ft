@@ -12,15 +12,11 @@ class HUDSystem extends System {
 
   update() {
     this.entities.forEach(entity => {
-      const widget = entity.components.find(
-        component => component instanceof HUD
-      )
+      const hud = entity.components.find(component => component instanceof HUD)
 
-      if (!widget) return
-
-      const { meta } = widget
-
-      this.position(entity, meta)
+      if (hud) {
+        this.position(entity, hud.meta)
+      }
     })
   }
 
