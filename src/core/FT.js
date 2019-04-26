@@ -5,9 +5,10 @@ import ResManager from '../res/ResManager'
 import SceneManager from '../scene/SceneManager'
 import events from '../events'
 import {
+  RenderSystem,
+  ScaleSystem,
   TweenSystem,
   WidgetSystem,
-  ScaleSystem,
   VisibilitySystem,
 } from '../systems'
 
@@ -113,8 +114,8 @@ class FT {
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
     this.addSystem(new VisibilitySystem())
-
-    const renderSystem = new ScaleSystem(container, stage, options.renderer)
+    this.addSystem(new ScaleSystem(container, options.renderer))
+    const renderSystem = new RenderSystem(container, stage, options.renderer)
     this.addSystem(renderSystem)
     /**
      * @ignore

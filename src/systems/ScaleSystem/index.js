@@ -1,15 +1,9 @@
-import { FT, Layer } from '../../core'
-import PIXI from '../../pixi'
-import { classname } from '../../utils'
-import { UPDATE_PRIORITY } from '../../const'
 import System from '../System'
-import ScaleMode from './ScaleMode'
+import { UPDATE_PRIORITY } from '../../const'
+import modes from './modes'
 import events from '../../events'
-
-const { autoDetectRenderer, utils } = PIXI
-
-// keep quiet!
-utils.skipHello()
+import { FT } from '../../core'
+import { classname } from '../../utils'
 
 /**
  * System for render.
@@ -17,28 +11,9 @@ utils.skipHello()
 class ScaleSystem extends System {
   constructor(
     container,
-    stage,
-    {
-      width = 750,
-      height = 1500,
-      forceCanvas = false,
-      transparent = true,
-      antialias = false,
-      scaleMode = 'COVER',
-      enableDOMEventMode = true,
-    } = {}
+    { width = 750, height = 1500, scaleMode = 'COVER' } = {}
   ) {
     super(UPDATE_PRIORITY.LOW)
-
-    const renderer = autoDetectRenderer({
-      width,
-      height,
-      forceCanvas,
-      transparent,
-      antialias,
-    })
-
-    container.appendChild(renderer.view)
 
     /**
      * @access private
@@ -48,21 +23,6 @@ class ScaleSystem extends System {
     /**
      * @access private
      */
-    this.$renderer = renderer
-
-    /**
-     * @access private
-     */
-    this.$view = renderer.view
-
-    /**
-     * @access private
-     */
-    this.$stage = stage
-
-    /**
-     * @access private
-     */
     this.$gameWidth = width
 
     /**
@@ -73,28 +33,11 @@ class ScaleSystem extends System {
     /**
      * @access private
      */
-    this.$scaleMode = scaleMode
-
-    if (enableDOMEventMode) {
-      this.enableDomEventMode()
-    }
+    this.mode = scaleMode
 
     events.resize.on(({ width, height }) => {
       this.onResize(width, height)
     }, this)
-  }
-
-  /**
-   * Resize stage.
-   *
-   * @param {number} width
-   * @param {number} height
-   */
-  resize(width, height) {
-    this.$gameWidth = width
-    this.$gameHeight = height
-
-    events.resize.emit()
   }
 
   /**
@@ -104,8 +47,8 @@ class ScaleSystem extends System {
     const gameWidth = this.$gameWidth
     const gameHeight = this.$gameHeight
 
-    const mode = this.$scaleMode
-    const scaleMode = ScaleMode[mode]
+    const { mode } = this
+    const scaleMode = modes[mode]
 
     if (!scaleMode) {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
@@ -142,13 +85,6 @@ class ScaleSystem extends System {
     this.$container.style.transformOrigin = '0 0'
     this.$container.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${offsetCSSX}, ${offsetCSSY}) rotate(${rotation}deg)`
 
-    this.$view.style.zIndex = Layer.VIEW
-    this.$view.style.position = 'absolute'
-    this.$view.style.width = '100%'
-    this.$view.style.height = '100%'
-
-    this.$renderer.resize(gameWidth, gameHeight)
-
     FT.stage = {
       width: gameWidth,
       height: gameHeight,
@@ -158,51 +94,6 @@ class ScaleSystem extends System {
     }
 
     FT.viewport = viewport
-  }
-
-  /**
-   * @access private
-   */
-  enableDomEventMode() {
-    /**
-     * Visit following link for more details.
-     * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
-     */
-
-    const renderer = this.$renderer
-    const container = this.$container
-    const { interaction } = renderer.plugins
-
-    interaction.autoPreventDefault = false
-    interaction.setTargetElement(container, renderer.resolution)
-
-    const { normalizeToPointerData } = interaction
-    interaction.normalizeToPointerData = function(event) {
-      this.interactionDOMElement = event.target
-      return normalizeToPointerData.call(this, event)
-    }
-
-    const _this = this
-    interaction.mapPositionToPoint = function(point, x, y) {
-      // the unit of x, y is CSS pixel
-      const resolutionMultiplier = 1.0 / this.resolution
-
-      if (_this.$rotate) {
-        point.x =
-          ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
-        point.y =
-          ((_this.$offsetCSSX - x) / _this.$scale) * resolutionMultiplier
-      } else {
-        point.x =
-          ((x - _this.$offsetCSSX) / _this.$scale) * resolutionMultiplier
-        point.y =
-          ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
-      }
-    }
-  }
-
-  update() {
-    this.$renderer.render(this.$stage)
   }
 }
 
