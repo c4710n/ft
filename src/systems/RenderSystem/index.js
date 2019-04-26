@@ -1,9 +1,10 @@
-import { FT, Device, Layer } from '../../core'
+import { FT, Layer } from '../../core'
 import PIXI from '../../pixi'
 import { classname } from '../../utils'
 import { UPDATE_PRIORITY } from '../../const'
 import System from '../System'
 import ScaleMode from './ScaleMode'
+import events from '../../events'
 
 const { autoDetectRenderer, utils } = PIXI
 
@@ -78,8 +79,9 @@ class RenderSystem extends System {
       this.enableDomEventMode()
     }
 
-    window.addEventListener('resize', this.onResize.bind(this))
-    this.onResize()
+    events.resize.on(({ width, height }) => {
+      this.onResize(width, height)
+    }, this)
   }
 
   /**
@@ -92,19 +94,15 @@ class RenderSystem extends System {
     this.$gameWidth = width
     this.$gameHeight = height
 
-    this.onResize()
+    events.resize.emit()
   }
 
   /**
    * @access private
    */
-  onResize() {
+  onResize(viewportCSSWidth, viewportCSSHeight) {
     const gameWidth = this.$gameWidth
     const gameHeight = this.$gameHeight
-    const {
-      width: viewportCSSWidth,
-      height: viewportCSSHeight,
-    } = Device.cssSize.clone()
 
     const mode = this.$scaleMode
     const scaleMode = ScaleMode[mode]

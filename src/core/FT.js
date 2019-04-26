@@ -3,6 +3,7 @@ import PIXI from '../pixi'
 import { Factory as DisplayFactory } from '../display'
 import ResManager from '../res/ResManager'
 import SceneManager from '../scene/SceneManager'
+import events from '../events'
 import {
   TweenSystem,
   WidgetSystem,
@@ -121,6 +122,8 @@ class FT {
     this.renderSystem = renderSystem
 
     this.enqueueSystems()
+
+    events.start()
   }
 
   get systems() {
