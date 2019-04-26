@@ -22,7 +22,7 @@ class RenderSystem extends System {
       // enableDOMEventMode = true,
     } = {}
   ) {
-    super(UPDATE_PRIORITY.LOW)
+    super('render', UPDATE_PRIORITY.LOW)
 
     const renderer = autoDetectRenderer({
       width,

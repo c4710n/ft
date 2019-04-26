@@ -8,7 +8,8 @@ class System {
   /**
    * @param [frequency=1] {number} frequency of execution.
    */
-  constructor(updatePriority = UPDATE_PRIORITY.NORMAL) {
+  constructor(name, updatePriority = UPDATE_PRIORITY.NORMAL) {
+    this.name = name
     this.updatePriority = updatePriority
 
     /**

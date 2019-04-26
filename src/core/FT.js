@@ -60,7 +60,7 @@ class FT {
     /**
      * @ignore
      */
-    this.$systems = []
+    this.systems = {}
     /**
      * place to store conflict variables.
      */
@@ -127,22 +127,20 @@ class FT {
     events.start()
   }
 
-  get systems() {
-    return this.$systems
-  }
-
   /**
    * @access private
    */
   addSystem(system) {
-    this.$systems.push(system)
+    this.systems[system.name] = system
   }
 
   /**
    * @access private
    */
   enqueueSystems() {
-    for (const system of this.$systems) {
+    const systems = Object.values(this.systems)
+
+    for (const system of systems) {
       this.ticker.add(system.update, system, system.updatePriority)
     }
   }

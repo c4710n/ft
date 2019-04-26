@@ -1,5 +1,4 @@
 import System from '../System'
-import { UPDATE_PRIORITY } from '../../const'
 import modes from './modes'
 import events from '../../events'
 import { FT } from '../../core'
@@ -13,7 +12,7 @@ class ScaleSystem extends System {
     container,
     { width = 750, height = 1500, scaleMode = 'COVER' } = {}
   ) {
-    super(UPDATE_PRIORITY.LOW)
+    super('scale')
 
     /**
      * @access private

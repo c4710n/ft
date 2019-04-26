@@ -5,8 +5,8 @@ import System from './System'
  * System for Visibility.
  */
 class VisibilitySystem extends System {
-  constructor(...args) {
-    super(...args)
+  constructor() {
+    super('visibility')
 
     this.onChange()
   }
