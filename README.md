@@ -10,20 +10,21 @@
 
 ## Features
 
-- built-in resource scanner (require webpack and val-loader)
-- built-in resource manager
-- built-in scene manager
-- built-in component system
-- responsive stage
-- GPU memory sensitive code
+- common managers
+  - resource manager
+  - scene manager
 - common systems
+  - component system
+  - render system
+  - scale system
   - tween system
+  - visibility system
   - widget system
 - common display object for developing marketing page
-  - Scroller
-  - Video
   - DOM
+  - Video
   - ...
+- GPU memory sensitive code
 
 ## Installation
 
@@ -37,9 +38,9 @@ Visit [ft-starter](https://github.com/2players/ft-starter) to get examples about
 
 ## Supported By
 
-ft is supported by helpful libraries:
+ft is supported by following libraries:
 
-- 2D WebGL renderer - [pixi.js](https://github.com/pixijs/pixi.js)
+- 2D Renderer - [pixi.js](https://github.com/pixijs/pixi.js)
 - Spine support - [pixi-spine](https://github.com/pixijs/pixi-spine)
 - Sound support - [pixi-sound](https://github.com/pixijs/pixi-sound)
 - Tween library - [es6-tween](https://github.com/tweenjs/es6-tween)
