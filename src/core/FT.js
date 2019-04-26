@@ -1,9 +1,9 @@
 import patch from '../patch'
 import PIXI from '../pixi'
+import Container from './Container'
 import { Factory as DisplayFactory } from '../display'
 import ResManager from '../res/ResManager'
 import SceneManager from '../scene/SceneManager'
-import events from '../events'
 import {
   RenderSystem,
   ScaleSystem,
@@ -11,44 +11,11 @@ import {
   WidgetSystem,
   VisibilitySystem,
 } from '../systems'
+import events from '../events'
 
 patch()
 
-const defaultOptions = {
-  backgroundColor: '#ffffff',
-}
-
-function createContainer(selector, { disableScroll = true } = {}) {
-  const container = document.querySelector(selector)
-  if (!container) {
-    throw new Error(`[FT] invalid selector of container`)
-  }
-
-  container.style.userSelect = 'none'
-  container.style.touchAction = 'none'
-  container.style.cursor = 'auto'
-  container.style.WebkitTapHighlightColor = 'rgba(0, 0, 0, 0)'
-
-  if (disableScroll) {
-    document.body.addEventListener(
-      'touchmove',
-      function(e) {
-        e.preventDefault()
-      },
-      { passive: false }
-    )
-
-    document.body.addEventListener(
-      'scroll',
-      function(e) {
-        e.preventDefault()
-      },
-      { passive: false }
-    )
-  }
-
-  return container
-}
+const { Ticker } = PIXI
 
 /**
  * Commander for framework.
@@ -58,23 +25,19 @@ class FT {
     window.FT = this
 
     /**
-     * @ignore
+     * DOM container of FT's canvas.
      */
-    this.systems = {}
-    /**
-     * place to store conflict variables.
-     */
-    this.internal = {}
+    this.container = null
 
     /**
      * ticker for game loop.
      */
-    this.ticker = new PIXI.Ticker()
+    this.ticker = new Ticker()
 
     /**
-     * DOM container of FT's canvas.
+     * @ignore
      */
-    this.container = null
+    this.systems = {}
 
     /**
      * default instance of ResManager.
@@ -101,21 +64,19 @@ class FT {
    * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
    */
   init(selector, options) {
-    const { backgroundColor } = Object.assign(defaultOptions, options)
-
-    const container = createContainer(selector)
+    const container = new Container(selector, options.container)
     this.container = container
-    this.backgroundColor = backgroundColor
 
-    const renderSystem = new RenderSystem(container, options.render)
+    const renderSystem = new RenderSystem(container.dom, options.render)
     this.renderSystem = renderSystem
+    this.internal = {}
     this.internal.stage = renderSystem.stage
 
     this.addSystem(renderSystem)
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
     this.addSystem(new VisibilitySystem())
-    this.addSystem(new ScaleSystem(container, options.scale))
+    this.addSystem(new ScaleSystem(container.dom, options.scale))
     this.enqueueSystems()
 
     events.start()
@@ -158,13 +119,6 @@ class FT {
    */
   resizeStage(...args) {
     this.renderSystem.resize(...args)
-  }
-
-  /**
-   * setter for background color of DOM container.
-   */
-  set backgroundColor(color) {
-    this.container.style.backgroundColor = color
   }
 }
 
