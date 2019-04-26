@@ -107,7 +107,7 @@ class FT {
     this.container = container
     this.backgroundColor = backgroundColor
 
-    const renderSystem = new RenderSystem(container, options.renderer)
+    const renderSystem = new RenderSystem(container, options.render)
     this.renderSystem = renderSystem
     this.internal.stage = renderSystem.stage
 
@@ -115,7 +115,7 @@ class FT {
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
     this.addSystem(new VisibilitySystem())
-    this.addSystem(new ScaleSystem(container, options.renderer))
+    this.addSystem(new ScaleSystem(container, options.scale))
     this.enqueueSystems()
 
     events.start()

@@ -8,31 +8,18 @@ import { classname } from '../../utils'
  * System for render.
  */
 class ScaleSystem extends System {
-  constructor(
-    container,
-    { width = 750, height = 1500, scaleMode = 'COVER' } = {}
-  ) {
+  constructor(container, { mode = 'COVER' } = {}) {
     super('scale')
 
     /**
      * @access private
      */
-    this.$container = container
+    this.container = container
 
     /**
      * @access private
      */
-    this.$gameWidth = width
-
-    /**
-     * @access private
-     */
-    this.$gameHeight = height
-
-    /**
-     * @access private
-     */
-    this.mode = scaleMode
+    this.mode = mode
 
     events.resize.on(({ width, height }) => {
       this.onResize(width, height)
@@ -43,8 +30,7 @@ class ScaleSystem extends System {
    * @access private
    */
   onResize(viewportCSSWidth, viewportCSSHeight) {
-    const gameWidth = this.$gameWidth
-    const gameHeight = this.$gameHeight
+    const { width, height } = FT.systems.render
 
     const { mode } = this
     const scaleMode = modes[mode]
@@ -52,10 +38,9 @@ class ScaleSystem extends System {
     if (!scaleMode) {
       throw new Error(`[${classname(this)}] unsupported scale mode - ${mode}`)
     }
-
     const { game, viewport, shouldRotate } = scaleMode(
-      gameWidth,
-      gameHeight,
+      width,
+      height,
       viewportCSSWidth,
       viewportCSSHeight
     )
@@ -73,26 +58,18 @@ class ScaleSystem extends System {
       ;[offsetCSSX, offsetCSSY] = [offsetCSSY, offsetCSSX]
     }
 
-    this.$offsetCSSX = offsetCSSX
-    this.$offsetCSSY = offsetCSSY
-    this.$scale = scale
-    this.$rotate = shouldRotate
+    this.offsetCSSX = offsetCSSX
+    this.offsetCSSY = offsetCSSY
+    this.scale = scale
+    this.rotate = shouldRotate
 
-    this.$container.style.position = 'absolute'
-    this.$container.style.width = `${gameWidth}px`
-    this.$container.style.height = `${gameHeight}px`
-    this.$container.style.transformOrigin = '0 0'
-    this.$container.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${offsetCSSX}, ${offsetCSSY}) rotate(${rotation}deg)`
+    this.container.style.position = 'absolute'
+    this.container.style.width = `${width}px`
+    this.container.style.height = `${height}px`
+    this.container.style.transformOrigin = '0 0'
+    this.container.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${offsetCSSX}, ${offsetCSSY}) rotate(${rotation}deg)`
 
-    FT.stage = {
-      width: gameWidth,
-      height: gameHeight,
-      centerX: gameWidth / 2,
-      centerY: gameHeight / 2,
-      center: [gameWidth / 2, gameHeight / 2],
-    }
-
-    FT.viewport = viewport
+    this.viewport = viewport
   }
 }
 
