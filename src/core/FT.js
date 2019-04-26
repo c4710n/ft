@@ -113,13 +113,6 @@ class FT {
   stop() {
     this.ticker.stop()
   }
-
-  /**
-   * resize stage after initialization.
-   */
-  resizeStage(...args) {
-    this.renderSystem.resize(...args)
-  }
 }
 
 /**
