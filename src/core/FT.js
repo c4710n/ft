@@ -107,21 +107,15 @@ class FT {
     this.container = container
     this.backgroundColor = backgroundColor
 
-    const stage = new PIXI.Container()
-    this.internal.stage = stage
-    stage.added = true // in order to make patchDisplayObjectLifecycle work.
+    const renderSystem = new RenderSystem(container, options.renderer)
+    this.renderSystem = renderSystem
+    this.internal.stage = renderSystem.stage
 
+    this.addSystem(renderSystem)
     this.addSystem(new TweenSystem())
     this.addSystem(new WidgetSystem())
     this.addSystem(new VisibilitySystem())
     this.addSystem(new ScaleSystem(container, options.renderer))
-    const renderSystem = new RenderSystem(container, stage, options.renderer)
-    this.addSystem(renderSystem)
-    /**
-     * @ignore
-     */
-    this.renderSystem = renderSystem
-
     this.enqueueSystems()
 
     events.start()

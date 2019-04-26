@@ -1,10 +1,10 @@
 import System from '../System'
+import { UPDATE_PRIORITY } from '../../const'
 import { Layer } from '../../core'
 import PIXI from '../../pixi'
-import { UPDATE_PRIORITY } from '../../const'
 import events from '../../events'
 
-const { autoDetectRenderer } = PIXI
+const { autoDetectRenderer, Container } = PIXI
 
 /**
  * System for render.
@@ -12,7 +12,6 @@ const { autoDetectRenderer } = PIXI
 class RenderSystem extends System {
   constructor(
     container,
-    stage,
     {
       width = 750,
       height = 1500,
@@ -24,7 +23,25 @@ class RenderSystem extends System {
   ) {
     super('render', UPDATE_PRIORITY.LOW)
 
-    const renderer = autoDetectRenderer({
+    /**
+     * @access private
+     */
+    this.container = container
+
+    /**
+     * @access private
+     */
+    this.width = width
+
+    /**
+     * @access private
+     */
+    this.height = height
+
+    /**
+     * @access private
+     */
+    this.renderer = autoDetectRenderer({
       width,
       height,
       forceCanvas,
@@ -32,32 +49,25 @@ class RenderSystem extends System {
       antialias,
     })
 
-    container.appendChild(renderer.view)
+    /**
+     * @access private
+     */
+    this.view = this.renderer.view
+    this.view.style.zIndex = Layer.VIEW
+    this.view.style.position = 'absolute'
+    this.view.style.width = '100%'
+    this.view.style.height = '100%'
 
     /**
      * @access private
      */
-    this.$container = container
+    this.stage = new Container()
+    this.stage.added = true // in order to make patchDisplayObjectLifecycle work.
 
     /**
-     * @access private
+     * Add view to DOM tree.
      */
-    this.$renderer = renderer
-
-    /**
-     * @access private
-     */
-    this.$view = renderer.view
-
-    /**
-     * @access private
-     */
-    this.$stage = stage
-
-    this.$view.style.zIndex = Layer.VIEW
-    this.$view.style.position = 'absolute'
-    this.$view.style.width = '100%'
-    this.$view.style.height = '100%'
+    container.appendChild(this.view)
 
     // if (enableDOMEventMode) {
     //   this.enableDomEventMode()
@@ -71,12 +81,12 @@ class RenderSystem extends System {
    * @param {number} height
    */
   resize(width, height) {
-    this.$renderer.resize(width, height)
+    this.renderer.resize(width, height)
     events.resize.emit()
   }
 
   update() {
-    this.$renderer.render(this.$stage)
+    this.renderer.render(this.stage)
   }
 
   /**
@@ -88,8 +98,8 @@ class RenderSystem extends System {
   //    * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
   //    */
 
-  //   const renderer = this.$renderer
-  //   const container = this.$container
+  //   const renderer = this.renderer
+  //   const container = this.container
   //   const { interaction } = renderer.plugins
 
   //   interaction.autoPreventDefault = false
@@ -106,16 +116,16 @@ class RenderSystem extends System {
   //     // the unit of x, y is CSS pixel
   //     const resolutionMultiplier = 1.0 / this.resolution
 
-  //     if (_this.$rotate) {
+  //     if (_this.rotate) {
   //       point.x =
-  //         ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
+  //         ((y - _this.offsetCSSY) / _this.scale) * resolutionMultiplier
   //       point.y =
-  //         ((_this.$offsetCSSX - x) / _this.$scale) * resolutionMultiplier
+  //         ((_this.offsetCSSX - x) / _this.scale) * resolutionMultiplier
   //     } else {
   //       point.x =
-  //         ((x - _this.$offsetCSSX) / _this.$scale) * resolutionMultiplier
+  //         ((x - _this.offsetCSSX) / _this.scale) * resolutionMultiplier
   //       point.y =
-  //         ((y - _this.$offsetCSSY) / _this.$scale) * resolutionMultiplier
+  //         ((y - _this.offsetCSSY) / _this.scale) * resolutionMultiplier
   //     }
   //   }
   // }
