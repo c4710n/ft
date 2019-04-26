@@ -19,7 +19,7 @@
   - scale system
   - tween system
   - visibility system
-  - widget system
+  - HUD system
 - common display object for developing marketing page
   - DOM
   - Video

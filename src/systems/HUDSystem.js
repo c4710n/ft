@@ -1,19 +1,19 @@
 import { FT } from '../core'
-import { Widget } from '../components'
+import { HUD } from '../components'
 import System from './System'
 
 /**
- * System for Widget component.
+ * System for HUD component.
  */
-class WidgetSystem extends System {
+class HUDSystem extends System {
   constructor() {
-    super('widget')
+    super('hud')
   }
 
   update() {
     this.entities.forEach(entity => {
       const widget = entity.components.find(
-        component => component instanceof Widget
+        component => component instanceof HUD
       )
 
       if (!widget) return
@@ -27,7 +27,7 @@ class WidgetSystem extends System {
   position(entity, meta) {
     let $x, $y
     const { left, right, top, bottom, percentage } = meta
-    const { viewport } = FT
+    const { viewport } = FT.systems.scale
 
     if (left !== undefined) {
       const offset = percentage ? viewport.width * left : left
@@ -54,4 +54,4 @@ class WidgetSystem extends System {
   }
 }
 
-export default WidgetSystem
+export default HUDSystem

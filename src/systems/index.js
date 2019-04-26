@@ -1,5 +1,5 @@
 export { default as RenderSystem } from './RenderSystem'
 export { default as ScaleSystem } from './ScaleSystem'
-export { default as WidgetSystem } from './WidgetSystem'
+export { default as HUDSystem } from './HUDSystem'
 export { default as TweenSystem } from './TweenSystem'
 export { default as VisibilitySystem } from './VisibilitySystem'

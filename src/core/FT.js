@@ -7,8 +7,8 @@ import SceneManager from '../scene/SceneManager'
 import {
   RenderSystem,
   ScaleSystem,
+  HUDSystem,
   TweenSystem,
-  WidgetSystem,
   VisibilitySystem,
 } from '../systems'
 import events from '../events'
@@ -74,7 +74,7 @@ class FT {
 
     this.addSystem(renderSystem)
     this.addSystem(new TweenSystem())
-    this.addSystem(new WidgetSystem())
+    this.addSystem(new HUDSystem())
     this.addSystem(new VisibilitySystem())
     this.addSystem(new ScaleSystem(container.dom, options.scale))
     this.enqueueSystems()
