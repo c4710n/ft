@@ -98,9 +98,9 @@ class SceneManager {
     }
 
     if (typeof index === 'number') {
-      FT.internal.stage.addChildAt(activeScene, index)
+      FT.stage.addChildAt(activeScene, index)
     } else {
-      FT.internal.stage.addChild(activeScene)
+      FT.stage.addChild(activeScene)
     }
 
     if (transition) {
@@ -137,7 +137,7 @@ class SceneManager {
       if (scene.sticky) {
         return true
       } else {
-        FT.internal.stage.removeChild(scene)
+        FT.stage.removeChild(scene)
 
         scene.destroy({
           children: true,
@@ -158,7 +158,7 @@ class SceneManager {
     const index = this.activeScenes.findIndex(s => s.name === name)
     if (index >= 0) {
       const scene = this.activeScenes[index]
-      FT.internal.stage.removeChild(scene)
+      FT.stage.removeChild(scene)
       scene.destroy({
         children: true,
         texture: scene.oneOff,

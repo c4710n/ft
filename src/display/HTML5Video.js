@@ -178,7 +178,7 @@ class HTML5Video extends DOM {
   showSpinner() {
     if (!this.$spinner.added) {
       this.$spinner.position.set(FT.stage.centerX, FT.stage.centerY)
-      FT.internal.stage.addChild(this.$spinner)
+      FT.stage.addChild(this.$spinner)
     }
   }
 
@@ -187,7 +187,7 @@ class HTML5Video extends DOM {
    */
   hideSpinner() {
     if (this.$spinner.added) {
-      FT.internal.stage.removeChild(this.$spinner)
+      FT.stage.removeChild(this.$spinner)
     }
   }
 

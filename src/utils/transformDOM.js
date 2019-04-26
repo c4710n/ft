@@ -21,7 +21,7 @@ function transformDOM(dom, displayObject, layer) {
     pivotY = displayObject.pivot.y
   }
 
-  const stagePosition = FT.internal.stage.getGlobalPosition()
+  const stagePosition = FT.stage.getGlobalPosition()
   const x = $x - stagePosition.x - pivotX
   const y = $y - stagePosition.y - pivotY
 

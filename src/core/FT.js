@@ -65,19 +65,17 @@ class FT {
    */
   init(selector, options) {
     const container = new Container(selector, options.container)
-    this.container = container
 
-    const renderSystem = new RenderSystem(container.dom, options.render)
-    this.renderSystem = renderSystem
-    this.internal = {}
-    this.internal.stage = renderSystem.stage
-
-    this.addSystem(renderSystem)
+    this.addSystem(new RenderSystem(container.dom, options.render))
     this.addSystem(new HUDSystem())
     this.addSystem(new TweenSystem())
     this.addSystem(new ScaleSystem(container.dom, options.scale))
     this.addSystem(new VisibilitySystem())
     this.enqueueSystems()
+
+    // alias some useful objects
+    this.container = container
+    this.stage = this.systems.render.stage
 
     events.listen()
   }
