@@ -1,5 +1,5 @@
 import PIXI from '../pixi'
-// import 'pixi-sound'
+import 'pixi-sound'
 import 'pixi-spine'
 import { classname } from '../utils'
 import { imageLoader as spineImageLoader } from './loader/spine'
