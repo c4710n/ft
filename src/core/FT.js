@@ -1,16 +1,17 @@
 import patch from '../patch'
 import PIXI from '../pixi'
-import Container from './Container'
-import { Factory as DisplayFactory } from '../display'
-import ResManager from '../res/ResManager'
-import SceneManager from '../scene/SceneManager'
 import {
   RenderSystem,
   HUDSystem,
   TweenSystem,
   ScaleSystem,
+  SoundSystem,
   VisibilitySystem,
 } from '../systems'
+import Container from './Container'
+import { Factory as DisplayFactory } from '../display'
+import ResManager from '../res/ResManager'
+import SceneManager from '../scene/SceneManager'
 import events from '../events'
 
 patch()
@@ -70,6 +71,7 @@ class FT {
     this.addSystem(new HUDSystem())
     this.addSystem(new TweenSystem())
     this.addSystem(new ScaleSystem(container.dom, options.scale))
+    this.addSystem(new SoundSystem())
     this.addSystem(new VisibilitySystem())
     this.enqueueSystems()
 
