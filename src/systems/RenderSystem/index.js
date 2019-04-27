@@ -41,6 +41,11 @@ class RenderSystem extends System {
     /**
      * @access private
      */
+    this.size = this.getSize()
+
+    /**
+     * @access private
+     */
     this.renderer = autoDetectRenderer({
       width,
       height,
@@ -65,15 +70,6 @@ class RenderSystem extends System {
     this.stage.added = true // in order to make patchDisplayObjectLifecycle work.
 
     /**
-     * @access private
-     */
-    this.size = {
-      centerX: width / 2,
-      centerY: height / 2,
-      center: [width / 2, height / 2],
-    }
-
-    /**
      * Add view to DOM tree.
      */
     container.appendChild(this.view)
@@ -93,8 +89,26 @@ class RenderSystem extends System {
     this.width = width
     this.height = height
 
+    this.updateSize()
     this.renderer.resize(width, height)
     events.resize.emit()
+  }
+
+  getSize() {
+    const { width, height } = this
+
+    return {
+      centerX: width / 2,
+      centerY: height / 2,
+      center: [width / 2, height / 2],
+    }
+  }
+
+  updateSize() {
+    const { width, height } = this
+    this.size.centerX = width / 2
+    this.size.centerY = height / 2
+    this.size.center = [width / 2, height / 2]
   }
 
   update() {
