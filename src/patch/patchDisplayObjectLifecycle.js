@@ -1,8 +1,10 @@
 import PIXI from '../pixi'
 import { FT } from '../core'
 import { splice } from '../utils/fast'
+import env from '../env'
 
-const DEBUG = true
+const { debug } = env
+
 const { Container, DisplayObject } = PIXI
 
 Container.prototype.$addChild = Container.prototype.addChild
@@ -12,7 +14,7 @@ function _bindComponent(displayObject, component) {
   if (displayObject.added && component.added === false) {
     component.added = true
 
-    if (DEBUG) {
+    if (debug) {
       // eslint-disable-next-line
       console.log(
         `[lifecycle] bind component ${component.constructor.name} for ${
@@ -36,7 +38,7 @@ function _unbindComponent(displayObject, component) {
 
     component.onRemoved(displayObject)
 
-    if (DEBUG) {
+    if (debug) {
       // eslint-disable-next-line
       console.log(
         `[lifecycle] unbind component ${component.constructor.name} for ${
@@ -54,7 +56,7 @@ function _unbindComponent(displayObject, component) {
 function callPostAdd(container) {
   container.added = true
 
-  if (DEBUG) {
+  if (debug) {
     console.log('[lifecycle] add', container.constructor.name) // eslint-disable-line
   }
 
@@ -82,7 +84,7 @@ function callPostRemove(container) {
     })
   }
 
-  if (DEBUG) {
+  if (debug) {
     console.log('[lifecycle] remove', container.constructor.name) // eslint-disable-line
   }
 
