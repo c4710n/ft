@@ -149,11 +149,18 @@ class ResManager extends PIXI.Loader {
    */
   animationTextures(name, animationName) {
     const spritesheet = this.resources[name]?.spritesheet
+
     if (!spritesheet) {
       throw new Error(`[${classname(this)}] missing spritesheet - ${name}`)
     }
 
-    const animationTextures = spritesheet?.animations[animationName]
+    let animationTextures
+    if (animationName) {
+      animationTextures = spritesheet?.animations[animationName]
+    } else {
+      animationTextures = Object.values(spritesheet.textures)
+    }
+
     if (!animationTextures) {
       throw new Error(
         `[${classname(
