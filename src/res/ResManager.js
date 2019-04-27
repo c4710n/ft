@@ -33,8 +33,6 @@ class ResManager extends PIXI.Loader {
     super(...args)
 
     this.use(fontLoader)
-
-    this.liveSounds = {}
   }
 
   /**
@@ -63,15 +61,17 @@ class ResManager extends PIXI.Loader {
    * Add a spritesheet to loading queue.
    */
   addSpritesheet(name) {
-    const json = this.url(name, { type: 'json' })
-    const image = this.url(name, { type: 'image' })
+    if (!this.resources[name]) {
+      const json = this.url(name, { type: 'json' })
+      const image = this.url(name, { type: 'image' })
 
-    this.add(name, json, {
-      data: {
-        meta: { image },
-      },
-      metadata: { image },
-    })
+      this.add(name, json, {
+        data: {
+          meta: { image },
+        },
+        metadata: { image },
+      })
+    }
 
     return name
   }
@@ -99,29 +99,19 @@ class ResManager extends PIXI.Loader {
   }
 
   /**
-   * Add a live sound.
-   */
-  addLiveSound(name) {
-    const url = this.url(name)
-    this.liveSounds[name] = new Audio(url)
-
-    return name
-  }
-
-  /**
    * Add a spine into loading queue.
    */
   addSpine(name) {
-    if (this.resources[name]) return
-
-    const json = $res.url(name, { type: 'json' })
-    const atlas = $res.url(name, { type: 'atlas' })
-    this.add(name, json, {
-      metadata: {
-        spineAtlasFile: atlas,
-        imageLoader: spineImageLoader,
-      },
-    })
+    if (!this.resources[name]) {
+      const json = $res.url(name, { type: 'json' })
+      const atlas = $res.url(name, { type: 'atlas' })
+      this.add(name, json, {
+        metadata: {
+          spineAtlasFile: atlas,
+          imageLoader: spineImageLoader,
+        },
+      })
+    }
 
     return name
   }
@@ -181,18 +171,6 @@ class ResManager extends PIXI.Loader {
       throw new Error(`[${classname(this)}] missing sound - ${name}`)
     } else {
       return resource.sound
-    }
-  }
-
-  /**
-   * Get a live sound by name.
-   */
-  liveSound(name) {
-    const sound = this.liveSounds[name]
-    if (!sound) {
-      throw new Error(`[${classname(this)}] missing live sound - ${name}`)
-    } else {
-      return sound
     }
   }
 
