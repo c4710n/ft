@@ -98,6 +98,8 @@ class RenderSystem extends System {
     const { width, height } = this
 
     return {
+      width: width,
+      height: height,
       centerX: width / 2,
       centerY: height / 2,
       center: [width / 2, height / 2],
@@ -106,6 +108,8 @@ class RenderSystem extends System {
 
   updateSize() {
     const { width, height } = this
+    this.size.width = width
+    this.size.height = height
     this.size.centerX = width / 2
     this.size.centerY = height / 2
     this.size.center = [width / 2, height / 2]
