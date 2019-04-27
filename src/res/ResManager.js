@@ -1,9 +1,8 @@
 import PIXI from '../pixi'
-import 'pixi-spine'
-import { classname } from '../utils'
-import { imageLoader as spineImageLoader } from './loader/spine'
 import fontLoader from './loader/font'
+import { generateImageLoader as generateSpineImageLoader } from './loader/spine'
 import { patch as patchSpritesheetLoader } from './loader/spritesheet'
+import { classname } from '../utils'
 
 patchSpritesheetLoader()
 
@@ -32,6 +31,10 @@ class ResManager extends PIXI.Loader {
     super(...args)
 
     this.use(fontLoader)
+
+    this.spineImageLoader = generateSpineImageLoader(name =>
+      this.url(name, { basename: true })
+    )
   }
 
   /**
@@ -102,6 +105,7 @@ class ResManager extends PIXI.Loader {
    */
   addSpine(name) {
     if (!this.resources[name]) {
+      const { spineImageLoader } = this
       const json = $res.url(name, { type: 'json' })
       const atlas = $res.url(name, { type: 'atlas' })
       this.add(name, json, {

@@ -2,6 +2,7 @@ import System from '../System'
 import { UPDATE_PRIORITY } from '../../const'
 import { FT, Layer } from '../../core'
 import PIXI from '../../pixi'
+import 'pixi-spine'
 import events from '../../events'
 
 const { autoDetectRenderer, Container } = PIXI
