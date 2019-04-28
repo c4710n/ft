@@ -1,11 +1,29 @@
 import { patchDisplayObjectMethods } from '../patch'
+
 import PIXI from '../pixi'
+import Spine from './Spine'
+import DOM from './DOM'
+import HTML5Video from './HTML5Video'
+import Mask from './Mask'
+import Scroller from './Scroller'
+const { Sprite, AnimatedSprite, Text } = PIXI
+
+const classMaps = {
+  Sprite,
+  AnimatedSprite,
+  Text,
+  Spine,
+  DOM,
+  HTML5Video,
+  Mask,
+  Scroller,
+}
 
 export function create($class, ...args) {
   let Class
 
   if (typeof $class === 'string') {
-    Class = PIXI[$class]
+    Class = classMaps[$class]
   } else {
     Class = $class
   }
