@@ -1,5 +1,7 @@
 import PIXI from '../pixi'
 
+const { Container } = PIXI
+
 /**
  * Scene is abstraction of container.
  *
@@ -22,10 +24,16 @@ import PIXI from '../pixi'
  *   }
  * }
  */
-class Scene extends PIXI.Container {
+class Scene extends Container {
   constructor(name) {
     super()
     this.name = name
+  }
+
+  setInteractive(value = true) {
+    this.interactive = value
+
+    return this
   }
 }
 
