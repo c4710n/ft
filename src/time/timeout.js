@@ -52,15 +52,18 @@ class Timer {
   }
 
   check() {
-    const now = performance.now()
-    const duration = now - this.startTime
-    if (duration > this.timeout) {
+    if (this.duration > this.timeout) {
       this.stopTick()
 
       if (this.callback) {
         this.callback()
       }
     }
+  }
+
+  get duration() {
+    const now = performance.now()
+    return now - this.startTime
   }
 
   startTick() {
