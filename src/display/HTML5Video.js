@@ -1,6 +1,6 @@
 import { FT, Layer, Device } from '../core'
 import DOM from './DOM'
-import { Timer } from '../utils'
+import { timeout } from '../time'
 import Spinner from './Spinner'
 
 /**
@@ -79,11 +79,9 @@ class HTML5Video extends DOM {
     /**
      * @ignore
      */
-    this.$spinnerTimer = new Timer(500)
-    /**
-     * @ignore
-     */
-    this.$spinnerChecker = null
+    this.$spinnerTimer = timeout(500, () => {
+      this.showSpinner()
+    })
   }
 
   /**
@@ -136,79 +134,13 @@ class HTML5Video extends DOM {
     super.renderDOM(this.$layer)
 
     const { currentTime } = this.$video
-    this.emit('progress', currentTime)
-  }
-
-  /**
-   * @ignore
-   */
-  addSpinnerChecker() {
-    const timer = this.$spinnerTimer
-    timer.start()
-
-    const spinnerChecker = () => {
-      // stuck due to lacking of data
-      if (this.$playing && this.currentTime === this.$staledCurrentTime) {
-        if (timer.exceed()) {
-          this.showSpinner()
-        }
-      } else {
-        timer.reset()
-        this.$staledCurrentTime = this.currentTime
-        this.hideSpinner()
-      }
-    }
-
-    this.$spinnerChecker = spinnerChecker
-    FT.ticker.add(spinnerChecker, this)
-  }
-
-  /**
-   * @ignore
-   */
-  removeSpinnerChecker() {
-    if (this.$spinnerChecker) {
-      FT.ticker.remove(this.$spinnerChecker, this)
+    if (currentTime !== this.$staledCurrentTime) {
+      this.$staledCurrentTime = currentTime
+      this.$spinnerTimer.reset()
+      this.hideSpinner()
+      this.emit('progress', currentTime)
     }
   }
-
-  /**
-   * @ignore
-   */
-  showSpinner() {
-    if (!this.$spinner.added) {
-      this.$spinner.position.set(FT.stage.centerX, FT.stage.centerY)
-      FT.stage.addChild(this.$spinner)
-    }
-  }
-
-  /**
-   * @ignore
-   */
-  hideSpinner() {
-    if (this.$spinner.added) {
-      FT.stage.removeChild(this.$spinner)
-    }
-  }
-
-  /**
-   * @ignore
-   */
-  nativePlay() {
-    this.$playing = true
-    this.addSpinnerChecker()
-    return this.$video.play()
-  }
-
-  /**
-   * @ignore
-   */
-  nativePause() {
-    this.$playing = false
-    this.removeSpinnerChecker()
-    return this.$video.pause()
-  }
-
   /**
    * Unlock current video.
    *
@@ -294,15 +226,6 @@ class HTML5Video extends DOM {
   }
 
   /**
-   * @ignore
-   * @emits {end}
-   */
-  onEnd = () => {
-    this.emit('end')
-    this.removeSpinnerChecker()
-  }
-
-  /**
    * Reset current video's timeline.
    *
    * @emits {reset}
@@ -310,27 +233,6 @@ class HTML5Video extends DOM {
   reset() {
     this.emit('reset')
     this.$video.currentTime = this.$readyTime
-  }
-
-  /**
-   * Get duration of video.
-   */
-  get duration() {
-    return this.$video.duration
-  }
-
-  /**
-   * Get current time of video.
-   */
-  get currentTime() {
-    return this.$video.currentTime
-  }
-
-  /**
-   * Set current time of video.
-   */
-  set currentTime(value) {
-    this.$video.currentTime = value
   }
 
   /**
@@ -351,6 +253,75 @@ class HTML5Video extends DOM {
   hide() {
     this.emit('hide')
     this.$video.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
+  }
+
+  /**
+   * @ignore
+   */
+  nativePlay() {
+    this.$playing = true
+    this.$spinnerTimer.start()
+    return this.$video.play()
+  }
+
+  /**
+   * @ignore
+   */
+  nativePause() {
+    this.$playing = false
+    this.$spinnerTimer.stop()
+    return this.$video.pause()
+  }
+
+  /**
+   * Get duration of video.
+   */
+  get duration() {
+    return this.$video.duration
+  }
+
+  /**
+   * @ignore
+   * @emits {end}
+   */
+  onEnd = () => {
+    this.emit('end')
+    this.$spinnerTimer.stop()
+  }
+
+  /**
+   * Get current time of video.
+   */
+  get currentTime() {
+    return this.$video.currentTime
+  }
+
+  /**
+   * Set current time of video.
+   */
+  set currentTime(value) {
+    this.$video.currentTime = value
+  }
+
+  /**
+   * @ignore
+   */
+  showSpinner() {
+    if (!this.$spinner.added) {
+      this.$spinner.position.set(FT.size.centerX, FT.size.centerY)
+      this.$spinner.visible = true
+      FT.stage.addChild(this.$spinner)
+    }
+  }
+
+  /**
+   * @ignore
+   */
+  hideSpinner() {
+    if (this.$spinner.added) {
+      this.$spinner.visible = false
+      FT.stage.removeChild(this.$spinner)
+    }
   }
 }
 
