@@ -6,7 +6,7 @@ import { FT } from '../core'
  * @param {number} ms specified time in milliseconds.
  * @return {Promise} a promise will be resolved when timeout.
  */
-export function delay(ms) {
+function delay(ms) {
   return new Promise(resolve => {
     const start = performance.now()
     const timer = () => {
@@ -21,6 +21,4 @@ export function delay(ms) {
   })
 }
 
-export default {
-  delay,
-}
+export default delay
