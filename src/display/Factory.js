@@ -4,6 +4,7 @@ import PIXI from '../pixi'
 import Spine from './Spine'
 import DOM from './DOM'
 import HTML5Video from './HTML5Video'
+import CanvasVideo from './CanvasVideo'
 import Mask from './Mask'
 import Scroller from './Scroller'
 const { Sprite, AnimatedSprite, Text } = PIXI
@@ -15,6 +16,7 @@ const classMaps = {
   Spine,
   DOM,
   HTML5Video,
+  CanvasVideo,
   Mask,
   Scroller,
 }

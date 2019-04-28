@@ -21,37 +21,18 @@ class HTML5Video extends DOM {
   /**
    * @param {string} src='' url of video
    * @param {Object} options
-   * @param {string} [options.id=''] id of video
-   * @param {boolean} [options.loop=false] enable loop
-   * @param {boolean} [options.hide=false] hide video after creating it
    */
-  constructor(src, { id = '', loop = false, hide = false } = {}) {
+  constructor(url, options = {}) {
     super('video')
 
     /**
      * @ignore
      */
-    this.$layer = Layer.DOM_DISPLAY_HIDDEN
+    this.$options = options
     /**
      * @ignore
      */
-    this.$src = src
-    /**
-     * @ignore
-     */
-    this.$id = id
-    /**
-     * @ignore
-     */
-    this.$loop = loop
-    /**
-     * @ignore
-     */
-    this.$hide = hide
-    /**
-     * @ignore
-     */
-    this.$video = this.patchVideoDOM(this.dom)
+    this.$video = this.patchVideoDOM(this.dom, url)
     /**
      * @ignore
      */
@@ -71,7 +52,7 @@ class HTML5Video extends DOM {
     /**
      * @ignore
      */
-    this.$staledCurrentTime = 0
+    this.$previousTime = 0
     /**
      * @ignore
      */
@@ -88,14 +69,11 @@ class HTML5Video extends DOM {
    * Create video DOM.
    * @ignore
    */
-  patchVideoDOM(video) {
-    this.$layer = this.$hide ? Layer.DOM_DISPLAY_HIDDEN : Layer.DOM_DISPLAY
-
-    // identifiers
-    if (this.$id) video.id = this.$id
-
-    video.src = this.$src
-    video.loop = this.$loop
+  patchVideoDOM(video, url) {
+    const { loop = false, hide = false } = this.$options
+    video.src = url
+    video.loop = loop
+    video.style.zIndex = hide ? Layer.DOM_DISPLAY_HIDDEN : Layer.DOM_DISPLAY
     video.crossorigin = 'anonymous'
     video.setAttribute('preload', 'auto')
     video.setAttribute('playsinline', '')
@@ -134,12 +112,13 @@ class HTML5Video extends DOM {
     super.renderDOM(this.$layer)
 
     const { currentTime } = this.$video
-    if (currentTime !== this.$staledCurrentTime) {
-      this.$staledCurrentTime = currentTime
+    if (this.isRealPlaying) {
       this.$spinnerTimer.reset()
       this.hideSpinner()
       this.emit('progress', currentTime)
     }
+
+    this.$previousTime = currentTime
   }
   /**
    * Unlock current video.
@@ -286,7 +265,9 @@ class HTML5Video extends DOM {
    */
   onEnd = () => {
     this.emit('end')
+    this.$playing = false
     this.$spinnerTimer.stop()
+    this.hideSpinner()
   }
 
   /**
@@ -301,6 +282,10 @@ class HTML5Video extends DOM {
    */
   set currentTime(value) {
     this.$video.currentTime = value
+  }
+
+  get isRealPlaying() {
+    return this.$playing && this.$video.currentTime > this.$previousTime
   }
 
   /**
