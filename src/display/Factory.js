@@ -7,12 +7,14 @@ import DOM from './DOM'
 import HTML5Video from './HTML5Video'
 import Mask from './Mask'
 import Scroller from './Scroller'
-const { Sprite, AnimatedSprite, Text } = PIXI
+const { Container, Sprite, AnimatedSprite, Text, Graphics } = PIXI
 
 const classMaps = {
+  Container,
   Sprite,
   AnimatedSprite,
   Text,
+  Graphics,
   Spine,
   DOM,
   HTML5Video,
