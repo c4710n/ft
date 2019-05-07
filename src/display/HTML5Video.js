@@ -74,6 +74,7 @@ class HTML5Video extends DOM {
     video.src = url
     video.loop = loop
     video.style.zIndex = hide ? Layer.DOM_DISPLAY_HIDDEN : Layer.DOM_DISPLAY
+    video.style.objectFit = 'fill'
     video.crossorigin = 'anonymous'
     video.setAttribute('preload', 'auto')
     video.setAttribute('playsinline', '')
