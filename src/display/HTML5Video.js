@@ -15,7 +15,7 @@ import Spinner from './Spinner'
  * await video.unlock()
  *
  * // play
- * video.play()
+ * await video.play()
  */
 class HTML5Video extends DOM {
   /**
