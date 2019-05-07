@@ -14,13 +14,13 @@ function setOrigin(originX, originY) {
     }
 
     if (originY !== undefined) {
-      this.pivot.y = (originX * this.height) / this.scale.x
+      this.pivot.y = (originY * this.height) / this.scale.y
     }
 
     if (originY === undefined) {
       const origin = originX
       this.pivot.x = (origin * this.width) / this.scale.x
-      this.pivot.y = (origin * this.height) / this.scale.x
+      this.pivot.y = (origin * this.height) / this.scale.y
     }
   }
 
