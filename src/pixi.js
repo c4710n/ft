@@ -14,7 +14,8 @@ export const loaders = {
   Loader: Loader,
   Resource: LoaderResource,
 }
-PIXI.loaders = loaders
+
+Object.assign(PIXI, { loaders })
 
 /**
  * @external {PIXI} https://github.com/pixijs/pixi.js/
