@@ -61,7 +61,9 @@ class HTML5Video extends DOM {
      * @ignore
      */
     this.$spinnerTimer = timeout(500, () => {
-      this.showSpinner()
+      if (this.isLoading) {
+        this.showSpinner()
+      }
     })
   }
 
@@ -112,13 +114,15 @@ class HTML5Video extends DOM {
   onUpdate() {
     super.renderDOM(this.$layer)
 
-    const { currentTime } = this.$video
-    if (this.isRealPlaying) {
+    const { currentTime } = this
+
+    if (this.isPlaying) {
       this.$spinnerTimer.reset()
       this.hideSpinner()
       this.emit('progress', currentTime)
+    } else if (this.isPaused) {
+      this.hideSpinner()
     }
-
     this.$previousTime = currentTime
   }
   /**
@@ -150,7 +154,9 @@ class HTML5Video extends DOM {
 
     await this.nativePlay()
     if (isPausedBeforeUnlock) {
-      this.nativePause()
+      return this.nativePause()
+    } else {
+      return Promise.resolve()
     }
   }
 
@@ -285,15 +291,23 @@ class HTML5Video extends DOM {
     this.$video.currentTime = value
   }
 
-  get isRealPlaying() {
-    return this.$playing && this.$video.currentTime > this.$previousTime
+  get isLoading() {
+    return this.$playing && this.currentTime <= this.$previousTime
+  }
+
+  get isPlaying() {
+    return this.$playing && this.currentTime > this.$previousTime
+  }
+
+  get isPaused() {
+    return !this.$playing && this.currentTime == this.$previousTime
   }
 
   /**
    * @ignore
    */
   showSpinner() {
-    if (this.$playing && !this.$spinner.added) {
+    if (!this.$spinner.added) {
       this.$spinner.position.set(FT.size.centerX, FT.size.centerY)
       this.$spinner.visible = true
       FT.stage.addChild(this.$spinner)
