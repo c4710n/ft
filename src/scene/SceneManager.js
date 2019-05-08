@@ -63,7 +63,16 @@ class SceneManager {
    *                                            seconds
    * @return {boolean} load is done or not
    */
-  async load(
+  async load(name, options) {
+    this.cleanup()
+    this._load(name, options)
+  }
+
+  async launch(name, options) {
+    this._load(name, options)
+  }
+
+  async _load(
     name,
     {
       sticky = false,
@@ -73,7 +82,6 @@ class SceneManager {
       index,
     } = {}
   ) {
-    this.cleanup()
     const scene = this.availableScenes.find(s => s.name === name)
     if (!scene) {
       if (name) {
