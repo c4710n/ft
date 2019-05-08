@@ -169,10 +169,10 @@ class SceneManager {
   }
 
   /**
-   * Find a loaded scene by name.
+   * Get a loaded scene by name.
    * @param {string} name name of a loaded scene
    */
-  find(name) {
+  get(name) {
     const scene = this.activeScenes.find(s => s.name === name)
     return scene
   }
