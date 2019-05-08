@@ -292,15 +292,17 @@ class HTML5Video extends DOM {
   }
 
   get isLoading() {
-    return this.$playing && this.currentTime <= this.$previousTime
+    return this.added && this.$playing && this.currentTime <= this.$previousTime
   }
 
   get isPlaying() {
-    return this.$playing && this.currentTime > this.$previousTime
+    return this.added && this.$playing && this.currentTime > this.$previousTime
   }
 
   get isPaused() {
-    return !this.$playing && this.currentTime == this.$previousTime
+    return (
+      this.added && !this.$playing && this.currentTime == this.$previousTime
+    )
   }
 
   /**
