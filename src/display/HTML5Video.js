@@ -293,7 +293,7 @@ class HTML5Video extends DOM {
    * @ignore
    */
   showSpinner() {
-    if (!this.$spinner.added) {
+    if (this.$playing && !this.$spinner.added) {
       this.$spinner.position.set(FT.size.centerX, FT.size.centerY)
       this.$spinner.visible = true
       FT.stage.addChild(this.$spinner)
