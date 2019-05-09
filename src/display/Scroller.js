@@ -38,7 +38,7 @@ class Scroller extends PIXI.Container {
       enableX = false,
       enableY = true,
       resistance = 20,
-      overflow = 100,
+      overflow = 50,
       bgColor = 0x000000,
     } = {}
   ) {
