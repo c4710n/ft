@@ -126,20 +126,18 @@ class RenderSystem extends System {
   enableDomEventMode() {
     /**
      * Visit following link for more details.
-     * @see https://github.com/pixijs/pixi.js/blob/v4.x/src/interaction/InteractionManager.js
+     * @see https://github.com/pixijs/pixi.js/blob/dev/packages/interaction/src/InteractionManager.js
      */
     const { container, renderer } = this
-
     const { interaction } = renderer.plugins
-    interaction.autoPreventDefault = false
-    interaction.setTargetElement(container, renderer.resolution)
-
     const { normalizeToPointerData } = interaction
+
+    interaction.setTargetElement(container, renderer.resolution)
+    // interaction.autoPreventDefault = false
     interaction.normalizeToPointerData = function(event) {
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
     }
-
     interaction.mapPositionToPoint = function(point, x, y) {
       const { scale } = FT.systems.scale.position
       const rotate = FT.systems.scale.rotate
