@@ -94,6 +94,11 @@ function setAlpha(alpha) {
   return this
 }
 
+function setTint(value) {
+  this.tint = value
+  return this
+}
+
 function setInteractive(value = true) {
   this.interactive = value
 
@@ -116,6 +121,7 @@ export default function patchDisplayObjectMethods(instance) {
   instance.setScaleX = setScaleX
   instance.setScaleY = setScaleY
   instance.setAlpha = setAlpha
+  instance.setTint = setTint
   instance.setInteractive = setInteractive
 
   instance.removeSelf = removeSelf
