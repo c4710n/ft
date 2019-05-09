@@ -19,7 +19,6 @@ class RenderSystem extends System {
       forceCanvas = false,
       transparent = true,
       antialias = false,
-      enableDOMEventMode = true,
     } = {}
   ) {
     super('render', UPDATE_PRIORITY.LOW)
@@ -75,9 +74,7 @@ class RenderSystem extends System {
      */
     container.appendChild(this.view)
 
-    if (enableDOMEventMode) {
-      this.enableDomEventMode()
-    }
+    this.remapInteraction()
   }
 
   /**
@@ -123,7 +120,7 @@ class RenderSystem extends System {
   /**
    * @access private
    */
-  enableDomEventMode() {
+  remapInteraction() {
     /**
      * Visit following link for more details.
      * @see https://github.com/pixijs/pixi.js/blob/dev/packages/interaction/src/InteractionManager.js
