@@ -1,6 +1,8 @@
 import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import PIXI from '../pixi'
 
+const { WHITE } = PIXI.Texture
+
 /**
  * A general scroller.
  *
@@ -43,8 +45,6 @@ class Scroller extends PIXI.Container {
     } = {}
   ) {
     super()
-
-    const { WHITE } = PIXI.Texture
 
     const mask = new PIXI.Sprite(WHITE)
     mask.width = width
@@ -158,59 +158,9 @@ class Scroller extends PIXI.Container {
     this.isScrolling = false
     this.data = null
 
-    this.handleBounce()
-    this.handleMomentum()
-  }
-
-  /**
-   * @access private
-   */
-  handleBounce = () => {
-    const { x, y } = this.content
-
-    if (this.enableX && (x > this.maxX || x < this.minX)) {
-      const from = { x }
-      const to = {}
-
-      if (x > this.maxX) {
-        to.x = this.maxX
-      } else if (x < this.minX) {
-        to.x = this.minX
-      }
-
-      const bounce = new Tween(from)
-        .to(to)
-        .duration(500)
-        .easing(Easing.Quartic.Out)
-        .start()
-      bounce.on('update', ({ x }) => {
-        this.content.x = x
-      })
-
-      this.bounceX = bounce
-    }
-
-    if (this.enableY && (y > this.maxY || y < this.minY)) {
-      const from = { y }
-      const to = {}
-
-      if (y > this.maxY) {
-        to.y = this.maxY
-      } else if (y < this.minY) {
-        to.y = this.minY
-      }
-
-      const bounce = new Tween(from)
-        .to(to)
-        .duration(500)
-        .easing(Easing.Quartic.Out)
-        .start()
-      bounce.on('update', ({ y }) => {
-        this.content.y = y
-      })
-
-      this.bounceY = bounce
-    }
+    if (this.enableX) this.handleMovementX()
+    if (this.enableY) this.handleMovementY()
+    this.resetScrollVelocity()
   }
 
   /**
@@ -233,14 +183,9 @@ class Scroller extends PIXI.Container {
     this.scrollVelocityY = 0
   }
 
-  /**
-   * @access private
-   */
-  handleMomentum = () => {
+  handleMovementX = () => {
     const absScrollVelocityX = Math.abs(this.scrollVelocityX)
-    const absScrollVelocityY = Math.abs(this.scrollVelocityY)
-
-    if (this.enableX && absScrollVelocityX >= 3) {
+    if (absScrollVelocityX >= 3) {
       const from = {}
       const to = {}
 
@@ -269,9 +214,14 @@ class Scroller extends PIXI.Container {
 
       momentum.on('complete', this.handleBounce)
       this.momentumX = momentum
+    } else {
+      this.handleBounceX()
     }
+  }
 
-    if (this.enableY && absScrollVelocityY >= 3) {
+  handleMovementY = () => {
+    const absScrollVelocityY = Math.abs(this.scrollVelocityY)
+    if (absScrollVelocityY >= 3) {
       const from = {}
       const to = {}
 
@@ -295,15 +245,67 @@ class Scroller extends PIXI.Container {
           this.content.y = cacheY
         } else {
           momentum.halt()
-          this.handleBounce()
+          this.handleBounceY()
         }
       })
 
-      momentum.on('complete', this.handleBounce)
+      momentum.on('complete', this.handleBounceY)
       this.momentumY = momentum
+    } else {
+      this.handleBounceY()
     }
+  }
 
-    this.resetScrollVelocity()
+  handleBounceX = () => {
+    const { x } = this.content
+
+    if (x > this.maxX || x < this.minX) {
+      const from = { x }
+      const to = {}
+
+      if (x > this.maxX) {
+        to.x = this.maxX
+      } else if (x < this.minX) {
+        to.x = this.minX
+      }
+
+      const bounce = new Tween(from)
+        .to(to)
+        .duration(1000)
+        .easing(Easing.Quartic.Out)
+        .start()
+      bounce.on('update', ({ x }) => {
+        this.content.x = x
+      })
+
+      this.bounceX = bounce
+    }
+  }
+
+  handleBounceY = () => {
+    const { y } = this.content
+
+    if (y > this.maxY || y < this.minY) {
+      const from = { y }
+      const to = {}
+
+      if (y > this.maxY) {
+        to.y = this.maxY
+      } else if (y < this.minY) {
+        to.y = this.minY
+      }
+
+      const bounce = new Tween(from)
+        .to(to)
+        .duration(1000)
+        .easing(Easing.Quartic.Out)
+        .start()
+      bounce.on('update', ({ y }) => {
+        this.content.y = y
+      })
+
+      this.bounceY = bounce
+    }
   }
 }
 
