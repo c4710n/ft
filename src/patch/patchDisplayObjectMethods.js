@@ -96,11 +96,18 @@ function setAlpha(alpha) {
 
 function setTint(value) {
   this.tint = value
+
   return this
 }
 
 function setInteractive(value = true) {
   this.interactive = value
+
+  return this
+}
+
+function setVisible(value = true) {
+  this.visible = value
 
   return this
 }
@@ -123,6 +130,7 @@ export default function patchDisplayObjectMethods(instance) {
   instance.setAlpha = setAlpha
   instance.setTint = setTint
   instance.setInteractive = setInteractive
+  instance.setVisible = setVisible
 
   instance.removeSelf = removeSelf
 }
