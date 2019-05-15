@@ -100,8 +100,12 @@ function setTint(value) {
   return this
 }
 
-function setInteractive(value = true) {
+function setInteractive(value = true, { includeChildren } = {}) {
   this.interactive = value
+
+  if (includeChildren) {
+    this.interactiveChildren = value
+  }
 
   return this
 }
