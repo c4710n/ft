@@ -128,17 +128,10 @@ class HTML5Video extends DOM {
   /**
    * Unlock current video.
    *
-   * WARNING: This method can't ensure playing video at a visible position
-   * on iOS < 10.3.1, so you need to call await video.play() to avoid black splash.
-   *
-   * If you need to unlock multiple videos at once, there are 2 conditions because
-   * iOS < 10.3.1 don't support playing multiple videos at one time:
-   *
    * @example
-   * // When you need to support iOS < 10.3.1:
+   * video1.unlock()
    * video2.unlock()
    * video3.unlock()
-   * video1.unlock()
    * await video1.play()
    *
    * @see https://stackoverflow.com/a/50480115/1793548
