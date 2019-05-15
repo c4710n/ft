@@ -152,9 +152,9 @@ class HTML5Video extends DOM {
     const { $video: video } = this
     const { paused: isPausedBeforeUnlock } = video
 
-    await this.nativePlay()
+    await video.play()
     if (isPausedBeforeUnlock) {
-      return this.nativePause()
+      return video.pause()
     } else {
       return Promise.resolve()
     }
