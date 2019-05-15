@@ -138,26 +138,14 @@ class HTML5Video extends DOM {
    * // When you need to support iOS < 10.3.1:
    * video2.unlock()
    * video3.unlock()
-   * await video1.unlock()
-   * await video1.play()
-   *
-   * @example
-   * // When you need to support iOS > 10.3.1
-   * Promise.all([video1.unlock(), video2.unlock(), video3.unlock()])
+   * video1.unlock()
    * await video1.play()
    *
    * @see https://stackoverflow.com/a/50480115/1793548
    */
-  async unlock() {
-    const { $video: video } = this
-    const { paused: isPausedBeforeUnlock } = video
-
-    await video.play()
-    if (isPausedBeforeUnlock) {
-      return video.pause()
-    } else {
-      return Promise.resolve()
-    }
+  unlock() {
+    this.$video.play()
+    this.$video.pause()
   }
 
   /**
