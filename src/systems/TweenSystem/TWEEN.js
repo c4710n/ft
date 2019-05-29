@@ -1,7 +1,7 @@
 // delegate es6-tween
-import { update, add, remove, has, Tween } from 'es6-tween'
+import { update, remove, Tween } from 'es6-tween'
 
-const TWEEN = { update, add, remove, has }
+const TWEEN = { update }
 
 if (!Tween.prototype.loop) {
   // candy for repeat forever
@@ -31,7 +31,7 @@ if (!Tween.prototype.startAsync) {
   }
 }
 
-export { Tween, Easing, Interpolation } from 'es6-tween'
+export { Tween, Easing } from 'es6-tween'
 
 /**
  * @external {TWEEN} https://github.com/tweenjs/es6-tween

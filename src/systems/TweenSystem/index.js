@@ -1,5 +1,6 @@
+import { FT } from '../../core'
 import System from '../System'
-import TWEEN from './TWEEN'
+import TWEEN, { Tween, Easing } from './TWEEN'
 
 /**
  * System for Tween.
@@ -7,6 +8,9 @@ import TWEEN from './TWEEN'
 class TweenSystem extends System {
   constructor() {
     super('tween')
+
+    FT.Tween = Tween
+    FT.Easing = Easing
   }
 
   update() {
