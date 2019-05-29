@@ -138,31 +138,47 @@ class ResManager extends PIXI.Loader {
     }
   }
   /**
-   * Get textures for animation.
+   * Get textures from spritesheets.
    */
-  animationTextures(name, animationName) {
-    const spritesheet = this.resources[name]?.spritesheet
+  spritesheetTextures(names) {
+    let _names = []
 
-    if (!spritesheet) {
-      throw new Error(`[${classname(this)}] missing spritesheet - ${name}`)
-    }
-
-    let animationTextures
-    if (animationName) {
-      animationTextures = spritesheet?.animations[animationName]
+    if (Array.isArray(names)) {
+      _names = names
     } else {
-      animationTextures = Object.values(spritesheet.textures)
+      const name = names
+      _names.push(name)
     }
 
-    if (!animationTextures) {
-      throw new Error(
-        `[${classname(
-          this
-        )}] missing animation textures - ${name}:${animationName}`
-      )
+    let texturesMap = []
+
+    for (const name of _names) {
+      const spritesheet = this.resources[name]?.spritesheet
+
+      if (!spritesheet) {
+        throw new Error(`[${classname(this)}] missing spritesheet - ${name}`)
+      }
+
+      for (const [name, texture] of Object.entries(spritesheet.textures)) {
+        texturesMap.push({ name, texture })
+      }
     }
 
-    return animationTextures
+    const textures = texturesMap
+      .sort((a, b) => {
+        if (a.name > b.name) {
+          return 1
+        }
+
+        if (a.name < b.name) {
+          return -1
+        }
+
+        return 0
+      })
+      .map(i => i.texture)
+
+    return textures
   }
 
   /**
