@@ -85,6 +85,9 @@
         "eslint --fix",
         "git add"
       ]
-    }
+    },
+    "ignore": [
+      "**/*.min.js"
+    ]
   }
 }
