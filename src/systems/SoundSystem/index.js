@@ -1,9 +1,6 @@
 import System from '../System'
-import PIXI from '../../pixi'
-import 'pixi-sound'
+import sound from 'pixi-sound'
 import events from '../../events'
-
-const { sound } = PIXI
 
 /**
  * System for Tween.
