@@ -3,12 +3,14 @@ import { FT, Layer } from '../../core'
 import PIXI from '../../pixi'
 import 'pixi-spine'
 import events from '../../events'
+import ReactPIXI from '../../react-pixi'
 
 const { autoDetectRenderer, Container } = PIXI
 
 class RenderSystem extends System {
   constructor(
     container,
+    app,
     {
       width = 750,
       height = 1500,
@@ -23,6 +25,7 @@ class RenderSystem extends System {
      * @access private
      */
     this.container = container
+    this.app = app
 
     /**
      * @access private
@@ -110,7 +113,13 @@ class RenderSystem extends System {
   }
 
   update() {
-    this.renderer.render(this.stage)
+    const { app, stage, renderer } = this
+
+    // flush app to stage
+    ReactPIXI.render(app, stage)
+
+    // render stage
+    renderer.render(stage)
   }
 
   /**

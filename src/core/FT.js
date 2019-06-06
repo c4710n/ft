@@ -64,10 +64,10 @@ class FT {
    * @param {number} [options.renderer] - renderer's default options.
    * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
    */
-  init(selector, options) {
+  init(selector, app, options) {
     const container = new Container(selector, options.container)
 
-    this.addSystem(new RenderSystem(container.dom, options.render))
+    this.addSystem(new RenderSystem(container.dom, app, options.render))
     this.addSystem(new HUDSystem())
     this.addSystem(new TweenSystem())
     this.addSystem(new ScaleSystem(container.dom, options.scale))
