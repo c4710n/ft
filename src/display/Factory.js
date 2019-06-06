@@ -1,4 +1,4 @@
-/* global require, ENABLE_CANVAS_VIDEO */
+/* global require, FT_ENABLE_CANVAS_VIDEO */
 
 import { patchDisplayObjectMethods } from '../patch'
 import PIXI from '../pixi'
@@ -22,7 +22,7 @@ const classMaps = {
   Scroller,
 }
 
-if (ENABLE_CANVAS_VIDEO) {
+if (FT_ENABLE_CANVAS_VIDEO) {
   const CanvasVideo = require('./CanvasVideo')
   classMaps.CanvasVideo = CanvasVideo
 }

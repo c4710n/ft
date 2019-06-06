@@ -1,10 +1,10 @@
+/* global FT_PRODUCTION_MODE */
 import * as PIXI from 'pixi.js-legacy'
-import env from './env'
 
 window.PIXI = PIXI
 
 const { utils } = PIXI
-if (env.release) {
+if (FT_PRODUCTION_MODE) {
   utils.skipHello()
 }
 
