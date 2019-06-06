@@ -5,10 +5,10 @@ class VisibilitySystem extends System {
   constructor() {
     super('visibility')
 
-    this.listen()
+    this.listen(events.show.emit, events.hide.emit)
   }
 
-  listen() {
+  listen(onShow, onHide) {
     // Set the name of the hidden property and the change event for visibility
     let hidden, visibilityChange
     if (typeof document.hidden !== 'undefined') {
@@ -27,9 +27,9 @@ class VisibilitySystem extends System {
       const isHidden = document[hidden]
 
       if (isHidden) {
-        events.hide.emit()
+        onHide()
       } else {
-        events.show.emit()
+        onShow()
       }
     }
 
