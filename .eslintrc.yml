@@ -11,3 +11,4 @@ env:
   browser: true
 rules:
   semi: off
+  no-unused-vars: ["error", { "argsIgnorePattern": "^_" }]
