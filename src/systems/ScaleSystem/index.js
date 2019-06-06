@@ -4,9 +4,6 @@ import events from '../../events'
 import { FT } from '../../core'
 import { classname } from '../../utils'
 
-/**
- * System for render.
- */
 class ScaleSystem extends System {
   constructor(container, { mode = 'COVER' } = {}) {
     super('scale')

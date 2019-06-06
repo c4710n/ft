@@ -2,9 +2,6 @@ import System from '../System'
 import sound from 'pixi-sound'
 import events from '../../events'
 
-/**
- * System for Tween.
- */
 class SoundSystem extends System {
   constructor() {
     super('sound')

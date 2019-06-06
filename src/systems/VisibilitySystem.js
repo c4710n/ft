@@ -1,9 +1,6 @@
 import System from './System'
 import events from '../events'
 
-/**
- * System for Visibility.
- */
 class VisibilitySystem extends System {
   constructor() {
     super('visibility')

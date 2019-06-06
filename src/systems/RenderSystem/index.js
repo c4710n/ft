@@ -7,9 +7,6 @@ import events from '../../events'
 
 const { autoDetectRenderer, Container } = PIXI
 
-/**
- * System for render.
- */
 class RenderSystem extends System {
   constructor(
     container,

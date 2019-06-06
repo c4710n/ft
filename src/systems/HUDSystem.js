@@ -2,9 +2,6 @@ import { FT } from '../core'
 import { HUD } from '../components'
 import System from './System'
 
-/**
- * System for HUD component.
- */
 class HUDSystem extends System {
   constructor() {
     super('hud')
