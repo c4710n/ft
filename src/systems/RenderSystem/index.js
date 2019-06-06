@@ -1,5 +1,4 @@
-import System from '../System'
-import { UPDATE_PRIORITY } from '../../const'
+import System, { UPDATE_PRIORITY } from '../System'
 import { FT, Layer } from '../../core'
 import PIXI from '../../pixi'
 import 'pixi-spine'

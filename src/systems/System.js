@@ -1,5 +1,7 @@
 import { splice } from '../utils/fast'
-import { UPDATE_PRIORITY } from '../const'
+import PIXI from '../pixi'
+
+export const { UPDATE_PRIORITY } = PIXI
 
 /**
  * Basic class for system.
