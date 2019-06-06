@@ -1,5 +1,5 @@
-import System from './System'
-import events from '../events'
+import System from '../System'
+import events from '../../events'
 
 class VisibilitySystem extends System {
   constructor() {
