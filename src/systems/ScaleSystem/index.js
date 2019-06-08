@@ -5,17 +5,10 @@ import { FT } from '../../core'
 import { classname } from '../../utils'
 
 class ScaleSystem extends System {
-  constructor(container, { mode = 'COVER' } = {}) {
+  constructor({ mode = 'COVER' } = {}) {
     super('scale')
 
-    /**
-     * @access private
-     */
-    this.container = container
-
-    /**
-     * @access private
-     */
+    this.container = FT.container
     this.mode = mode
 
     events.resize.on(({ width, height }) => {

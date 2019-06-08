@@ -25,34 +25,11 @@ class FT {
   constructor() {
     window.FT = this
 
-    /**
-     * DOM container of FT's canvas.
-     */
     this.container = null
-
-    /**
-     * ticker for game loop.
-     */
     this.ticker = new Ticker()
-
-    /**
-     * @ignore
-     */
     this.systems = {}
-
-    /**
-     * default instance of ResManager.
-     */
     this.rm = ResManager.default
-
-    /**
-     * default instance of SceneManager.
-     */
     this.sm = SceneManager.default
-
-    /**
-     * helper for creating DisplayObject faster.
-     */
     this.create = DisplayFactory.create
   }
 
@@ -65,18 +42,16 @@ class FT {
    * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
    */
   init(selector, options) {
-    const container = new Container(selector, options.container)
+    this.container = new Container(selector, options.container).dom
 
-    this.addSystem(new RenderSystem(container.dom, options.render))
+    this.addSystem(new RenderSystem(options.render))
     this.addSystem(new HUDSystem())
     this.addSystem(new TweenSystem())
-    this.addSystem(new ScaleSystem(container.dom, options.scale))
+    this.addSystem(new ScaleSystem(options.scale))
     this.addSystem(new SoundSystem())
     this.addSystem(new VisibilitySystem())
     this.enqueueSystems()
 
-    // alias some useful objects
-    this.container = container
     this.stage = this.systems.render.stage
     this.size = this.systems.render.size
 

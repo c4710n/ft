@@ -7,24 +7,19 @@ import events from '../../events'
 const { autoDetectRenderer, Container } = PIXI
 
 class RenderSystem extends System {
-  constructor(
-    container,
-    app,
-    {
-      width = 750,
-      height = 1500,
-      forceCanvas = false,
-      transparent = true,
-      antialias = false,
-    } = {}
-  ) {
+  constructor({
+    width = 750,
+    height = 1500,
+    forceCanvas = false,
+    transparent = true,
+    antialias = false,
+  } = {}) {
     super('render', UPDATE_PRIORITY.LOW)
 
     /**
      * @access private
      */
-    this.container = container
-    this.app = app
+    this.container = FT.container
 
     /**
      * @access private
@@ -70,7 +65,7 @@ class RenderSystem extends System {
     /**
      * Add view to DOM tree.
      */
-    container.appendChild(this.view)
+    this.container.appendChild(this.view)
 
     this.remapInteraction()
   }
