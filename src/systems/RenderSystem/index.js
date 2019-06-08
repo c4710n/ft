@@ -1,7 +1,6 @@
 import app from '../../app'
 import System, { UPDATE_PRIORITY } from '../System'
 import { Layer, PIXI } from '../../core'
-import 'pixi-spine'
 import events from '../../events'
 
 class RenderSystem extends System {
