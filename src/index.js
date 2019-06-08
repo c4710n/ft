@@ -9,4 +9,6 @@ export * from './scene'
 export * from './res'
 export * from './debug'
 
+export * from './systems/TweenSystem/TWEEN'
+
 export default FT
