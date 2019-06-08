@@ -48,9 +48,6 @@ class App {
     this.addSystem(new VisibilitySystem())
     this.enqueueSystems()
 
-    this.stage = this.systems.render.stage
-    this.size = this.systems.render.size
-
     events.listen()
   }
 

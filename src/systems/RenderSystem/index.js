@@ -13,29 +13,13 @@ class RenderSystem extends System {
   } = {}) {
     super('render', UPDATE_PRIORITY.LOW)
 
-    /**
-     * @access private
-     */
     this.container = app.container
 
-    /**
-     * @access private
-     */
     this.width = width
-
-    /**
-     * @access private
-     */
     this.height = height
-
-    /**
-     * @access private
-     */
     this.size = this.getSize()
+    app.size = this.size
 
-    /**
-     * @access private
-     */
     this.renderer = PIXI.autoDetectRenderer({
       width,
       height,
@@ -43,27 +27,19 @@ class RenderSystem extends System {
       transparent,
       antialias,
     })
+    app.renderer = this.renderer
 
-    /**
-     * @access private
-     */
     this.view = this.renderer.view
     this.view.style.zIndex = Layer.VIEW
     this.view.style.position = 'absolute'
     this.view.style.width = '100%'
     this.view.style.height = '100%'
+    app.view = this.view
 
-    /**
-     * @access private
-     */
     this.stage = app.stage
     this.stage.added = true // in order to make patchDisplayObjectLifecycle work.
 
-    /**
-     * Add view to DOM tree.
-     */
     this.container.appendChild(this.view)
-
     this.remapInteraction()
   }
 

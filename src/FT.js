@@ -13,5 +13,6 @@ class FT {
 }
 
 const ft = new FT()
+window.ft = ft
 
 export default ft
