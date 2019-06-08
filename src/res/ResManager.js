@@ -166,8 +166,8 @@ class ResManager extends PIXI.Loader {
 
     const textures = texturesMap
       .sort((a, b) => {
-        const orderA = Number.parseInt(a.name.split('.')[0])
-        const orderB = Number.parseInt(b.name.split('.')[0])
+        const orderA = Number.parseInt(a.name.replace(/[^0-9]/g, ''))
+        const orderB = Number.parseInt(b.name.replace(/[^0-9]/g, ''))
 
         if (orderA > orderB) {
           return 1
