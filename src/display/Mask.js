@@ -1,5 +1,5 @@
-import { FT } from '../core'
-import PIXI from '../pixi'
+import app from '../app'
+import { PIXI } from '../core'
 
 /**
  * A mask whose size is equal to viewport's size.
@@ -17,7 +17,7 @@ class Mask extends PIXI.Graphics {
     super()
 
     this.beginFill(color)
-    const { width, height } = FT.stage
+    const { width, height } = app.stage
     this.drawRect(0, 0, width, height)
     this.endFill()
 

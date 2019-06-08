@@ -1,4 +1,4 @@
-import PIXI from '../pixi'
+import PIXI from './PIXI'
 
 /**
  * Get metadata of device.

@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import app from '../app'
 import { Tween } from '../systems/TweenSystem/TWEEN'
 import { classname, qs } from '../utils'
 
@@ -94,7 +94,7 @@ class SceneManager {
     }
 
     const { Class, name: $name } = scene
-    const activeScene = FT.create(Class, $name)
+    const activeScene = app.create(Class, $name)
     activeScene.sticky = sticky
     activeScene.oneOff = oneOff
 
@@ -106,9 +106,9 @@ class SceneManager {
     }
 
     if (typeof index === 'number') {
-      FT.stage.addChildAt(activeScene, index)
+      app.stage.addChildAt(activeScene, index)
     } else {
-      FT.stage.addChild(activeScene)
+      app.stage.addChild(activeScene)
     }
 
     if (transition) {
@@ -145,7 +145,7 @@ class SceneManager {
       if (scene.sticky) {
         return true
       } else {
-        FT.stage.removeChild(scene)
+        app.stage.removeChild(scene)
 
         scene.destroy({
           children: true,
@@ -166,7 +166,7 @@ class SceneManager {
     const index = this.activeScenes.findIndex(s => s.name === name)
     if (index >= 0) {
       const scene = this.activeScenes[index]
-      FT.stage.removeChild(scene)
+      app.stage.removeChild(scene)
       scene.destroy({
         children: true,
         texture: scene.oneOff,

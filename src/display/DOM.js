@@ -1,6 +1,6 @@
-import { FT, Layer } from '../core'
+import app from '../app'
+import { PIXI, Layer } from '../core'
 import { transformDOM } from '../utils'
-import PIXI from '../pixi'
 
 const { Sprite, Texture } = PIXI
 
@@ -19,11 +19,11 @@ class DOM extends Sprite {
   }
 
   onAdded() {
-    FT.container.dom.appendChild(this.dom)
+    app.container.appendChild(this.dom)
   }
 
   onRemoved() {
-    FT.container.dom.removeChild(this.dom)
+    app.container.removeChild(this.dom)
   }
 
   onUpdate() {

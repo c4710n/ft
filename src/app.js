@@ -1,5 +1,5 @@
-import patch from '../patch'
-import PIXI from '../pixi'
+import patch from './patch'
+import { PIXI, styleDOM } from './core'
 import {
   RenderSystem,
   HUDSystem,
@@ -7,26 +7,22 @@ import {
   ScaleSystem,
   SoundSystem,
   VisibilitySystem,
-} from '../systems'
-import Container from './Container'
-import { Factory as DisplayFactory } from '../display'
-import ResManager from '../res/ResManager'
-import SceneManager from '../scene/SceneManager'
-import events from '../events'
+} from './systems'
+import { Factory as DisplayFactory } from './display'
+import ResManager from './res/ResManager'
+import SceneManager from './scene/SceneManager'
+import events from './events'
 
 patch()
-
-const { Ticker } = PIXI
 
 /**
  * Commander for framework.
  */
-class FT {
+class App {
   constructor() {
-    window.FT = this
-
     this.container = null
-    this.ticker = new Ticker()
+    this.ticker = new PIXI.Ticker()
+    this.stage = new PIXI.Container()
     this.systems = {}
     this.rm = ResManager.default
     this.sm = SceneManager.default
@@ -41,8 +37,8 @@ class FT {
    * @param {number} [options.renderer] - renderer's default options.
    * @param {string} [options.backgroundColor='#ffffff'] - background of DOM container.
    */
-  init(selector, options) {
-    this.container = new Container(selector, options.container).dom
+  init(dom, options) {
+    this.container = new styleDOM(dom, options.container)
 
     this.addSystem(new RenderSystem(options.render))
     this.addSystem(new HUDSystem())
@@ -91,9 +87,6 @@ class FT {
   }
 }
 
-/**
- * The global single instance of FT.
- */
-const ft = new FT()
+const app = new App()
 
-export default ft
+export default app

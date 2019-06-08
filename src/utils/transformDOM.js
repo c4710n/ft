@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import app from '../app'
 
 /**
  * Transform DOMElement's position and size according given DisplayObject.
@@ -21,7 +21,7 @@ function transformDOM(dom, displayObject, layer) {
     pivotY = displayObject.pivot.y
   }
 
-  const stagePosition = FT.stage.getGlobalPosition()
+  const stagePosition = app.stage.getGlobalPosition()
   const x = $x - stagePosition.x - pivotX
   const y = $y - stagePosition.y - pivotY
 

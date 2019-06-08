@@ -1,5 +1,5 @@
 import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
-import PIXI from '../pixi'
+import { PIXI } from '../core'
 
 const { WHITE } = PIXI.Texture
 

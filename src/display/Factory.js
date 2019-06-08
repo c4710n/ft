@@ -1,7 +1,7 @@
 /* global require, FT_ENABLE_CANVAS_VIDEO */
 
 import { patchDisplayObjectMethods } from '../patch'
-import PIXI from '../pixi'
+import { PIXI } from '../core'
 import Spine from './Spine'
 import DOM from './DOM'
 import HTML5Video from './HTML5Video'

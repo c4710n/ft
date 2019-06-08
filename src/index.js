@@ -1,3 +1,6 @@
+import FT from './FT'
+
+export { default as app } from './app'
 export * from './core'
 export * from './systems'
 export * from './display'
@@ -5,4 +8,5 @@ export * from './components'
 export * from './scene'
 export * from './res'
 export * from './debug'
-export { default as PIXI } from './pixi'
+
+export default FT

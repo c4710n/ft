@@ -1,10 +1,8 @@
+import app from '../../app'
 import System, { UPDATE_PRIORITY } from '../System'
-import { FT, Layer } from '../../core'
-import PIXI from '../../pixi'
+import { Layer, PIXI } from '../../core'
 import 'pixi-spine'
 import events from '../../events'
-
-const { autoDetectRenderer, Container } = PIXI
 
 class RenderSystem extends System {
   constructor({
@@ -19,7 +17,7 @@ class RenderSystem extends System {
     /**
      * @access private
      */
-    this.container = FT.container
+    this.container = app.container
 
     /**
      * @access private
@@ -39,7 +37,7 @@ class RenderSystem extends System {
     /**
      * @access private
      */
-    this.renderer = autoDetectRenderer({
+    this.renderer = PIXI.autoDetectRenderer({
       width,
       height,
       forceCanvas,
@@ -59,7 +57,7 @@ class RenderSystem extends System {
     /**
      * @access private
      */
-    this.stage = new Container()
+    this.stage = app.stage
     this.stage.added = true // in order to make patchDisplayObjectLifecycle work.
 
     /**
@@ -132,8 +130,8 @@ class RenderSystem extends System {
       return normalizeToPointerData.call(this, event)
     }
     interaction.mapPositionToPoint = function(point, x, y) {
-      const { scale } = FT.systems.scale.position
-      const rotate = FT.systems.scale.rotate
+      const { scale } = app.systems.scale.position
+      const rotate = app.systems.scale.rotate
 
       // the unit of x, y is CSS pixel
       const resolutionMultiplier = 1.0 / this.resolution

@@ -1,14 +1,14 @@
+import app from '../../app'
 import System from '../System'
 import modes from './Modes'
 import events from '../../events'
-import { FT } from '../../core'
 import { classname } from '../../utils'
 
 class ScaleSystem extends System {
   constructor({ mode = 'COVER' } = {}) {
     super('scale')
 
-    this.container = FT.container
+    this.container = app.container
     this.mode = mode
 
     events.resize.on(({ width, height }) => {
@@ -20,7 +20,7 @@ class ScaleSystem extends System {
    * @access private
    */
   onResize(viewportCSSWidth, viewportCSSHeight) {
-    const { width, height } = FT.systems.render
+    const { width, height } = app.systems.render
 
     const { mode } = this
     const scaleMode = modes[mode]

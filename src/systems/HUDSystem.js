@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import app from '../app'
 import { HUD } from '../components'
 import System from './System'
 
@@ -24,7 +24,7 @@ class HUDSystem extends System {
   positionOne(entity, meta) {
     let $x, $y
     const { left, right, top, bottom, percentage } = meta
-    const { bounds } = FT.systems.scale
+    const { bounds } = app.systems.scale
 
     if (left !== undefined) {
       const offset = percentage ? bounds.width * left : left

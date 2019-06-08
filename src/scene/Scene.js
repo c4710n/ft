@@ -1,4 +1,4 @@
-import PIXI from '../pixi'
+import { PIXI } from '../core'
 
 const { Container } = PIXI
 

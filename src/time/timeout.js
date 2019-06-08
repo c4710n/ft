@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import app from '../app'
 import classname from '../utils/classname'
 
 /**
@@ -28,7 +28,7 @@ class Timer {
 
     this.timeout = timeout
     this.callback = callback
-    this.ticker = FT.ticker
+    this.ticker = app.ticker
     this.isTickerStopped = true
 
     this.startTime = 0

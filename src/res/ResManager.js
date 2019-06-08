@@ -1,4 +1,4 @@
-import PIXI from '../pixi'
+import { PIXI } from '../core'
 import fontLoader from './loader/font'
 import { generateImageLoader as generateSpineImageLoader } from './loader/spine'
 import { patch as patchSpritesheetLoader } from './loader/spritesheet'

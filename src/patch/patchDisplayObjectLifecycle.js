@@ -1,6 +1,6 @@
 /* global FT_PRODUCTION_MODE */
-import PIXI from '../pixi'
-import { FT } from '../core'
+import app from '../app'
+import { PIXI } from '../core'
 import { splice } from '../utils/fast'
 
 const { Container, DisplayObject } = PIXI
@@ -15,16 +15,14 @@ function _bindComponent(displayObject, component) {
     if (!FT_PRODUCTION_MODE) {
       // eslint-disable-next-line
       console.log(
-        `[lifecycle] bind component ${component.constructor.name} for ${
-          displayObject.constructor.name
-        }`
+        `[lifecycle] bind component ${component.constructor.name} for ${displayObject.constructor.name}`
       )
     }
 
     component.onAdded(displayObject)
 
     if (component.onUpdate) {
-      FT.ticker.add(component.onUpdate, component)
+      app.ticker.add(component.onUpdate, component)
     }
   }
 }
@@ -39,14 +37,12 @@ function _unbindComponent(displayObject, component) {
     if (!FT_PRODUCTION_MODE) {
       // eslint-disable-next-line
       console.log(
-        `[lifecycle] unbind component ${component.constructor.name} for ${
-          displayObject.constructor.name
-        }`
+        `[lifecycle] unbind component ${component.constructor.name} for ${displayObject.constructor.name}`
       )
     }
 
     if (component.onUpdate) {
-      FT.ticker.remove(component.onUpdate, component)
+      app.ticker.remove(component.onUpdate, component)
     }
   }
 }
@@ -69,7 +65,7 @@ function callPostAdd(container) {
   }
 
   if (container.onUpdate) {
-    FT.ticker.add(container.onUpdate, container)
+    app.ticker.add(container.onUpdate, container)
   }
 }
 
@@ -91,7 +87,7 @@ function callPostRemove(container) {
   }
 
   if (container.onUpdate) {
-    FT.ticker.remove(container.onUpdate, container)
+    app.ticker.remove(container.onUpdate, container)
   }
 }
 

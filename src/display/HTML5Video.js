@@ -1,4 +1,5 @@
-import { FT, Layer, Device } from '../core'
+import app from '../app'
+import { Layer, Device } from '../core'
 import DOM from './DOM'
 import { timeout } from '../time'
 import Spinner from './Spinner'
@@ -9,7 +10,7 @@ import Spinner from './Spinner'
  * @example
  * // create
  * const url = 'https://url/to/video'
- * const video = FT.create(Video, url)
+ * const video = app.create(Video, url)
  *
  * // unlock
  * await video.unlock()
@@ -56,7 +57,7 @@ class HTML5Video extends DOM {
     /**
      * @ignore
      */
-    this.$spinner = FT.create(Spinner)
+    this.$spinner = app.create(Spinner)
     /**
      * @ignore
      */
@@ -291,9 +292,9 @@ class HTML5Video extends DOM {
    */
   showSpinner() {
     if (!this.$spinner.added) {
-      this.$spinner.position.set(FT.size.centerX, FT.size.centerY)
+      this.$spinner.position.set(app.size.centerX, app.size.centerY)
       this.$spinner.visible = true
-      FT.stage.addChild(this.$spinner)
+      app.stage.addChild(this.$spinner)
     }
   }
 
@@ -303,7 +304,7 @@ class HTML5Video extends DOM {
   hideSpinner() {
     if (this.$spinner.added) {
       this.$spinner.visible = false
-      FT.stage.removeChild(this.$spinner)
+      app.stage.removeChild(this.$spinner)
     }
   }
 }

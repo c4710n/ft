@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import app from '../app'
 
 /**
  * A delay timer based on FT.ticker.
@@ -13,11 +13,11 @@ function delay(ms) {
       const now = performance.now()
       if (now - start > ms) {
         resolve()
-        FT.ticker.remove(timer)
+        app.ticker.remove(timer)
       }
     }
 
-    FT.ticker.add(timer)
+    app.ticker.add(timer)
   })
 }
 

@@ -1,4 +1,5 @@
-import { FT, Layer } from '../../core'
+import app from '../../app'
+import { Layer } from '../../core'
 import DOM from '../DOM'
 import { timeout } from '../../time'
 import Spinner from '../Spinner'
@@ -10,7 +11,7 @@ import JSMpeg from './vendor/jsmpeg.min'
  * @example
  * // create
  * const url = 'https://url/to/video'
- * const video = FT.create('CanvasVideo', url)
+ * const video = app.create('CanvasVideo', url)
  *
  * // play
  * video.play()
@@ -54,7 +55,7 @@ class CanvasVideo extends DOM {
     /**
      * @ignore
      */
-    this.$spinner = FT.create(Spinner)
+    this.$spinner = app.create(Spinner)
     /**
      * @ignore
      */
@@ -220,9 +221,9 @@ class CanvasVideo extends DOM {
    */
   showSpinner() {
     if (this.$playing && !this.$spinner.added) {
-      this.$spinner.position.set(FT.size.centerX, FT.size.centerY)
+      this.$spinner.position.set(app.size.centerX, app.size.centerY)
       this.$spinner.visible = true
-      FT.stage.addChild(this.$spinner)
+      app.stage.addChild(this.$spinner)
     }
   }
 
@@ -232,7 +233,7 @@ class CanvasVideo extends DOM {
   hideSpinner() {
     if (this.$spinner.added) {
       this.$spinner.visible = false
-      FT.stage.removeChild(this.$spinner)
+      app.stage.removeChild(this.$spinner)
     }
   }
 }

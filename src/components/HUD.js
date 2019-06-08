@@ -1,4 +1,4 @@
-import { FT } from '../core'
+import app from '../app'
 import Component from './Component'
 
 /**
@@ -16,7 +16,7 @@ class HUD extends Component {
   constructor({ left, right, top, bottom, percentage = false } = {}) {
     super()
 
-    this.system = FT.systems.hud
+    this.system = app.systems.hud
     if (left !== undefined) this.meta.left = left
     if (right !== undefined) this.meta.right = right
     if (top !== undefined) this.meta.top = top

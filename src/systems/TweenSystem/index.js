@@ -1,4 +1,4 @@
-import { FT } from '../../core'
+import app from '../../app'
 import System from '../System'
 import TWEEN, { Tween, Easing } from './TWEEN'
 
@@ -6,8 +6,8 @@ class TweenSystem extends System {
   constructor() {
     super('tween')
 
-    FT.Tween = Tween
-    FT.Easing = Easing
+    app.Tween = Tween
+    app.Easing = Easing
   }
 
   update() {
