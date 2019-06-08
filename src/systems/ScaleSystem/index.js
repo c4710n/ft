@@ -1,5 +1,5 @@
 import System from '../System'
-import modes from './modes'
+import modes from './Modes'
 import events from '../../events'
 import { FT } from '../../core'
 import { classname } from '../../utils'
