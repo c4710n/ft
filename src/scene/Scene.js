@@ -30,6 +30,10 @@ class Scene extends Container {
     this.name = name
   }
 
+  async transitionIn() {}
+
+  async transitionOut() {}
+
   setInteractive(value = true) {
     this.interactive = value
 

@@ -1,5 +1,4 @@
 import app from '../app'
-import { Tween } from '../systems/TweenSystem/TWEEN'
 import { classname, qs } from '../utils'
 
 /**
@@ -33,6 +32,12 @@ class SceneManager {
      * @access private
      */
     this.activeScenes = []
+
+    /**
+     * Store currentc scene
+     * @access private
+     */
+    this.currentScene = null
   }
 
   /**
@@ -57,31 +62,18 @@ class SceneManager {
    *                                         you unload it explicitly
    * @param {boolean} [options.oneOff=false] scene is one-off, when the scene is removed,
    *                                         related textures will be destroyed
-   * @param {boolean} [options.transition=false] enable transition when switching
-   *                                            scene
-   * @param {number} [options.transitionTime=500] transition's duration, unit in
-   *                                            seconds
    * @return {boolean} load is done or not
    */
   async load(name, options) {
-    this.cleanup()
     this._load(name, options)
+    this.cleanup()
   }
 
   async launch(name, options) {
     this._load(name, options)
   }
 
-  async _load(
-    name,
-    {
-      sticky = false,
-      oneOff = false,
-      transition = false,
-      duration = 500,
-      index,
-    } = {}
-  ) {
+  async _load(name, { sticky = false, oneOff = false, index } = {}) {
     const scene = this.availableScenes.find(s => s.name === name)
     if (!scene) {
       if (name) {
@@ -94,30 +86,28 @@ class SceneManager {
     }
 
     const { Class, name: $name } = scene
-    const activeScene = app.create(Class, $name)
-    activeScene.sticky = sticky
-    activeScene.oneOff = oneOff
-
-    this.activeScenes.push(activeScene)
-
-    if (transition) {
-      // a simple transition
-      activeScene.alpha = 0
-    }
+    const nextScene = app.create(Class, $name)
+    nextScene.sticky = sticky
+    nextScene.oneOff = oneOff
 
     if (typeof index === 'number') {
-      app.stage.addChildAt(activeScene, index)
+      app.stage.addChildAt(nextScene, index)
     } else {
-      app.stage.addChild(activeScene)
+      app.stage.addChild(nextScene)
     }
 
-    if (transition) {
-      await new Tween(activeScene).to({ alpha: 1 }, duration).startAsync()
-
-      if (activeScene.afterTransition) {
-        activeScene.afterTransition()
-      }
+    const transitions = []
+    if (this.currentScene?.transitionOut) {
+      transitions.push(this.currentScene.transitionOut())
     }
+
+    if (nextScene?.transitionIn) {
+      transitions.push(nextScene.transitionIn())
+    }
+    await Promise.all(transitions)
+
+    this.activeScenes.push(nextScene)
+    this.currentScene = nextScene
 
     return true
   }
@@ -142,7 +132,7 @@ class SceneManager {
    */
   cleanup() {
     this.activeScenes = this.activeScenes.filter(scene => {
-      if (scene.sticky) {
+      if (scene.sticky || scene === this.currentScene) {
         return true
       } else {
         app.stage.removeChild(scene)
