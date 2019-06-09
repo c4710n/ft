@@ -8,7 +8,7 @@ import Mask from './Mask'
 import Scroller from './Scroller'
 const { Container, Sprite, AnimatedSprite, Text, Graphics } = PIXI
 
-const classMaps = {
+const factories = {
   Container,
   Sprite,
   AnimatedSprite,
@@ -23,19 +23,24 @@ const classMaps = {
 
 if (FT_ENABLE_CANVAS_VIDEO) {
   const CanvasVideo = require('./CanvasVideo')
-  classMaps.CanvasVideo = CanvasVideo
+  factories.CanvasVideo = CanvasVideo
 }
 
-export function create($class, ...args) {
-  let Class
+export function create(nameOrFactory, ...args) {
+  let displayObject
 
-  if (typeof $class === 'string') {
-    Class = classMaps[$class]
+  if (typeof nameOrFactory === 'string') {
+    const factory = factories[nameOrFactory]
+
+    if (factory.isFunction) {
+      displayObject = factory(...args)
+    } else {
+      displayObject = new factory(...args)
+    }
   } else {
-    Class = $class
+    const Class = nameOrFactory
+    displayObject = new Class(...args)
   }
-
-  const displayObject = new Class(...args)
 
   return displayObject
 }
