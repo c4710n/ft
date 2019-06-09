@@ -120,6 +120,10 @@ function removeSelf() {
   this.parent.removeChild(this)
 }
 
+function getComponent(Class) {
+  return this.components?.find(component => component instanceof Class)
+}
+
 export default function patchDisplayObjectMethods(prototype) {
   prototype.setOrigin = setOrigin
   prototype.setSize = setSize
@@ -135,6 +139,8 @@ export default function patchDisplayObjectMethods(prototype) {
   prototype.setTint = setTint
   prototype.setInteractive = setInteractive
   prototype.setVisible = setVisible
+
+  prototype.getComponent = getComponent
 
   prototype.removeSelf = removeSelf
 }
