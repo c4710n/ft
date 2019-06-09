@@ -17,7 +17,7 @@ class Mask extends PIXI.Graphics {
     super()
 
     this.beginFill(color)
-    const { width, height } = app.stage
+    const { width, height } = app.size
     this.drawRect(0, 0, width, height)
     this.endFill()
 
