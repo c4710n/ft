@@ -5,7 +5,13 @@ import System from './System'
 function checkPercentage(value) {
   const num = Number.parseFloat(value)
 
-  if (typeof num === 'number' && num <= 100 && num >= 0) {
+  if (
+    typeof value === 'string' &&
+    value.endsWith('%') &&
+    typeof num === 'number' &&
+    num <= 100 &&
+    num >= 0
+  ) {
     const percentage = num / 100
     return [true, percentage]
   } else {
