@@ -1,24 +1,6 @@
 import app from '../app'
 import { classname, qs } from '../utils'
 
-/**
- * Manager of Scenes.
- *
- * @example
- * // default instance of SceneManager.
- * const { default: sceneManager } = SceneManager
- *
- * class Preloader extends Scene {}
- *
- * class Playground extends Scene {}
- *
- * // register scenes
- * sceneManager.register('preloader', Preloader)
- * sceneManager.register('playground', Playground)
- *
- * // load scene
- * sceneManager.load('preloader')
- */
 class SceneManager {
   constructor() {
     /**
