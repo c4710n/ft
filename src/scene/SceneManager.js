@@ -96,6 +96,11 @@ class SceneManager {
     return true
   }
 
+  async launchUnique(name, ...args) {
+    if (this.get(name)) return
+    await this.launch(name, ...args)
+  }
+
   /**
    * Load scene according `scene` field in querystring
    */
