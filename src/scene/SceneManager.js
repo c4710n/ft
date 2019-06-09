@@ -13,7 +13,7 @@ class SceneManager {
      * Store all loaded scenes.
      * @access private
      */
-    this.activeScenes = []
+    this.loadedScenes = []
 
     /**
      * Store currentc scene
@@ -46,26 +46,8 @@ class SceneManager {
    *                                         related textures will be destroyed
    * @return {boolean} load is done or not
    */
-  async load(name, options) {
-    this._load(name, options)
-    this.cleanup()
-  }
-
-  async launch(name, options) {
-    this._load(name, options)
-  }
-
-  async _load(name, { sticky = false, oneOff = false, index } = {}) {
-    const scene = this.availableScenes.find(s => s.name === name)
-    if (!scene) {
-      if (name) {
-        // eslint-disable-next-line
-        console.error(
-          `[${classname(this)}] failed to load unregistered scene - ${name}`
-        )
-      }
-      return false
-    }
+  async load(name, { sticky = false, oneOff = false, index } = {}) {
+    const scene = this.findScene(name)
 
     const { Class, name: $name } = scene
     const nextScene = app.create(Class, $name)
@@ -82,14 +64,34 @@ class SceneManager {
     if (this.currentScene?.transitionOut) {
       transitions.push(this.currentScene.transitionOut())
     }
-
     if (nextScene?.transitionIn) {
       transitions.push(nextScene.transitionIn())
     }
     await Promise.all(transitions)
 
-    this.activeScenes.push(nextScene)
+    this.loadedScenes.push(nextScene)
     this.currentScene = nextScene
+
+    this.cleanup()
+    return true
+  }
+
+  async launch(name, { index } = {}) {
+    const scene = this.findScene(name)
+
+    const { Class, name: $name } = scene
+    const launchedScene = app.create(Class, $name)
+
+    if (typeof index === 'number') {
+      app.stage.addChildAt(launchedScene, index)
+    } else {
+      app.stage.addChild(launchedScene)
+    }
+    this.loadedScenes.push(launchedScene)
+
+    if (launchedScene?.transitionIn) {
+      await launchedScene.transitionIn()
+    }
 
     return true
   }
@@ -113,7 +115,7 @@ class SceneManager {
    * @access private
    */
   cleanup() {
-    this.activeScenes = this.activeScenes.filter(scene => {
+    this.loadedScenes = this.loadedScenes.filter(scene => {
       if (scene.sticky || scene === this.currentScene) {
         return true
       } else {
@@ -134,26 +136,35 @@ class SceneManager {
    * Unload a scene by name explicitly.
    * @param {string} name name of scene
    */
-  unload(name) {
-    const index = this.activeScenes.findIndex(s => s.name === name)
+  async unload(name) {
+    const index = this.loadedScenes.findIndex(s => s.name === name)
     if (index >= 0) {
-      const scene = this.activeScenes[index]
+      const scene = this.loadedScenes[index]
+
+      if (scene?.transitionOut) {
+        await scene.transitionOut()
+      }
+
       app.stage.removeChild(scene)
       scene.destroy({
         children: true,
         texture: scene.oneOff,
         baseTexture: scene.oneOff,
       })
-      this.activeScenes.splice(index, 1)
+      this.loadedScenes.splice(index, 1)
     }
   }
 
-  /**
-   * Get a loaded scene by name.
-   * @param {string} name name of a loaded scene
-   */
   get(name) {
-    const scene = this.activeScenes.find(s => s.name === name)
+    const scene = this.loadedScenes.find(s => s.name === name)
+    return scene
+  }
+
+  findScene(name) {
+    const scene = this.availableScenes.find(s => s.name === name)
+    if (!scene) {
+      throw `[${classname(this)}] failed to load unregistered scene - ${name}`
+    }
     return scene
   }
 }
