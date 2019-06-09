@@ -11,9 +11,8 @@ class HUD extends Component {
    * @param {number} options.right right position for bounds.
    * @param {number} options.top top position for bounds.
    * @param {number} options.bottom bottom position for bounds.
-   * @param {number} options.percentage make left, right ,top, bottom represent percentage.
    */
-  constructor({ left, right, top, bottom, percentage = false } = {}) {
+  constructor({ left, right, top, bottom } = {}) {
     super()
 
     this.system = app.systems.hud
@@ -21,7 +20,6 @@ class HUD extends Component {
     if (right !== undefined) this.meta.right = right
     if (top !== undefined) this.meta.top = top
     if (bottom !== undefined) this.meta.bottom = bottom
-    this.meta.percentage = percentage
   }
 
   // eslint-disable-next-line
