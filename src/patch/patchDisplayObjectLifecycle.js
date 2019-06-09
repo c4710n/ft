@@ -2,8 +2,11 @@
 import app from '../app'
 import { PIXI } from '../core'
 import { splice } from '../utils/fast'
+import patchDisplayObjectMethods from './patchDisplayObjectMethods'
 
 const { Container, DisplayObject } = PIXI
+
+patchDisplayObjectMethods(Container.prototype)
 
 Container.prototype.$addChild = Container.prototype.addChild
 Container.prototype.$removeChild = Container.prototype.removeChild

@@ -33,12 +33,6 @@ class Scene extends Container {
   async transitionIn() {}
 
   async transitionOut() {}
-
-  setInteractive(value = true) {
-    this.interactive = value
-
-    return this
-  }
 }
 
 export default Scene

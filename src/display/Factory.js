@@ -1,6 +1,5 @@
 /* global require, FT_ENABLE_CANVAS_VIDEO */
 
-import { patchDisplayObjectMethods } from '../patch'
 import { PIXI } from '../core'
 import Spine from './Spine'
 import DOM from './DOM'
@@ -37,8 +36,6 @@ export function create($class, ...args) {
   }
 
   const displayObject = new Class(...args)
-
-  patchDisplayObjectMethods(displayObject)
 
   return displayObject
 }
