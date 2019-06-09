@@ -120,21 +120,21 @@ function removeSelf() {
   this.parent.removeChild(this)
 }
 
-export default function patchDisplayObjectMethods(instance) {
-  instance.setOrigin = setOrigin
-  instance.setSize = setSize
-  instance.setWidth = setWidth
-  instance.setHeight = setHeight
-  instance.setPosition = setPosition
-  instance.setPositionX = setPositionX
-  instance.setPositionY = setPositionY
-  instance.setScale = setScale
-  instance.setScaleX = setScaleX
-  instance.setScaleY = setScaleY
-  instance.setAlpha = setAlpha
-  instance.setTint = setTint
-  instance.setInteractive = setInteractive
-  instance.setVisible = setVisible
+export default function patchDisplayObjectMethods(prototype) {
+  prototype.setOrigin = setOrigin
+  prototype.setSize = setSize
+  prototype.setWidth = setWidth
+  prototype.setHeight = setHeight
+  prototype.setPosition = setPosition
+  prototype.setPositionX = setPositionX
+  prototype.setPositionY = setPositionY
+  prototype.setScale = setScale
+  prototype.setScaleX = setScaleX
+  prototype.setScaleY = setScaleY
+  prototype.setAlpha = setAlpha
+  prototype.setTint = setTint
+  prototype.setInteractive = setInteractive
+  prototype.setVisible = setVisible
 
-  instance.removeSelf = removeSelf
+  prototype.removeSelf = removeSelf
 }
