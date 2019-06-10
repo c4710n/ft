@@ -76,11 +76,13 @@ class SceneManager {
     return true
   }
 
-  async launch(name, { index } = {}) {
+  async launch(name, { oneOff = false, index } = {}) {
     const scene = this.findScene(name)
 
     const { Class, name: $name } = scene
     const launchedScene = app.create(Class, $name)
+    launchedScene.launched = true
+    launchedScene.oneOff = oneOff
 
     if (typeof index === 'number') {
       app.stage.addChildAt(launchedScene, index)
@@ -121,7 +123,7 @@ class SceneManager {
    */
   cleanup() {
     this.loadedScenes = this.loadedScenes.filter(scene => {
-      if (scene.sticky || scene === this.currentScene) {
+      if (scene.sticky || scene.launched || scene === this.currentScene) {
         return true
       } else {
         app.stage.removeChild(scene)
