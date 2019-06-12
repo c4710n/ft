@@ -73,10 +73,15 @@ class HTML5Video extends DOM {
    * @ignore
    */
   patchVideoDOM(video, url) {
-    const { loop = false, hide = false } = this.$options
+    const {
+      loop = false,
+      layer = Layer.DOM_DISPLAY,
+      controls = false,
+    } = this.$options
     video.src = url
     video.loop = loop
-    video.style.zIndex = hide ? Layer.DOM_DISPLAY_HIDDEN : Layer.DOM_DISPLAY
+    video.controls = controls
+    video.style.zIndex = layer
     video.style.objectFit = 'fill'
     video.crossorigin = 'anonymous'
     video.setAttribute('preload', 'auto')
