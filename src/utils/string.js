@@ -26,7 +26,21 @@ export function sub(string, start, end) {
   return substring
 }
 
+export function shuffle(string) {
+  const chars = string.split('')
+
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = chars[i]
+    chars[i] = chars[j]
+    chars[j] = temp
+  }
+
+  return chars.join('')
+}
+
 export default {
   length,
   sub,
+  shuffle,
 }
