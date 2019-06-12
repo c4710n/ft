@@ -7,7 +7,7 @@ import app from '../app'
  * @param {DisplayObject} displayObject the display object which provides position and size.
  */
 function transformDOM(dom, displayObject, layer) {
-  const { width, height, alpha } = displayObject
+  const { width, height, worldAlpha: alpha } = displayObject
 
   const { x: $x, y: $y } = displayObject.getGlobalPosition()
 

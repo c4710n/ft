@@ -10,7 +10,6 @@ const { Sprite, Texture } = PIXI
 class DOM extends Sprite {
   constructor(tag = 'div') {
     super(Texture.EMPTY)
-    this.alpha = 1
 
     /**
      * @access private
