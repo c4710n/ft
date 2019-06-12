@@ -23,15 +23,32 @@ class HTML5Video extends PIXI.Container {
    * @param {string} src='' url of video
    * @param {Object} options
    */
-  constructor(url, options = {}) {
+  constructor(
+    url,
+    {
+      loop = false,
+      layer = Layer.DOM_DISPLAY,
+      controls = false,
+      posterTexture,
+    } = {}
+  ) {
     super()
 
-    this.$options = options
+    this.$posterTexture = posterTexture
+    if (this.$posterTexture) {
+      const poster = new PIXI.Sprite(this.$posterTexture).setOrigin(0.5)
+      this.addChild(poster)
+      this.poster = poster
+    }
 
     const video = new DOM('video').setOrigin(0.5)
+    this.videoDOM = this.patchVideoDOM(video.dom, url, {
+      loop,
+      layer,
+      controls,
+    })
     this.video = video
     this.addChild(video)
-    this.videoDOM = this.patchVideoDOM(video.dom, url)
 
     /**
      * @ignore
@@ -71,38 +88,41 @@ class HTML5Video extends PIXI.Container {
    * Create video DOM.
    * @ignore
    */
-  patchVideoDOM(video, url) {
-    const {
-      loop = false,
-      layer = Layer.DOM_DISPLAY,
-      controls = false,
-    } = this.$options
-    video.src = url
-    video.loop = loop
-    video.controls = controls
-    video.style.zIndex = layer
-    video.style.objectFit = 'fill'
-    video.crossorigin = 'anonymous'
-    video.setAttribute('preload', 'auto')
-    video.setAttribute('playsinline', '')
-    video.setAttribute('webkit-playsinline', '') // WebKit-based browser adaptation
+  patchVideoDOM(videoDOM, url, { loop, layer, controls } = {}) {
+    videoDOM.src = url
+    videoDOM.loop = loop
+    videoDOM.controls = controls
+    videoDOM.style.zIndex = layer
+    videoDOM.style.objectFit = 'fill'
+    videoDOM.crossorigin = 'anonymous'
+    videoDOM.setAttribute('preload', 'auto')
+    videoDOM.setAttribute('playsinline', '')
+    videoDOM.setAttribute('webkit-playsinline', '') // WebKit-based browser adaptation
 
     // QQ Browser on iOS
     if (Device.isIOS && Device.isQQBrowser) {
-      video.setAttribute('x5-playsinline', '')
+      videoDOM.setAttribute('x5-playsinline', '')
     }
 
-    return video
+    return videoDOM
   }
 
   setSize(...args) {
     this.video.setSize(...args)
+
+    if (this.poster) {
+      this.poster.setSize(...args)
+    }
 
     return this
   }
 
   setAngle(...args) {
     this.video.setAngle(...args)
+
+    if (this.poster) {
+      this.poster.setAngle(...args)
+    }
 
     return this
   }
