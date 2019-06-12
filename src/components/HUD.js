@@ -12,14 +12,21 @@ class HUD extends Component {
    * @param {number} options.top top position for bounds.
    * @param {number} options.bottom bottom position for bounds.
    */
-  constructor({ left, right, top, bottom } = {}) {
-    super()
+  constructor(options) {
+    super(options)
 
     this.system = app.systems.hud
-    if (left !== undefined) this.meta.left = left
-    if (right !== undefined) this.meta.right = right
-    if (top !== undefined) this.meta.top = top
-    if (bottom !== undefined) this.meta.bottom = bottom
+  }
+
+  setMeta({ left, right, top, bottom } = {}) {
+    const meta = {}
+
+    if (left !== undefined) meta.left = left
+    if (right !== undefined) meta.right = right
+    if (top !== undefined) meta.top = top
+    if (bottom !== undefined) meta.bottom = bottom
+
+    this.meta = meta
   }
 
   // eslint-disable-next-line
