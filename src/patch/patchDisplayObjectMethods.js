@@ -94,6 +94,12 @@ function setAlpha(alpha) {
   return this
 }
 
+function setRotation(rotation) {
+  this.rotation = rotation
+
+  return this
+}
+
 function setTint(value) {
   this.tint = value
 
@@ -136,6 +142,7 @@ export default function patchDisplayObjectMethods(prototype) {
   prototype.setScaleX = setScaleX
   prototype.setScaleY = setScaleY
   prototype.setAlpha = setAlpha
+  prototype.setRotation = setRotation
   prototype.setTint = setTint
   prototype.setInteractive = setInteractive
   prototype.setVisible = setVisible
