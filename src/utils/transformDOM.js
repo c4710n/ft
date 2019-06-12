@@ -32,6 +32,7 @@ function transformDOM(dom, displayObject, layer) {
   dom.style.top = `${y}px`
   dom.style.zIndex = layer
   dom.style.opacity = alpha
+  dom.style.transformOrigin = `${pivotX}px ${pivotY}px`
   dom.style.transform = `rotate(${rotation}deg)`
 }
 
