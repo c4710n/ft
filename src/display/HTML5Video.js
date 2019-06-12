@@ -1,5 +1,5 @@
 import app from '../app'
-import { Layer, Device } from '../core'
+import { Layer, Device, PIXI } from '../core'
 import DOM from './DOM'
 import { timeout } from '../time'
 import Spinner from './Spinner'
@@ -18,22 +18,21 @@ import Spinner from './Spinner'
  * // play
  * await video.play()
  */
-class HTML5Video extends DOM {
+class HTML5Video extends PIXI.Container {
   /**
    * @param {string} src='' url of video
    * @param {Object} options
    */
   constructor(url, options = {}) {
-    super('video')
+    super()
 
-    /**
-     * @ignore
-     */
     this.$options = options
-    /**
-     * @ignore
-     */
-    this.$video = this.patchVideoDOM(this.dom, url)
+
+    const video = new DOM('video').setOrigin(0.5)
+    this.video = video
+    this.addChild(video)
+    this.videoDOM = this.patchVideoDOM(video.dom, url)
+
     /**
      * @ignore
      */
@@ -96,20 +95,30 @@ class HTML5Video extends DOM {
     return video
   }
 
+  setSize(...args) {
+    this.video.setSize(...args)
+
+    return this
+  }
+
+  setAngle(...args) {
+    this.video.setAngle(...args)
+
+    return this
+  }
+
   /**
    * @ignore
    */
   onAdded() {
-    super.onAdded()
-    this.$video.addEventListener('ended', this.onEnd)
+    this.videoDOM.addEventListener('ended', this.onEnd)
   }
 
   /**
    * @ignore
    */
   onRemoved() {
-    super.onRemoved()
-    this.$video.removeEventListener('ended', this.onEnd)
+    this.videoDOM.removeEventListener('ended', this.onEnd)
   }
 
   /**
@@ -118,8 +127,6 @@ class HTML5Video extends DOM {
    * @emits {progress}
    */
   onUpdate() {
-    super.renderDOM(this.$layer)
-
     const { currentTime } = this
 
     if (this.isPlaying) {
@@ -143,8 +150,8 @@ class HTML5Video extends DOM {
    * @see https://stackoverflow.com/a/50480115/1793548
    */
   unlock() {
-    this.$video.play()
-    this.$video.pause()
+    this.videoDOM.play()
+    this.videoDOM.pause()
   }
 
   /**
@@ -159,7 +166,7 @@ class HTML5Video extends DOM {
    * @return {Promise} same as DOM API - `play()`
    */
   play() {
-    const { $video: video } = this
+    const { videoDOM: video } = this
 
     if (this.$ready) {
       this.emit('play')
@@ -205,7 +212,7 @@ class HTML5Video extends DOM {
    */
   reset() {
     this.emit('reset')
-    this.$video.currentTime = this.$readyTime
+    this.videoDOM.currentTime = this.$readyTime
   }
 
   /**
@@ -215,7 +222,7 @@ class HTML5Video extends DOM {
    */
   show() {
     this.emit('show')
-    this.$video.style.zIndex = Layer.DOM_DISPLAY
+    this.videoDOM.style.zIndex = Layer.DOM_DISPLAY
   }
 
   /**
@@ -225,7 +232,7 @@ class HTML5Video extends DOM {
    */
   hide() {
     this.emit('hide')
-    this.$video.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
+    this.videoDOM.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
   }
 
   /**
@@ -234,7 +241,7 @@ class HTML5Video extends DOM {
   nativePlay() {
     this.$playing = true
     this.$spinnerTimer.start()
-    return this.$video.play()
+    return this.videoDOM.play()
   }
 
   /**
@@ -243,14 +250,14 @@ class HTML5Video extends DOM {
   nativePause() {
     this.$playing = false
     this.$spinnerTimer.stop()
-    return this.$video.pause()
+    return this.videoDOM.pause()
   }
 
   /**
    * Get duration of video.
    */
   get duration() {
-    return this.$video.duration
+    return this.videoDOM.duration
   }
 
   /**
@@ -268,14 +275,14 @@ class HTML5Video extends DOM {
    * Get current time of video.
    */
   get currentTime() {
-    return this.$video.currentTime
+    return this.videoDOM.currentTime
   }
 
   /**
    * Set current time of video.
    */
   set currentTime(value) {
-    this.$video.currentTime = value
+    this.videoDOM.currentTime = value
   }
 
   get isLoading() {
@@ -297,9 +304,9 @@ class HTML5Video extends DOM {
    */
   showSpinner() {
     if (!this.$spinner.added) {
-      this.$spinner.position.set(app.size.centerX, app.size.centerY)
+      this.$spinner.position.set(0, 0)
       this.$spinner.visible = true
-      app.stage.addChild(this.$spinner)
+      this.addChild(this.$spinner)
     }
   }
 
@@ -309,7 +316,7 @@ class HTML5Video extends DOM {
   hideSpinner() {
     if (this.$spinner.added) {
       this.$spinner.visible = false
-      app.stage.removeChild(this.$spinner)
+      this.removeChild(this.$spinner)
     }
   }
 }
