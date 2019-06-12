@@ -1,4 +1,13 @@
 function setOrigin(originX, originY) {
+  // cache origin on object
+  if (originY === undefined) {
+    this.originX = originX
+    this.originY = originX
+  } else {
+    this.originX = originX
+    this.originY = originY
+  }
+
   if (this.anchor) {
     if (originX !== undefined) this.anchor.x = originX
     if (originY !== undefined) this.anchor.y = originY
@@ -100,6 +109,12 @@ function setRotation(rotation) {
   return this
 }
 
+function setAngle(angle) {
+  this.angle = angle
+
+  return this
+}
+
 function setTint(value) {
   this.tint = value
 
@@ -143,6 +158,7 @@ export default function patchDisplayObjectMethods(prototype) {
   prototype.setScaleY = setScaleY
   prototype.setAlpha = setAlpha
   prototype.setRotation = setRotation
+  prototype.setAngle = setAngle
   prototype.setTint = setTint
   prototype.setInteractive = setInteractive
   prototype.setVisible = setVisible

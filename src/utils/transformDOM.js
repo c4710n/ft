@@ -7,7 +7,7 @@ import app from '../app'
  * @param {DisplayObject} displayObject the display object which provides position and size.
  */
 function transformDOM(dom, displayObject, layer) {
-  const { width, height, worldAlpha: alpha, rotation } = displayObject
+  const { width, height, worldAlpha: alpha, angle } = displayObject
 
   const { x: $x, y: $y } = displayObject.getGlobalPosition()
 
@@ -33,7 +33,7 @@ function transformDOM(dom, displayObject, layer) {
   dom.style.zIndex = layer
   dom.style.opacity = alpha
   dom.style.transformOrigin = `${pivotX}px ${pivotY}px`
-  dom.style.transform = `rotate(${rotation}deg)`
+  dom.style.transform = `rotate(${angle}deg)`
 }
 
 export default transformDOM
