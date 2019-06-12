@@ -7,7 +7,7 @@ import app from '../app'
  * @param {DisplayObject} displayObject the display object which provides position and size.
  */
 function transformDOM(dom, displayObject, layer) {
-  const { width, height, worldAlpha: alpha } = displayObject
+  const { width, height, worldAlpha: alpha, rotation } = displayObject
 
   const { x: $x, y: $y } = displayObject.getGlobalPosition()
 
@@ -32,6 +32,7 @@ function transformDOM(dom, displayObject, layer) {
   dom.style.top = `${y}px`
   dom.style.zIndex = layer
   dom.style.opacity = alpha
+  dom.style.transform = `rotate(${rotation}deg)`
 }
 
 export default transformDOM
