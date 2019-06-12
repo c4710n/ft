@@ -8,12 +8,10 @@ const { Sprite, Texture } = PIXI
  * Create a DOM element.
  */
 class DOM extends Sprite {
-  constructor(tag = 'div') {
+  constructor(tag = 'div', { layer = Layer.DOM_INTERACTION } = {}) {
     super(Texture.EMPTY)
 
-    /**
-     * @access private
-     */
+    this.layer = layer
     this.dom = document.createElement(tag)
   }
 
@@ -26,7 +24,8 @@ class DOM extends Sprite {
   }
 
   onUpdate() {
-    this.renderDOM(Layer.DOM_INTERACTION)
+    const { layer } = this
+    this.renderDOM(layer)
   }
 
   /**
