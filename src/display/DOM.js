@@ -13,9 +13,13 @@ class DOM extends Sprite {
 
     this.layer = layer
     this.dom = document.createElement(tag)
+    this.skipFirstUpdate = false
   }
 
   onAdded() {
+    // hide dom for now.
+    // renderDOM will give it right opacity later.
+    this.dom.style.opacity = 0
     app.container.appendChild(this.dom)
   }
 
@@ -24,6 +28,11 @@ class DOM extends Sprite {
   }
 
   onUpdate() {
+    if (!this.skipFirstUpdate) {
+      this.skipFirstUpdate = true
+      return
+    }
+
     const { layer } = this
     this.renderDOM(layer)
   }
