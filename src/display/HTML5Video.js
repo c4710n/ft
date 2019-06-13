@@ -10,7 +10,7 @@ import Spinner from './Spinner'
  * @example
  * // create
  * const url = 'https://url/to/video'
- * const video = app.create(Video, url)
+ * const video = app.create('HTML5Video', url)
  *
  * // unlock
  * await video.unlock()
@@ -42,7 +42,7 @@ class HTML5Video extends PIXI.Container {
     }
 
     const video = new DOM('video').setOrigin(0.5)
-    this.videoDOM = this.patchVideoDOM(video.dom, url, {
+    this.videoPlayer = this.createVideoPlayer(video.dom, url, {
       loop,
       layer,
       controls,
@@ -88,7 +88,7 @@ class HTML5Video extends PIXI.Container {
    * Create video DOM.
    * @ignore
    */
-  patchVideoDOM(videoDOM, url, { loop, layer, controls } = {}) {
+  createVideoPlayer(videoDOM, url, { loop, layer, controls } = {}) {
     videoDOM.src = url
     videoDOM.loop = loop
     videoDOM.controls = controls
@@ -131,14 +131,14 @@ class HTML5Video extends PIXI.Container {
    * @ignore
    */
   onAdded() {
-    this.videoDOM.addEventListener('ended', this.onEnd)
+    this.videoPlayer.addEventListener('ended', this.onEnd)
   }
 
   /**
    * @ignore
    */
   onRemoved() {
-    this.videoDOM.removeEventListener('ended', this.onEnd)
+    this.videoPlayer.removeEventListener('ended', this.onEnd)
   }
 
   /**
@@ -170,8 +170,8 @@ class HTML5Video extends PIXI.Container {
    * @see https://stackoverflow.com/a/50480115/1793548
    */
   unlock() {
-    this.videoDOM.play()
-    this.videoDOM.pause()
+    this.videoPlayer.play()
+    this.videoPlayer.pause()
   }
 
   /**
@@ -186,7 +186,7 @@ class HTML5Video extends PIXI.Container {
    * @return {Promise} same as DOM API - `play()`
    */
   play() {
-    const { videoDOM } = this
+    const { videoPlayer } = this
 
     if (this.$ready) {
       this.emit('play')
@@ -197,18 +197,18 @@ class HTML5Video extends PIXI.Container {
       this.$preplayPromise ||
       new Promise(resolve => {
         const listener = () => {
-          const { currentTime } = videoDOM
+          const { currentTime } = videoPlayer
           if (currentTime > 0) {
-            videoDOM.removeEventListener('timeupdate', listener)
+            videoPlayer.removeEventListener('timeupdate', listener)
             this.$ready = true
             this.$readyTime = currentTime
-            videoDOM.muted = false
+            videoPlayer.muted = false
             this.emit('play')
             resolve()
           }
         }
-        videoDOM.addEventListener('timeupdate', listener)
-        videoDOM.muted = true
+        videoPlayer.addEventListener('timeupdate', listener)
+        videoPlayer.muted = true
         this.nativePlay()
       })
     return this.$preplayPromise
@@ -232,7 +232,7 @@ class HTML5Video extends PIXI.Container {
    */
   reset() {
     this.emit('reset')
-    this.videoDOM.currentTime = this.$readyTime
+    this.videoPlayer.currentTime = this.$readyTime
   }
 
   /**
@@ -242,7 +242,7 @@ class HTML5Video extends PIXI.Container {
    */
   show() {
     this.emit('show')
-    this.videoDOM.style.zIndex = Layer.DOM_DISPLAY
+    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY
   }
 
   /**
@@ -252,7 +252,7 @@ class HTML5Video extends PIXI.Container {
    */
   hide() {
     this.emit('hide')
-    this.videoDOM.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
+    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
   }
 
   /**
@@ -261,7 +261,7 @@ class HTML5Video extends PIXI.Container {
   nativePlay() {
     this.$playing = true
     this.$spinnerTimer.start()
-    return this.videoDOM.play()
+    return this.videoPlayer.play()
   }
 
   /**
@@ -270,14 +270,14 @@ class HTML5Video extends PIXI.Container {
   nativePause() {
     this.$playing = false
     this.$spinnerTimer.stop()
-    return this.videoDOM.pause()
+    return this.videoPlayer.pause()
   }
 
   /**
    * Get duration of video.
    */
   get duration() {
-    return this.videoDOM.duration
+    return this.videoPlayer.duration
   }
 
   /**
@@ -295,14 +295,14 @@ class HTML5Video extends PIXI.Container {
    * Get current time of video.
    */
   get currentTime() {
-    return this.videoDOM.currentTime
+    return this.videoPlayer.currentTime
   }
 
   /**
    * Set current time of video.
    */
   set currentTime(value) {
-    this.videoDOM.currentTime = value
+    this.videoPlayer.currentTime = value
   }
 
   get isLoading() {
