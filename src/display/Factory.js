@@ -23,7 +23,7 @@ const factories = {
 
 if (FT_ENABLE_CANVAS_VIDEO) {
   const CanvasVideo = require('./CanvasVideo')
-  factories.CanvasVideo = CanvasVideo
+  factories.CanvasVideo = CanvasVideo.default
 }
 
 export function create(nameOrFactory, ...args) {
