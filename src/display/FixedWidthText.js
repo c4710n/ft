@@ -16,10 +16,16 @@ class FixedWidthText extends PIXI.Text {
 
     const suffixWidth = new PIXI.Text(suffix, ...args).width
 
+    const calcWidth = textWidth - suffixWidth
+    const maxWidth = calcWidth > 0 ? calcWidth : 0
+
     let truncated = false
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      if (this.width < textWidth - suffixWidth) {
+      if (
+        this.width < maxWidth ||
+        (this.text.length = 0 && this.width >= maxWidth)
+      ) {
         if (truncated) {
           this.text += suffix
         }
@@ -28,7 +34,7 @@ class FixedWidthText extends PIXI.Text {
       } else {
         truncated = true
         const text = this.text
-        const end = this.text.length - 1
+        const end = this.text.length - 2
         this.text = string.sub(text, 0, end)
       }
     }
