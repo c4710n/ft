@@ -1,5 +1,5 @@
 import app from '../../app'
-import { Layer } from '../../core'
+import { Layer, PIXI } from '../../core'
 import DOM from '../DOM'
 import { timeout } from '../../time'
 import Spinner from '../Spinner'
@@ -16,30 +16,27 @@ import JSMpeg from './vendor/jsmpeg.min'
  * // play
  * video.play()
  */
-class CanvasVideo extends DOM {
+class CanvasVideo extends PIXI.Container {
   /**
    * @param {string} url='' url of video
    * @param {Object} options
    */
-  constructor(url, options = {}) {
-    super('canvas')
+  constructor(
+    url,
+    { autoplay = false, loop = false, layer = Layer.DOM_DISPLAY, poster } = {}
+  ) {
+    super()
 
-    /**
-     * @ignore
-     */
-    this.$options = options
-    /**
-     * @ignore
-     */
-    this.$video = this.createVideo(this.dom, url)
-    /**
-     * @ignore
-     */
-    this.$preplayPromise = null
-    /**
-     * @ignore
-     */
-    this.$ready = false
+    const video = new DOM('canvas').setOrigin(0.5)
+    this.videoPlayer = this.createVideoPlayer(video.dom, url, {
+      autoplay,
+      loop,
+      layer,
+      poster,
+    })
+    this.video = video
+    this.addChild(video)
+
     /**
      * @ignore
      */
@@ -60,7 +57,9 @@ class CanvasVideo extends DOM {
      * @ignore
      */
     this.$spinnerTimer = timeout(500, () => {
-      this.showSpinner()
+      if (this.isLoading) {
+        this.showSpinner()
+      }
     })
   }
 
@@ -68,34 +67,42 @@ class CanvasVideo extends DOM {
    * Create video DOM.
    * @ignore
    */
-  createVideo(canvas, url) {
-    const { loop = false, hide = false } = this.$options
-    canvas.style.zIndex = hide ? Layer.DOM_DISPLAY_HIDDEN : Layer.DOM_DISPLAY
+  createVideoPlayer(canvas, url, { autoplay, loop, layer, poster } = {}) {
+    canvas.style.zIndex = layer
 
     const options = {
-      loop,
       canvas,
+      poster,
+      autoplay,
+      loop,
       videoBufferSize: 2048 * 1024, // 1024 means 1KB
       onEnded: this.onEnd,
     }
-    var video = new JSMpeg.Player(url, options)
+    const videoPlayer = new JSMpeg.Player(url, options)
+    return videoPlayer
+  }
 
-    return video
+  setSize(...args) {
+    this.video.setSize(...args)
+
+    return this
+  }
+
+  setAngle(...args) {
+    this.video.setAngle(...args)
+
+    return this
   }
 
   /**
    * @ignore
    */
-  onAdded() {
-    super.onAdded()
-  }
+  onAdded() {}
 
   /**
    * @ignore
    */
-  onRemoved() {
-    super.onRemoved()
-  }
+  onRemoved() {}
 
   /**
    * @ignore
@@ -103,21 +110,19 @@ class CanvasVideo extends DOM {
    * @emits {progress}
    */
   onUpdate() {
-    super.renderDOM(this.$layer)
-
-    const { currentTime } = this.$video
-    if (this.isRealPlaying) {
+    const { currentTime } = this.videoPlayer
+    if (this.isPlaying) {
       this.$spinnerTimer.reset()
       this.hideSpinner()
       this.emit('progress', currentTime)
+    } else if (this.isPaused) {
+      this.hideSpinner()
     }
 
     this.$previousTime = currentTime
   }
 
-  async unlock() {
-    return Promise.resolve()
-  }
+  unlock() {}
 
   play() {
     this.emit('play')
@@ -131,7 +136,7 @@ class CanvasVideo extends DOM {
 
   reset() {
     this.emit('reset')
-    this.$video.currentTime = this.$readyTime
+    this.videoPlayer.currentTime = this.$readyTime
   }
 
   /**
@@ -141,7 +146,7 @@ class CanvasVideo extends DOM {
    */
   show() {
     this.emit('show')
-    this.$video.style.zIndex = Layer.DOM_DISPLAY
+    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY
   }
 
   /**
@@ -151,7 +156,7 @@ class CanvasVideo extends DOM {
    */
   hide() {
     this.emit('hide')
-    this.$video.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
+    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
   }
 
   /**
@@ -162,7 +167,7 @@ class CanvasVideo extends DOM {
     this.$spinnerTimer.start()
 
     return new Promise(resolve => {
-      this.$video.play()
+      this.videoPlayer.play()
       resolve()
     })
   }
@@ -175,7 +180,7 @@ class CanvasVideo extends DOM {
     this.$spinnerTimer.stop()
 
     return new Promise(resolve => {
-      this.$video.pause()
+      this.videoPlayer.pause()
       resolve()
     })
   }
@@ -184,7 +189,7 @@ class CanvasVideo extends DOM {
    * Get duration of video.
    */
   get duration() {
-    return this.$video.duration
+    return this.videoPlayer.duration
   }
 
   /**
@@ -202,28 +207,37 @@ class CanvasVideo extends DOM {
    * Get current time of video.
    */
   get currentTime() {
-    return this.$video.currentTime
+    return this.videoPlayer.currentTime
   }
 
   /**
    * Set current time of video.
    */
   set currentTime(value) {
-    this.$video.currentTime = value
+    this.videoPlayer.currentTime = value
   }
 
-  get isRealPlaying() {
-    return this.$playing && this.$video.currentTime > this.$previousTime
+  get isLoading() {
+    return this.added && this.$playing && this.currentTime <= this.$previousTime
   }
 
+  get isPlaying() {
+    return this.added && this.$playing && this.currentTime > this.$previousTime
+  }
+
+  get isPaused() {
+    return (
+      this.added && !this.$playing && this.currentTime == this.$previousTime
+    )
+  }
   /**
    * @ignore
    */
   showSpinner() {
-    if (this.$playing && !this.$spinner.added) {
-      this.$spinner.position.set(app.size.centerX, app.size.centerY)
+    if (!this.$spinner.added) {
+      this.$spinner.position.set(0, 0)
       this.$spinner.visible = true
-      app.stage.addChild(this.$spinner)
+      this.addChild(this.$spinner)
     }
   }
 
@@ -233,7 +247,7 @@ class CanvasVideo extends DOM {
   hideSpinner() {
     if (this.$spinner.added) {
       this.$spinner.visible = false
-      app.stage.removeChild(this.$spinner)
+      this.removeChild(this.$spinner)
     }
   }
 }
