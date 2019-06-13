@@ -24,7 +24,7 @@ class FixedWidthText extends PIXI.Text {
     while (true) {
       if (
         this.width < maxWidth ||
-        (this.text.length = 0 && this.width >= maxWidth)
+        (this.text.length === 0 && this.width >= maxWidth)
       ) {
         if (truncated) {
           this.text += suffix
