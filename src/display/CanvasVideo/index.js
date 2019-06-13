@@ -23,16 +23,20 @@ class CanvasVideo extends PIXI.Container {
    */
   constructor(
     url,
-    { autoplay = false, loop = false, layer = Layer.DOM_DISPLAY, poster } = {}
+    {
+      autoplay = false,
+      loop = false,
+      layer = Layer.DOM_DISPLAY,
+      posterURL,
+    } = {}
   ) {
     super()
 
-    const video = new DOM('canvas').setOrigin(0.5)
+    const video = new DOM('canvas', { layer }).setOrigin(0.5)
     this.videoPlayer = this.createVideoPlayer(video.dom, url, {
       autoplay,
       loop,
-      layer,
-      poster,
+      poster: posterURL,
     })
     this.video = video
     this.addChild(video)
@@ -67,9 +71,7 @@ class CanvasVideo extends PIXI.Container {
    * Create video DOM.
    * @ignore
    */
-  createVideoPlayer(canvas, url, { autoplay, loop, layer, poster } = {}) {
-    canvas.style.zIndex = layer
-
+  createVideoPlayer(canvas, url, { autoplay, loop, poster } = {}) {
     const options = {
       canvas,
       poster,

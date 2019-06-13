@@ -41,10 +41,9 @@ class HTML5Video extends PIXI.Container {
       this.poster = poster
     }
 
-    const video = new DOM('video').setOrigin(0.5)
+    const video = new DOM('video', { layer }).setOrigin(0.5)
     this.videoPlayer = this.createVideoPlayer(video.dom, url, {
       loop,
-      layer,
       controls,
     })
     this.video = video
@@ -88,11 +87,10 @@ class HTML5Video extends PIXI.Container {
    * Create video DOM.
    * @ignore
    */
-  createVideoPlayer(videoDOM, url, { loop, layer, controls } = {}) {
+  createVideoPlayer(videoDOM, url, { loop, controls } = {}) {
     videoDOM.src = url
     videoDOM.loop = loop
     videoDOM.controls = controls
-    videoDOM.style.zIndex = layer
     videoDOM.style.objectFit = 'fill'
     videoDOM.crossorigin = 'anonymous'
     videoDOM.setAttribute('preload', 'auto')
