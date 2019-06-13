@@ -30,17 +30,10 @@
   "dependencies": {
     "es6-tween": "^5.5.2",
     "eventemitter3": "^3.1.2",
-    "fbjs": "^1.0.0",
-    "idx": "^2.5.6",
-    "lodash": "^4.17.11",
-    "performance-now": "^2.1.0",
     "pixi-sound": "^3.0.2",
     "pixi-spine": "^2.0.0",
     "pixi.js-legacy": "^5.0.1",
     "qs": "^6.7.0",
-    "react": "^16.8.6",
-    "react-reconciler": "^0.20.4",
-    "scheduler": "^0.14.0",
     "string-length": "^3.1.0",
     "vconsole": "^3.3.0",
     "webfontloader": "^1.6.28"
