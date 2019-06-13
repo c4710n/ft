@@ -28,9 +28,7 @@
 
 ## Installation
 
-```sh
-$ npm install @2players/ft
-```
+Not ready to release.
 
 ## Usage
 
