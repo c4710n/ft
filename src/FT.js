@@ -5,7 +5,7 @@ class FT {
     this.app = app
   }
 
-  createAPP(...args) {
+  create(...args) {
     this.app.init(...args)
 
     return this.app

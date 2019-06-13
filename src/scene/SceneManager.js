@@ -50,7 +50,7 @@ class SceneManager {
     const scene = this.findScene(name)
 
     const { Class, name: $name } = scene
-    const nextScene = app.create(Class, $name)
+    const nextScene = new Class($name)
     nextScene.sticky = sticky
     nextScene.oneOff = oneOff
 
@@ -80,7 +80,7 @@ class SceneManager {
     const scene = this.findScene(name)
 
     const { Class, name: $name } = scene
-    const launchedScene = app.create(Class, $name)
+    const launchedScene = new Class($name)
     launchedScene.launched = true
     launchedScene.oneOff = oneOff
 

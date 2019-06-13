@@ -12,3 +12,11 @@ if (FT_PRODUCTION_MODE) {
  * @external {PIXI} https://github.com/pixijs/pixi.js/
  */
 export default PIXI
+
+export {
+  Container,
+  Graphics,
+  Sprite,
+  AnimatedSprite,
+  Text,
+} from 'pixi.js-legacy'

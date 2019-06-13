@@ -8,7 +8,6 @@ import {
   SoundSystem,
   VisibilitySystem,
 } from './systems'
-import { Factory as DisplayFactory } from './display'
 import ResManager from './res/ResManager'
 import SceneManager from './scene/SceneManager'
 import events from './events'
@@ -26,7 +25,6 @@ class App {
     this.systems = {}
     this.rm = ResManager.default
     this.sm = SceneManager.default
-    this.create = DisplayFactory.create
   }
 
   /**

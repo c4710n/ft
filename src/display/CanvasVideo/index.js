@@ -1,4 +1,3 @@
-import app from '../../app'
 import { Layer, PIXI } from '../../core'
 import DOM from '../DOM'
 import { timeout } from '../../time'
@@ -11,7 +10,7 @@ import JSMpeg from './vendor/jsmpeg.min'
  * @example
  * // create
  * const url = 'https://url/to/video'
- * const video = app.create('CanvasVideo', url)
+ * const video = new CanvasVideo(url)
  *
  * // play
  * video.play()
@@ -56,7 +55,7 @@ class CanvasVideo extends PIXI.Container {
     /**
      * @ignore
      */
-    this.$spinner = app.create(Spinner)
+    this.$spinner = new Spinner()
     /**
      * @ignore
      */

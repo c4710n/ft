@@ -1,4 +1,3 @@
-import app from '../app'
 import { Layer, Device, PIXI } from '../core'
 import DOM from './DOM'
 import { timeout } from '../time'
@@ -10,7 +9,7 @@ import Spinner from './Spinner'
  * @example
  * // create
  * const url = 'https://url/to/video'
- * const video = app.create('HTML5Video', url)
+ * const video = new HTML5Video(url)
  *
  * // unlock
  * await video.unlock()
@@ -72,7 +71,7 @@ class HTML5Video extends PIXI.Container {
     /**
      * @ignore
      */
-    this.$spinner = app.create(Spinner)
+    this.$spinner = new Spinner()
     /**
      * @ignore
      */
