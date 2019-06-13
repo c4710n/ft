@@ -186,7 +186,7 @@ class HTML5Video extends PIXI.Container {
    * @return {Promise} same as DOM API - `play()`
    */
   play() {
-    const { videoDOM: video } = this
+    const { videoDOM } = this
 
     if (this.$ready) {
       this.emit('play')
@@ -197,18 +197,18 @@ class HTML5Video extends PIXI.Container {
       this.$preplayPromise ||
       new Promise(resolve => {
         const listener = () => {
-          const { currentTime } = video
+          const { currentTime } = videoDOM
           if (currentTime > 0) {
-            video.removeEventListener('timeupdate', listener)
+            videoDOM.removeEventListener('timeupdate', listener)
             this.$ready = true
             this.$readyTime = currentTime
-            video.muted = false
+            videoDOM.muted = false
             this.emit('play')
             resolve()
           }
         }
-        video.addEventListener('timeupdate', listener)
-        video.muted = true
+        videoDOM.addEventListener('timeupdate', listener)
+        videoDOM.muted = true
         this.nativePlay()
       })
     return this.$preplayPromise
