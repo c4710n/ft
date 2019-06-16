@@ -130,6 +130,7 @@ class Scroller extends PIXI.Container {
         x = this.minOverflowX
       }
 
+      if (!this.content.added) return
       this.content.x = x
     }
 
@@ -144,6 +145,7 @@ class Scroller extends PIXI.Container {
         y = this.minOverflowY
       }
 
+      if (!this.content.added) return
       this.content.y = y
     }
 
@@ -205,6 +207,7 @@ class Scroller extends PIXI.Container {
         cacheX += velocity
 
         if (cacheX <= this.maxOverflowX && cacheX >= this.minOverflowX) {
+          if (!this.content.added) return
           this.content.x = cacheX
         } else {
           momentum.halt()
@@ -242,6 +245,7 @@ class Scroller extends PIXI.Container {
         cacheY += velocity
 
         if (cacheY <= this.maxOverflowY && cacheY >= this.minOverflowY) {
+          if (!this.content.added) return
           this.content.y = cacheY
         } else {
           momentum.halt()
@@ -275,6 +279,7 @@ class Scroller extends PIXI.Container {
         .easing(Easing.Quartic.Out)
         .start()
       bounce.on('update', ({ x }) => {
+        if (!this.content.added) return
         this.content.x = x
       })
 
@@ -301,6 +306,7 @@ class Scroller extends PIXI.Container {
         .easing(Easing.Quartic.Out)
         .start()
       bounce.on('update', ({ y }) => {
+        if (!this.content.added) return
         this.content.y = y
       })
 
