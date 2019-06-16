@@ -9,6 +9,7 @@ const { Container, DisplayObject } = PIXI
 patchDisplayObjectMethods(Container.prototype)
 
 Container.prototype.$addChild = Container.prototype.addChild
+Container.prototype.$addChildAt = Container.prototype.addChildAt
 Container.prototype.$removeChild = Container.prototype.removeChild
 
 function _bindComponent(displayObject, component) {
@@ -118,6 +119,14 @@ function _addChild(child) {
   }
 }
 
+function _addChildAt(child, index) {
+  this.$addChildAt(child, index)
+
+  if (this.added) {
+    recursiveCallPostAdd(child)
+  }
+}
+
 function _removeChild(child) {
   this.$removeChild(child)
 
@@ -160,5 +169,6 @@ export default function patchDisplayObjectLifecycle() {
   DisplayObject.prototype.removeComponent = removeComponent
 
   Container.prototype.addChild = _addChild
+  Container.prototype.addChildAt = _addChildAt
   Container.prototype.removeChild = _removeChild
 }
