@@ -41,7 +41,7 @@ class Scroller extends PIXI.Container {
       enableY = true,
       resistance = 20,
       overflow = 50,
-      bgColor = 0x000000,
+      bgColor,
     } = {}
   ) {
     super()
@@ -55,11 +55,13 @@ class Scroller extends PIXI.Container {
     window.mask = mask
     this.addChild(window)
 
-    const bg = new PIXI.Sprite(WHITE)
-    bg.width = width
-    bg.height = height
-    bg.tint = bgColor
-    window.addChild(bg)
+    if (bgColor) {
+      const bg = new PIXI.Sprite(WHITE)
+      bg.width = width
+      bg.height = height
+      bg.tint = bgColor
+      window.addChild(bg)
+    }
 
     window.addChild(content)
     this.content = content
