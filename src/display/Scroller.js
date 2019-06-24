@@ -84,8 +84,11 @@ class Scroller extends PIXI.Container {
     // position
     this.maxX = 0
     this.minX = width - content.width
+    if (this.minX > 0) this.minX = 0
+
     this.maxY = 0
     this.minY = height - content.height
+    if (this.minY > 0) this.minY = 0
 
     // bounce related
     this.bounceX = null
