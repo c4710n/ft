@@ -55,13 +55,17 @@ class Scroller extends PIXI.Container {
     window.mask = mask
     this.addChild(window)
 
+    const bg = new PIXI.Sprite(WHITE)
+    bg.width = width
+    bg.height = height
+
     if (bgColor) {
-      const bg = new PIXI.Sprite(WHITE)
-      bg.width = width
-      bg.height = height
       bg.tint = bgColor
-      window.addChild(bg)
+    } else {
+      bg.alpha = 0
     }
+
+    window.addChild(bg)
 
     window.addChild(content)
     this.content = content
