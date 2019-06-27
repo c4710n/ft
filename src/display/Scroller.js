@@ -46,6 +46,14 @@ class Scroller extends PIXI.Container {
   ) {
     super()
 
+    this.viewWidth = width
+    this.viewHeight = height
+
+    const contentWidth = content.width
+    const contentHeight = content.height
+
+    this.cachedPosition = { x: 0, y: 0 }
+
     const mask = new PIXI.Graphics()
     mask.beginFill(0xffff00)
     mask.drawRect(0, 0, width, height)
@@ -84,11 +92,11 @@ class Scroller extends PIXI.Container {
 
     // position
     this.maxX = 0
-    this.minX = width - content.width
+    this.minX = width - contentWidth
     if (this.minX > 0) this.minX = 0
 
     this.maxY = 0
-    this.minY = height - content.height
+    this.minY = height - contentHeight
     if (this.minY > 0) this.minY = 0
 
     // bounce related
@@ -323,6 +331,49 @@ class Scroller extends PIXI.Container {
       this.bounceY = bounce
     }
   }
+
+  onUpdate() {
+    const { x: currentX, y: currentY } = this.content
+    const { x: cachedX, y: cachedY } = this.cachedPosition
+
+    if (currentX === cachedX && currentY === cachedY) {
+      return
+    }
+    this.cachedPosition.x = currentX
+    this.cachedPosition.y = currentY
+
+    const viewLeft = -this.content.x
+    const viewRight = viewLeft + this.viewWidth
+    const viewTop = -this.content.y
+    const viewBottom = viewTop + this.viewHeight
+
+    for (const child of this.content.children) {
+      const { top, bottom, left, right } = getLocalPosition(child)
+      const isChildOutOfView =
+        top > viewBottom ||
+        bottom < viewTop ||
+        left > viewRight ||
+        right < viewLeft
+
+      if (isChildOutOfView) {
+        child.renderable = false
+      } else {
+        child.renderable = true
+      }
+    }
+  }
+}
+
+function getLocalPosition(displayobject) {
+  const { x, y } = displayobject.position
+  const { width, height } = displayobject
+
+  const left = x
+  const right = x + width
+  const top = y
+  const bottom = y + height
+
+  return { left, right, top, bottom }
 }
 
 export default Scroller
