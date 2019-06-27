@@ -59,7 +59,7 @@ class Scroller extends PIXI.Container {
     bg.width = width
     bg.height = height
 
-    if (bgColor) {
+    if (bgColor !== undefined) {
       bg.tint = bgColor
     } else {
       bg.alpha = 0
