@@ -52,7 +52,8 @@ class Scroller extends PIXI.Container {
     const contentWidth = content.width
     const contentHeight = content.height
 
-    this.cachedPosition = { x: 0, y: 0 }
+    // undefined value ensures that the first call of lazyRender will not be skipped
+    this.cachedPosition = { x: undefined, y: undefined }
 
     const mask = new PIXI.Graphics()
     mask.beginFill(0xffff00)
@@ -111,6 +112,8 @@ class Scroller extends PIXI.Container {
     this.momentumX = null
     this.momentumY = null
     this.resetScrollVelocity()
+
+    this.lazyRender()
   }
 
   /**
@@ -333,6 +336,10 @@ class Scroller extends PIXI.Container {
   }
 
   onUpdate() {
+    this.lazyRender()
+  }
+
+  lazyRender() {
     const { x: currentX, y: currentY } = this.content
     const { x: cachedX, y: cachedY } = this.cachedPosition
 
@@ -357,8 +364,10 @@ class Scroller extends PIXI.Container {
 
       if (isChildOutOfView) {
         child.renderable = false
+        child.visible = false
       } else {
         child.renderable = true
+        child.visible = true
       }
     }
   }
