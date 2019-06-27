@@ -46,9 +46,10 @@ class Scroller extends PIXI.Container {
   ) {
     super()
 
-    const mask = new PIXI.Sprite(WHITE)
-    mask.width = width
-    mask.height = height
+    const mask = new PIXI.Graphics()
+    mask.beginFill(0xffff00)
+    mask.drawRect(0, 0, width, height)
+    mask.endFill()
     this.addChild(mask)
 
     const window = new PIXI.Container()
