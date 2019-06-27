@@ -10,12 +10,6 @@ class SceneManager {
     this.availableScenes = []
 
     /**
-     * Store all loaded scenes.
-     * @access private
-     */
-    this.loadedScenes = []
-
-    /**
      * Store currentc scene
      * @access private
      */
@@ -69,16 +63,16 @@ class SceneManager {
     }
     await Promise.all(transitions)
 
-    this.loadedScenes.push(nextScene)
     this.currentScene = nextScene
 
     this.cleanup()
     return true
   }
 
-  async launch(name, { oneOff = false, index } = {}) {
-    const scene = this.findScene(name)
+  async launch(name, { unique = false, oneOff = false, index } = {}) {
+    if (unique && this.get(name)) return
 
+    const scene = this.findScene(name)
     const { Class, name: $name } = scene
     const launchedScene = new Class($name)
     launchedScene.launched = true
@@ -89,7 +83,6 @@ class SceneManager {
     } else {
       app.stage.addChild(launchedScene)
     }
-    this.loadedScenes.push(launchedScene)
 
     if (launchedScene?.transitionIn) {
       await launchedScene.transitionIn()
@@ -98,9 +91,27 @@ class SceneManager {
     return true
   }
 
-  async launchUnique(name, ...args) {
-    if (this.get(name)) return
-    await this.launch(name, ...args)
+  async launchExisting(
+    scene,
+    { unique = false, shouldDestroy = true, oneOff = false, index } = {}
+  ) {
+    if (unique && this.get(scene)) return
+
+    scene.launched = true
+    scene.shouldDestroy = shouldDestroy
+    scene.oneOff = oneOff
+
+    if (typeof index === 'number') {
+      app.stage.addChildAt(scene, index)
+    } else {
+      app.stage.addChild(scene)
+    }
+
+    if (scene?.transitionIn) {
+      await scene.transitionIn()
+    }
+
+    return true
   }
 
   /**
@@ -122,20 +133,16 @@ class SceneManager {
    * @access private
    */
   cleanup() {
-    this.loadedScenes = this.loadedScenes.filter(scene => {
-      if (scene.sticky || scene.launched || scene === this.currentScene) {
-        return true
-      } else {
-        app.stage.removeChild(scene)
+    app.stage.children.forEach(scene => {
+      if (scene.sticky || scene.launched || scene === this.currentScene) return
 
-        scene.destroy({
-          children: true,
-          texture: scene.oneOff,
-          baseTexture: scene.oneOff,
-        })
+      app.stage.removeChild(scene)
 
-        return false
-      }
+      scene.destroy({
+        children: true,
+        texture: scene.oneOff,
+        baseTexture: scene.oneOff,
+      })
     })
   }
 
@@ -144,26 +151,37 @@ class SceneManager {
    * @param {string} name name of scene
    */
   async unload(name) {
-    const index = this.loadedScenes.findIndex(s => s.name === name)
-    if (index >= 0) {
-      const scene = this.loadedScenes[index]
-
+    const scene = app.stage.children.find(s => s.name === name)
+    if (scene) {
       if (scene?.transitionOut) {
         await scene.transitionOut()
       }
 
       app.stage.removeChild(scene)
-      scene.destroy({
-        children: true,
-        texture: scene.oneOff,
-        baseTexture: scene.oneOff,
-      })
-      this.loadedScenes.splice(index, 1)
+
+      if (scene.shouldDestroy) {
+        scene.destroy({
+          children: true,
+          texture: scene.oneOff,
+          baseTexture: scene.oneOff,
+        })
+      }
     }
   }
 
-  get(name) {
-    const scene = this.loadedScenes.find(s => s.name === name)
+  get(nameOrScene) {
+    let scene
+
+    const scenes = app.stage.children
+
+    if (typeof nameOrScene === 'string') {
+      const providedSceneName = nameOrScene
+      scene = scenes.find(s => s.name === providedSceneName)
+    } else {
+      const providedScene = nameOrScene
+      scene = scenes.find(s => s === providedScene)
+    }
+
     return scene
   }
 
