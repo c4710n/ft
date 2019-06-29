@@ -12,14 +12,14 @@ class ScaleSystem extends System {
     this.mode = mode
 
     events.resize.on(({ width, height }) => {
-      this.onResize(width, height)
+      this.scale(width, height)
     }, this)
   }
 
   /**
    * @access private
    */
-  onResize(viewportCSSWidth, viewportCSSHeight) {
+  scale(viewportCSSWidth, viewportCSSHeight) {
     const { width, height } = app.systems.render
 
     const { mode } = this
