@@ -7,10 +7,10 @@ import {
   ScaleSystem,
   SoundSystem,
   VisibilitySystem,
+  ResizeSystem,
 } from './systems'
 import ResManager from './res/ResManager'
 import SceneManager from './scene/SceneManager'
-import events from './events'
 
 patch()
 
@@ -44,9 +44,8 @@ class App {
     this.addSystem(new ScaleSystem(options.scale))
     this.addSystem(new SoundSystem())
     this.addSystem(new VisibilitySystem())
+    this.addSystem(new ResizeSystem())
     this.enqueueSystems()
-
-    events.listen()
   }
 
   /**

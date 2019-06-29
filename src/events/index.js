@@ -41,13 +41,7 @@ hide.emit = function(...args) {
   EE.emit(EVENT_HIDE, ...args)
 }
 
-function listen() {
-  window.addEventListener('resize', resize.emit)
-  resize.emit()
-}
-
 export default {
-  listen,
   resize,
   scale,
   show,
