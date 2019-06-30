@@ -31,7 +31,7 @@
     "es6-tween": "^5.5.2",
     "eventemitter3": "^3.1.2",
     "pixi-sound": "^3.0.2",
-    "pixi-spine": "^2.0.0",
+    "pixi-spine": "^2.0.2",
     "pixi.js-legacy": "^5.0.1",
     "qs": "^6.7.0",
     "string-length": "^3.1.0",

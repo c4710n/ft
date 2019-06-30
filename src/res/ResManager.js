@@ -32,10 +32,6 @@ class ResManager extends PIXI.Loader {
     super(...args)
 
     this.use(fontLoader)
-
-    this.spineImageLoader = generateSpineImageLoader(name =>
-      this.url(name, { basename: true })
-    )
   }
 
   /**
@@ -105,6 +101,12 @@ class ResManager extends PIXI.Loader {
    * Add a spine into loading queue.
    */
   addSpine(name) {
+    if (!this.spineImageLoader) {
+      this.spineImageLoader = generateSpineImageLoader(name =>
+        this.url(name, { basename: true })
+      )
+    }
+
     if (!this.resources[name]) {
       const { spineImageLoader } = this
       const json = $res.url(name, { type: 'json' })
