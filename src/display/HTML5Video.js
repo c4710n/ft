@@ -29,6 +29,7 @@ class HTML5Video extends PIXI.Container {
       layer = Layer.DOM_DISPLAY,
       controls = false,
       posterTexture,
+      spinnerPosition = [0, 0],
     } = {}
   ) {
     super()
@@ -71,7 +72,7 @@ class HTML5Video extends PIXI.Container {
     /**
      * @ignore
      */
-    this.$spinner = new Spinner()
+    this.$spinner = new Spinner().setPosition(spinnerPosition)
     /**
      * @ignore
      */
@@ -321,7 +322,6 @@ class HTML5Video extends PIXI.Container {
    */
   showSpinner() {
     if (!this.$spinner.added) {
-      this.$spinner.position.set(0, 0)
       this.$spinner.visible = true
       this.addChild(this.$spinner)
     }
