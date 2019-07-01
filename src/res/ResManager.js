@@ -98,6 +98,17 @@ class ResManager extends PIXI.Loader {
   }
 
   /**
+   * Add a JSON to loading queue.
+   */
+  addJSON(name) {
+    if (!this.resources[name]) {
+      this.add(...$res.nu(name))
+    }
+
+    return name
+  }
+
+  /**
    * Add a spine into loading queue.
    */
   addSpine(name) {
@@ -209,6 +220,18 @@ class ResManager extends PIXI.Loader {
       throw new Error(`[${classname(this)}] missing sound - ${name}`)
     } else {
       return resource.sound
+    }
+  }
+
+  /**
+   * Add a JSON data by name
+   */
+  json(name) {
+    const resource = this.resources[name]
+    if (!resource) {
+      throw new Error(`[${classname(this)}] missing sound - ${name}`)
+    } else {
+      return resource.data
     }
   }
 
