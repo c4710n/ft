@@ -34,6 +34,8 @@ class HTML5Video extends PIXI.Container {
   ) {
     super()
 
+    this.$spinnerPosition = spinnerPosition
+
     this.$posterTexture = posterTexture
     if (this.$posterTexture) {
       const poster = new PIXI.Sprite(this.$posterTexture).setOrigin(0.5)
@@ -72,7 +74,7 @@ class HTML5Video extends PIXI.Container {
     /**
      * @ignore
      */
-    this.$spinner = new Spinner().setPosition(spinnerPosition)
+    this.$spinner = new Spinner()
     /**
      * @ignore
      */
@@ -322,6 +324,7 @@ class HTML5Video extends PIXI.Container {
    */
   showSpinner() {
     if (!this.$spinner.added) {
+      this.$spinner.setPosition(...this.$spinnerPosition)
       this.$spinner.visible = true
       this.addChild(this.$spinner)
     }
