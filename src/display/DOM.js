@@ -24,7 +24,9 @@ class DOM extends Sprite {
   }
 
   onRemoved() {
-    app.container.removeChild(this.dom)
+    if (this.dom.parentElement) {
+      app.container.removeChild(this.dom)
+    }
   }
 
   onUpdate() {
