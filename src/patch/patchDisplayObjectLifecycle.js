@@ -117,6 +117,8 @@ function _addChild(child) {
   if (this.added) {
     recursiveCallPostAdd(child)
   }
+
+  return child
 }
 
 function _addChildAt(child, index) {
@@ -125,6 +127,8 @@ function _addChildAt(child, index) {
   if (this.added) {
     recursiveCallPostAdd(child)
   }
+
+  return child
 }
 
 function _removeChild(child) {
@@ -133,6 +137,8 @@ function _removeChild(child) {
   if (this.added) {
     recursiveCallPostRemove(child)
   }
+
+  return child
 }
 
 function initComponents() {
