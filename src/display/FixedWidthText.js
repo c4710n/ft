@@ -34,7 +34,7 @@ class FixedWidthText extends PIXI.Text {
       } else {
         truncated = true
         const text = this.text
-        const end = this.text.length - 2
+        const end = string.length(this.text) - 1
         this.text = string.sub(text, 0, end)
       }
     }
