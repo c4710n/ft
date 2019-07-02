@@ -87,6 +87,12 @@ class SceneManager {
     return true
   }
 
+  async setCurrent(nameOrScene) {
+    const scene = this.get(nameOrScene)
+    scene.launched = false
+    this.currentScene = scene
+  }
+
   /**
    * Load scene according `scene` field in querystring
    */
