@@ -7,7 +7,7 @@ class SceneManager {
      * Store all registered scenes.
      * @access private
      */
-    this.availableScenes = []
+    this.registeredScenes = []
 
     /**
      * Store currentc scene
@@ -22,38 +22,31 @@ class SceneManager {
    * @param {Scene} Class subclass of {@link Scene}
    */
   register(name, Class) {
-    this.availableScenes.push({
+    this.registeredScenes.push({
       name,
       Class,
     })
   }
 
   /**
-   * Load scene which is already registered. This method will remove all scenes
-   * which aren't sticky.
-   *
-   * @param {string} name name of scene
-   * @param {Object} [options]
-   * @param {boolean} [options.sticky=false] scene will not be removed unless
-   *                                         you unload it explicitly
-   * @param {boolean} [options.oneOff=false] scene is one-off, when the scene is removed,
-   *                                         related textures will be destroyed
-   * @return {boolean} load is done or not
+   * Start a scene with cleaning up other scenes.
    */
-  async load(name, { sticky = false, oneOff = false, index } = {}) {
-    const scene = this.findScene(name)
+  async load(name, { unique = false, oneOff = false, index } = {}) {
+    if (unique && this.get(name)) return
 
-    const { Class, name: $name } = scene
+    // find registered scene, then create an instance of the scene
+    const { Class, name: $name } = this.getRegisteredScene(name)
     const nextScene = new Class($name)
-    nextScene.sticky = sticky
     nextScene.oneOff = oneOff
 
+    // add instance of scene into stage
     if (typeof index === 'number') {
       app.stage.addChildAt(nextScene, index)
     } else {
       app.stage.addChild(nextScene)
     }
 
+    // play animation
     const transitions = []
     if (this.currentScene?.transitionOut) {
       transitions.push(this.currentScene.transitionOut())
@@ -66,17 +59,21 @@ class SceneManager {
     this.currentScene = nextScene
 
     this.cleanup()
+
+    console.log(app.stage.children)
     return true
   }
 
+  /**
+   * Start a scene without cleaning up other scenes.
+   */
   async launch(name, { unique = false, oneOff = false, index } = {}) {
     if (unique && this.get(name)) return
 
-    const scene = this.findScene(name)
-    const { Class, name: $name } = scene
+    const { Class, name: $name } = this.getRegisteredScene(name)
     const launchedScene = new Class($name)
-    launchedScene.launched = true
     launchedScene.oneOff = oneOff
+    launchedScene.launched = true
 
     if (typeof index === 'number') {
       app.stage.addChildAt(launchedScene, index)
@@ -88,29 +85,7 @@ class SceneManager {
       await launchedScene.transitionIn()
     }
 
-    return true
-  }
-
-  async launchExisting(
-    scene,
-    { unique = false, shouldDestroy = true, oneOff = false, index } = {}
-  ) {
-    if (unique && this.get(scene)) return
-
-    scene.launched = true
-    scene.shouldDestroy = shouldDestroy
-    scene.oneOff = oneOff
-
-    if (typeof index === 'number') {
-      app.stage.addChildAt(scene, index)
-    } else {
-      app.stage.addChild(scene)
-    }
-
-    if (scene?.transitionIn) {
-      await scene.transitionIn()
-    }
-
+    console.log(app.stage.children)
     return true
   }
 
@@ -133,8 +108,12 @@ class SceneManager {
    * @access private
    */
   cleanup() {
-    app.stage.children.forEach(scene => {
-      if (scene.sticky || scene.launched || scene === this.currentScene) return
+    const scenes = app.stage.children
+
+    scenes.forEach(scene => {
+      if (scene.launched || scene === this.currentScene) {
+        return
+      }
 
       app.stage.removeChild(scene)
 
@@ -148,10 +127,9 @@ class SceneManager {
 
   /**
    * Unload a scene by name explicitly.
-   * @param {string} name name of scene
    */
   async unload(name) {
-    const scene = app.stage.children.find(s => s.name === name)
+    const scene = this.get(name)
     if (scene) {
       if (scene?.transitionOut) {
         await scene.transitionOut()
@@ -169,6 +147,20 @@ class SceneManager {
     }
   }
 
+  /**
+   * Get a registered scene.
+   */
+  getRegisteredScene(name) {
+    const scene = this.registeredScenes.find(s => s.name === name)
+    if (!scene) {
+      throw `[${classname(this)}] failed to get unregistered scene - ${name}`
+    }
+    return scene
+  }
+
+  /**
+   * Get a started scene by name or reference.
+   */
   get(nameOrScene) {
     let scene
 
@@ -182,14 +174,6 @@ class SceneManager {
       scene = scenes.find(s => s === providedScene)
     }
 
-    return scene
-  }
-
-  findScene(name) {
-    const scene = this.availableScenes.find(s => s.name === name)
-    if (!scene) {
-      throw `[${classname(this)}] failed to load unregistered scene - ${name}`
-    }
     return scene
   }
 }
