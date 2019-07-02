@@ -60,7 +60,6 @@ class SceneManager {
 
     this.cleanup()
 
-    console.log(app.stage.children)
     return true
   }
 
@@ -85,7 +84,6 @@ class SceneManager {
       await launchedScene.transitionIn()
     }
 
-    console.log(app.stage.children)
     return true
   }
 
