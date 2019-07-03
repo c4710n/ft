@@ -1,7 +1,6 @@
-import { Layer, Device, PIXI } from '../core'
+import { Device, PIXI } from '../core'
+import Video from './Video'
 import DOM from './DOM'
-import { timeout } from '../time'
-import Spinner from './Spinner'
 
 /**
  * Video player based on HTML5 `<video>` tag.
@@ -17,147 +16,68 @@ import Spinner from './Spinner'
  * // play
  * await video.play()
  */
-class HTML5Video extends PIXI.Container {
-  /**
-   * @param {string} src='' url of video
-   * @param {Object} options
-   */
-  constructor(
-    url,
-    {
-      loop = false,
-      layer = Layer.DOM_DISPLAY,
-      controls = false,
-      posterTexture,
-      spinnerPosition = [0, 0],
-    } = {}
-  ) {
-    super()
+class HTML5Video extends Video {
+  constructor(...args) {
+    super(...args)
 
-    this.$spinnerPosition = spinnerPosition
+    this.$preplayPromise = null
+    this.$ready = false
+  }
 
-    this.$posterTexture = posterTexture
-    if (this.$posterTexture) {
-      const poster = new PIXI.Sprite(this.$posterTexture).setOrigin(0.5)
-      this.addChild(poster)
-      this.poster = poster
-    }
-
+  createVideoPlayer(url, { layer, poster, loop } = {}) {
     const video = new DOM('video', { layer }).setOrigin(0.5)
-    this.videoPlayer = this.createVideoPlayer(video.dom, url, {
-      loop,
-      controls,
-    })
     this.video = video
     this.addChild(video)
 
-    /**
-     * @ignore
-     */
-    this.$preplayPromise = null
-    /**
-     * @ignore
-     */
-    this.$ready = false
-    /**
-     * @ignore
-     */
-    this.$readyTime = 0
-    /**
-     * @ignore
-     */
-    this.$playing = false
-    /**
-     * @ignore
-     */
-    this.$previousTime = 0
-    /**
-     * @ignore
-     */
-    this.$spinner = new Spinner()
-    /**
-     * @ignore
-     */
-    this.$spinnerTimer = timeout(500, () => {
-      if (this.isLoading) {
-        this.showSpinner()
-      }
-    })
-  }
-
-  /**
-   * Create video DOM.
-   * @ignore
-   */
-  createVideoPlayer(videoDOM, url, { loop, controls } = {}) {
+    const videoDOM = video.dom
     videoDOM.src = url
     videoDOM.loop = loop
-    videoDOM.controls = controls
     videoDOM.style.objectFit = 'fill'
     videoDOM.crossorigin = 'anonymous'
     videoDOM.setAttribute('preload', 'auto')
     videoDOM.setAttribute('playsinline', '')
     videoDOM.setAttribute('webkit-playsinline', '') // WebKit-based browser adaptation
-
     // QQ Browser on iOS
     if (Device.isIOS && Device.isQQBrowser) {
       videoDOM.setAttribute('x5-playsinline', '')
     }
 
-    return videoDOM
-  }
-
-  setSize(...args) {
-    this.video.setSize(...args)
-
-    if (this.poster) {
-      this.poster.setSize(...args)
+    const posterTexture = poster
+    if (posterTexture) {
+      const poster = new PIXI.Sprite(posterTexture).setOrigin(0.5)
+      this.addChild(poster)
+      this.$poster = poster
     }
 
-    return this
+    const videoPlayer = videoDOM
+
+    return videoPlayer
   }
 
-  setAngle(...args) {
-    this.video.setAngle(...args)
-
-    if (this.poster) {
-      this.poster.setAngle(...args)
-    }
-
-    return this
-  }
-
-  /**
-   * @ignore
-   */
   onAdded() {
     this.videoPlayer.addEventListener('ended', this.onEnd)
   }
 
-  /**
-   * @ignore
-   */
   onRemoved() {
     this.videoPlayer.removeEventListener('ended', this.onEnd)
   }
 
-  /**
-   * @ignore
-   *
-   * @emits {progress}
-   */
-  onUpdate() {
-    const { currentTime } = this
-
-    if (this.isPlaying) {
-      this.$spinnerTimer.reset()
-      this.hideSpinner()
-      this.emit('progress', currentTime)
-    } else if (this.isPaused) {
-      this.hideSpinner()
+  setSize(...args) {
+    if (this.$poster) {
+      this.$poster.setSize(...args)
     }
-    this.$previousTime = currentTime
+
+    return super.setSize(...args)
   }
+
+  setAngle(...args) {
+    if (this.$poster) {
+      this.$poster.setAngle(...args)
+    }
+
+    return super.setAngle(...args)
+  }
+
   /**
    * Unlock current video.
    *
@@ -214,130 +134,14 @@ class HTML5Video extends PIXI.Container {
     return this.$preplayPromise
   }
 
-  /**
-   * Pause current video.
-   *
-   * @emits {pause}
-   * @return {Promise} same as DOM API - `pause()`
-   */
-  pause() {
-    this.emit('pause')
-    return this.nativePause()
-  }
-
-  /**
-   * Reset current video's timeline.
-   *
-   * @emits {reset}
-   */
-  reset() {
-    this.emit('reset')
-    this.videoPlayer.currentTime = this.$readyTime
-  }
-
-  /**
-   * Show current video.
-   *
-   * @emits {show}
-   */
-  show() {
-    this.emit('show')
-    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY
-  }
-
-  /**
-   * Hide current video.
-   *
-   * @emits {hide}
-   */
-  hide() {
-    this.emit('hide')
-    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
-  }
-
-  /**
-   * @ignore
-   */
   nativePlay() {
-    this.$playing = true
-    this.$spinnerTimer.start()
+    super.nativePlay()
     return this.videoPlayer.play()
   }
 
-  /**
-   * @ignore
-   */
   nativePause() {
-    this.$playing = false
-    this.$spinnerTimer.stop()
+    super.nativePause()
     return this.videoPlayer.pause()
-  }
-
-  /**
-   * Get duration of video.
-   */
-  get duration() {
-    return this.videoPlayer.duration
-  }
-
-  /**
-   * @ignore
-   * @emits {end}
-   */
-  onEnd = () => {
-    this.emit('end')
-    this.$playing = false
-    this.$spinnerTimer.stop()
-    this.hideSpinner()
-  }
-
-  /**
-   * Get current time of video.
-   */
-  get currentTime() {
-    return this.videoPlayer.currentTime
-  }
-
-  /**
-   * Set current time of video.
-   */
-  set currentTime(value) {
-    this.videoPlayer.currentTime = value
-  }
-
-  get isLoading() {
-    return this.added && this.$playing && this.currentTime <= this.$previousTime
-  }
-
-  get isPlaying() {
-    return this.added && this.$playing && this.currentTime > this.$previousTime
-  }
-
-  get isPaused() {
-    return (
-      this.added && !this.$playing && this.currentTime == this.$previousTime
-    )
-  }
-
-  /**
-   * @ignore
-   */
-  showSpinner() {
-    if (!this.$spinner.added) {
-      this.$spinner.setPosition(...this.$spinnerPosition)
-      this.$spinner.visible = true
-      this.addChild(this.$spinner)
-    }
-  }
-
-  /**
-   * @ignore
-   */
-  hideSpinner() {
-    if (this.$spinner.added) {
-      this.$spinner.visible = false
-      this.removeChild(this.$spinner)
-    }
   }
 }
 
