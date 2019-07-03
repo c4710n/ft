@@ -83,14 +83,8 @@ class Video extends PIXI.Container {
     this.videoPlayer.currentTime = this.$readyTime
   }
 
-  show() {
-    this.emit('show')
-    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY
-  }
-
-  hide() {
-    this.emit('hide')
-    this.videoPlayer.style.zIndex = Layer.DOM_DISPLAY_HIDDEN
+  setLayer(layer = Layer.DOM_DISPLAY_HIDDEN) {
+    this.videoPlayer.style.zIndex = layer
   }
 
   nativePlay() {
