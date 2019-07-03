@@ -25,13 +25,15 @@ class CanvasVideo extends Video {
 
     const posterURL = poster
     const options = {
-      canvas: video,
+      canvas: video.dom,
       poster: posterURL,
       loop,
       videoBufferSize: 2048 * 1024, // 1024 means 1KB
       onEnded: this.onEnd,
     }
+
     const videoPlayer = new JSMpeg.Player(url, options)
+
     return videoPlayer
   }
 
