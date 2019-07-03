@@ -67,7 +67,7 @@ class Video extends PIXI.Container {
   }
 
   setLayer(layer = Layer.DOM_DISPLAY_HIDDEN) {
-    this.videoPlayer.style.zIndex = layer
+    this.video.layer = layer
 
     return this
   }
