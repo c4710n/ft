@@ -66,6 +66,12 @@ class Video extends PIXI.Container {
     return this
   }
 
+  setLayer(layer = Layer.DOM_DISPLAY_HIDDEN) {
+    this.videoPlayer.style.zIndex = layer
+
+    return this
+  }
+
   unlock() {}
 
   play() {
@@ -81,10 +87,6 @@ class Video extends PIXI.Container {
   reset() {
     this.emit('reset')
     this.videoPlayer.currentTime = this.$readyTime
-  }
-
-  setLayer(layer = Layer.DOM_DISPLAY_HIDDEN) {
-    this.videoPlayer.style.zIndex = layer
   }
 
   nativePlay() {
