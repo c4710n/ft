@@ -62,7 +62,7 @@ class HUDSystem extends System {
     }
 
     if (bottom !== undefined) {
-      const [isPercentage, percentage] = checkPercentage(top)
+      const [isPercentage, percentage] = checkPercentage(bottom)
       const offset = isPercentage ? bounds.height * percentage : bottom
       $y = bounds.bottom - offset
     }
