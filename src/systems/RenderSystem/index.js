@@ -99,7 +99,7 @@ class RenderSystem extends System {
     const { normalizeToPointerData } = interaction
 
     interaction.setTargetElement(container, renderer.resolution)
-    // interaction.autoPreventDefault = false
+    interaction.autoPreventDefault = false
     interaction.normalizeToPointerData = function(event) {
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
