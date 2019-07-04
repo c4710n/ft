@@ -114,11 +114,12 @@ class RenderSystem extends System {
       const rect = container.getBoundingClientRect()
 
       if (rotate) {
-        point.x = ((y - rect.y) / scale) * resolutionMultiplier
-        point.y = ((rect.width - (x - rect.x)) / scale) * resolutionMultiplier
+        point.x = ((y - rect.top) / scale) * resolutionMultiplier
+        point.y =
+          ((rect.width - (x - rect.left)) / scale) * resolutionMultiplier
       } else {
-        point.x = ((x - rect.x) / scale) * resolutionMultiplier
-        point.y = ((y - rect.y) / scale) * resolutionMultiplier
+        point.x = ((x - rect.left) / scale) * resolutionMultiplier
+        point.y = ((y - rect.top) / scale) * resolutionMultiplier
       }
     }
   }
