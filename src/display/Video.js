@@ -12,6 +12,7 @@ class Video extends PIXI.Container {
       layer = Layer.DOM_DISPLAY,
       poster,
       loop = false,
+      spinnerTimeout = 300,
       onShowSpinner,
       onHideSpinner,
     } = {}
@@ -26,7 +27,7 @@ class Video extends PIXI.Container {
 
     this.onShowSpinner = onShowSpinner
     this.onHideSpinner = onHideSpinner
-    this.$spinnerTimer = timeout(500, () => {
+    this.$spinnerTimer = timeout(spinnerTimeout, () => {
       if (this.isCaching) {
         this.onShowSpinner?.(this)
       }
@@ -38,17 +39,18 @@ class Video extends PIXI.Container {
   onRemoved() {}
 
   onUpdate() {
+    const { currentTime } = this
+
     if (this.isPlaying) {
       this.$spinnerTimer.reset()
-
-      const { currentTime } = this
-      this.$previousTime = currentTime
       this.emit('progress', currentTime)
     }
 
     if (this.isPlaying || this.isPaused) {
       this.onHideSpinner?.(this)
     }
+
+    this.$previousTime = currentTime
   }
 
   // eslint-disable-next-line
