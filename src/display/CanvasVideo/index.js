@@ -1,6 +1,9 @@
+import EventEmitter from 'eventemitter3'
 import Video from '../Video'
 import DOM from '../DOM'
 import JSMpeg from './vendor/jsmpeg.min'
+
+const EE = new EventEmitter()
 
 /**
  * Video player based on JSMpeg.
@@ -16,6 +19,8 @@ import JSMpeg from './vendor/jsmpeg.min'
 class CanvasVideo extends Video {
   constructor(...args) {
     super(...args)
+
+    this.isPlayed = false
   }
 
   createVideoPlayer(url, { layer, poster, loop } = {}) {
@@ -29,6 +34,9 @@ class CanvasVideo extends Video {
       poster: posterURL,
       loop,
       videoBufferSize: 2048 * 1024, // 1024 means 1KB
+      onPlay: () => {
+        this.onPlay(this)
+      },
       onEnded: this.onEnd,
     }
 
@@ -37,13 +45,22 @@ class CanvasVideo extends Video {
     return videoPlayer
   }
 
+  onPlay(context) {
+    if (!context.isPlayed && context.videoPlayer.isPlaying) {
+      context.isPlayed = true
+      EE.emit('play')
+    }
+  }
+
   nativePlay() {
     super.nativePlay()
 
-    return new Promise(resolve => {
-      this.videoPlayer.play()
-      resolve()
+    const promise = new Promise(resolve => {
+      EE.on('play', resolve)
     })
+    this.videoPlayer.play()
+
+    return promise
   }
 
   nativePause() {
