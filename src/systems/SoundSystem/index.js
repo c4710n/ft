@@ -7,11 +7,13 @@ class SoundSystem extends System {
     super('sound')
 
     events.show.on(() => {
-      sound.togglePauseAll()
+      sound._context.paused = false
+      sound._context.refreshPaused()
     })
 
     events.hide.on(() => {
-      sound.togglePauseAll()
+      sound._context.paused = true
+      sound._context.refreshPaused()
     })
   }
 }
