@@ -159,13 +159,11 @@ class SceneManager {
 
       app.stage.removeChild(scene)
 
-      if (scene.shouldDestroy) {
-        scene.destroy({
-          children: true,
-          texture: scene.oneOff,
-          baseTexture: scene.oneOff,
-        })
-      }
+      scene.destroy({
+        children: true,
+        texture: scene.oneOff,
+        baseTexture: scene.oneOff,
+      })
     }
   }
 
