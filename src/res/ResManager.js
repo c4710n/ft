@@ -31,6 +31,7 @@ class ResManager extends PIXI.Loader {
   constructor(...args) {
     super(...args)
 
+    this.queuedResources = []
     this.use(fontLoader)
   }
 
@@ -46,104 +47,103 @@ class ResManager extends PIXI.Loader {
   }
 
   /**
-   * Add an image to loading queue.
-   */
-  addImage(name) {
-    if (!this.resources[name]) {
-      this.add(...$res.nu(name))
-    }
-
-    return name
-  }
-
-  /**
-   * Add a spritesheet to loading queue.
-   */
-  addSpritesheet(name) {
-    if (!this.resources[name]) {
-      const json = this.url(name, { type: 'json' })
-      const image = this.url(name, { type: 'image' })
-
-      this.add(name, json, {
-        data: {
-          meta: { image },
-        },
-        metadata: { image },
-      })
-    }
-
-    return name
-  }
-
-  /**
-   * Add a font to loading queue.
-   */
-  addFont(name) {
-    if (!this.resources[name]) {
-      this.add(...$res.nu(name))
-    }
-
-    return name
-  }
-
-  /**
-   * Add a sound to loading queue.
-   */
-  addSound(name) {
-    if (!this.resources[name]) {
-      this.add(...$res.nu(name))
-    }
-
-    return name
-  }
-
-  /**
-   * Add a JSON to loading queue.
-   */
-  addJSON(name) {
-    if (!this.resources[name]) {
-      this.add(...$res.nu(name))
-    }
-
-    return name
-  }
-
-  /**
-   * Add a spine into loading queue.
-   */
-  addSpine(name) {
-    if (!this.spineImageLoader) {
-      this.spineImageLoader = generateSpineImageLoader(name =>
-        this.url(name, { basename: true })
-      )
-    }
-
-    if (!this.resources[name]) {
-      const { spineImageLoader } = this
-      const json = $res.url(name, { type: 'json' })
-      const atlas = $res.url(name, { type: 'atlas' })
-      this.add(name, json, {
-        metadata: {
-          spineAtlasFile: atlas,
-          imageLoader: spineImageLoader,
-        },
-      })
-    }
-
-    return name
-  }
-
-  /**
    * Get url of resource.
    */
   url(...args) {
     return $res.url(...args)
   }
 
+  addImage(name) {
+    this.queuedResources.push({ name, type: 'image' })
+    return name
+  }
+
+  addFont(name) {
+    this.queuedResources.push({ name, type: 'webfont' })
+    return name
+  }
+
+  addSound(name) {
+    this.queuedResources.push({ name, type: 'sound' })
+    return name
+  }
+
+  addJSON(name) {
+    this.queuedResources.push({ name, type: 'json' })
+    return name
+  }
+
+  addSpritesheet(name) {
+    this.queuedResources.push({ name, type: 'spritesheet' })
+    return name
+  }
+
+  addSpine(name) {
+    this.queuedResources.push({ name, type: 'spine' })
+    return name
+  }
+
+  load() {
+    for (const resource of this.queuedResources) {
+      const { type, name } = resource
+
+      if (this.resources[name]) continue
+
+      switch (type) {
+        case 'spine':
+          this.loadSpine(name)
+          break
+        case 'spritesheet':
+          this.loadSpritesheet(name)
+          break
+        default:
+          this.loadGeneralResource(name)
+      }
+    }
+
+    return super.load()
+  }
+
+  /* general loader for loading image, webfont, sound, json */
+  loadGeneralResource(name) {
+    this.add(...$res.nu(name))
+  }
+
+  loadSpritesheet(name) {
+    const json = this.url(name, { type: 'json' })
+    const image = this.url(name, { type: 'image' })
+
+    this.add(name, json, {
+      data: {
+        meta: { image },
+      },
+      metadata: { image },
+    })
+  }
+
+  loadSpine(name) {
+    if (!this.spineImageLoader) {
+      this.spineImageLoader = generateSpineImageLoader(name =>
+        this.url(name, { basename: true })
+      )
+    }
+
+    const { spineImageLoader } = this
+    const json = $res.url(name, { type: 'json' })
+    const atlas = $res.url(name, { type: 'atlas' })
+    this.add(name, json, {
+      metadata: {
+        spineAtlasFile: atlas,
+        imageLoader: spineImageLoader,
+      },
+    })
+  }
+
   /**
    * Get a texture by name.
    */
   texture(name) {
+    console.log(this.resources)
     const resource = this.resources[name]
     if (!resource) {
       throw new Error(`[${classname(this)}] missing texture - ${name}`)
@@ -158,7 +158,7 @@ class ResManager extends PIXI.Loader {
   subTexture(name, subname) {
     const resource = this.resources[name]
     if (!resource) {
-      throw new Error(`[${classname(this)}] missing texture - ${name}`)
+      throw new Error(`[${classname(this)}] missing subtexture - ${name}`)
     } else {
       return resource.textures[subname]
     }
@@ -229,7 +229,7 @@ class ResManager extends PIXI.Loader {
   json(name) {
     const resource = this.resources[name]
     if (!resource) {
-      throw new Error(`[${classname(this)}] missing sound - ${name}`)
+      throw new Error(`[${classname(this)}] missing json - ${name}`)
     } else {
       return resource.data
     }
