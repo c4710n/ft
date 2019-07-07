@@ -143,7 +143,6 @@ class ResManager extends PIXI.Loader {
    * Get a texture by name.
    */
   texture(name) {
-    console.log(this.resources)
     const resource = this.resources[name]
     if (!resource) {
       throw new Error(`[${classname(this)}] missing texture - ${name}`)
