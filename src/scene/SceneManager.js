@@ -1,8 +1,6 @@
 import app from '../app'
 import { classname, qs } from '../utils'
 
-const TRANSITION_ORDER_PARALLEL = 'parallel'
-
 class SceneManager {
   constructor() {
     /**
@@ -33,15 +31,7 @@ class SceneManager {
   /**
    * Start a scene with cleaning up other scenes.
    */
-  async load(
-    name,
-    {
-      unique = false,
-      oneOff = false,
-      index,
-      transitionOrder = TRANSITION_ORDER_PARALLEL,
-    } = {}
-  ) {
+  async load(name, { unique = false, oneOff = false, index, transition } = {}) {
     if (unique && this.get(name)) return
 
     // find registered scene, then create an instance of the scene
@@ -56,18 +46,14 @@ class SceneManager {
       app.stage.addChild(nextScene)
     }
 
-    if (transitionOrder === TRANSITION_ORDER_PARALLEL) {
-      const transitions = []
-      if (this.currentScene?.transitionOut) {
-        transitions.push(this.currentScene.transitionOut())
-      }
-      if (nextScene?.transitionIn) {
-        transitions.push(nextScene.transitionIn())
-      }
-      await Promise.all(transitions)
+    const { currentScene } = this
+    if (transition) {
+      // custom logic for transition
+      await transition(currentScene, nextScene)
     } else {
-      if (this.currentScene?.transitionOut) {
-        await this.currentScene.transitionOut()
+      // default logic for transition
+      if (currentScene?.transitionOut) {
+        await currentScene.transitionOut()
       }
       if (nextScene?.transitionIn) {
         await nextScene.transitionIn()
