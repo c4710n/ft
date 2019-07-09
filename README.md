@@ -17,13 +17,17 @@
   - component system
   - render system
   - scale system
-  - tween system
   - visibility system
+  - sound system
+  - tween system
   - HUD system
 - common display object for developing marketing page
   - DOM
-  - Video
+  - HTML5Video / CanvasVideo
   - ...
+- useful helpers
+  - unicode string helper
+  - random number helper
 - GPU memory sensitive code
 
 ## Installation
