@@ -5,9 +5,9 @@ import events from '../../events'
 
 class RenderSystem extends System {
   constructor({
+    type = 'auto',
     width = 750,
     height = 1500,
-    forceCanvas = false,
     transparent = true,
     antialias = false,
   } = {}) {
@@ -20,13 +20,15 @@ class RenderSystem extends System {
     this.size = this.getSize()
     app.size = this.size
 
-    this.renderer = PIXI.autoDetectRenderer({
-      width,
-      height,
-      forceCanvas,
-      transparent,
-      antialias,
-    })
+    const options = { width, height, transparent, antialias }
+
+    if (type === 'webgl') {
+      this.renderer = new PIXI.Renderer(options)
+    } else if (type === 'canvas') {
+      this.renderer = new PIXI.CanvasRenderer(options)
+    } else {
+      this.renderer = PIXI.autoDetectRenderer(options)
+    }
     app.renderer = this.renderer
 
     this.view = this.renderer.view
