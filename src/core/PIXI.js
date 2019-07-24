@@ -19,4 +19,5 @@ export {
   Sprite,
   AnimatedSprite,
   Text,
+  NineSlicePlane,
 } from 'pixi.js-legacy'

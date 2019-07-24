@@ -29,8 +29,8 @@
   ],
   "dependencies": {
     "es6-tween": "^5.5.10",
-    "fast-glob": "^3.0.4",
     "eventemitter3": "^4.0.0",
+    "fast-glob": "^3.0.4",
     "pixi-sound": "^3.0.3",
     "pixi-spine": "^2.0.3",
     "pixi.js-legacy": "^5.1.0",

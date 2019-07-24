@@ -1,6 +1,7 @@
 import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import { PIXI } from '../core'
 
+const { Sprite } = PIXI
 const { WHITE } = PIXI.Texture
 
 /**
@@ -48,6 +49,13 @@ class Scroller extends PIXI.Container {
 
     this.viewWidth = width
     this.viewHeight = height
+
+    // help to calculate the right size of content
+    const basePoint = new Sprite(WHITE)
+      .setAlpha(0)
+      .setSize(1, 1)
+      .setPosition(0, 0)
+    content.addChild(basePoint)
 
     const contentWidth = content.width
     const contentHeight = content.height
