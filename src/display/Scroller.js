@@ -36,29 +36,24 @@ class Scroller extends PIXI.Container {
   constructor(
     content,
     {
-      width = 750,
-      height = 1500,
-      enableX = false,
-      enableY = true,
-      resistance = 20,
-      overflow = 50,
+      width,
+      height,
+      enableX,
+      enableY,
+      enableLazyRender,
+      resistance,
+      overflow,
       bgColor,
     } = {}
   ) {
     super()
 
-    this.viewWidth = width
-    this.viewHeight = height
-
     // help to calculate the right size of content
-    const basePoint = new Sprite(WHITE)
+    const basePoint = new Sprite(PIXI.Texture.WHITE)
       .setAlpha(0)
-      .setSize(1, 1)
+      .setSize(5, 5)
       .setPosition(0, 0)
     content.addChild(basePoint)
-
-    const contentWidth = content.width
-    const contentHeight = content.height
 
     // undefined value ensures that the first call of lazyRender will not be skipped
     this.cachedPosition = { x: undefined, y: undefined }
@@ -88,40 +83,22 @@ class Scroller extends PIXI.Container {
     window.addChild(content)
     this.content = content
 
+    const setupOptions = {
+      width,
+      height,
+      enableX,
+      enableY,
+      enableLazyRender,
+      resistance,
+      overflow,
+    }
+    this.setup(setupOptions)
+
     window.interactive = true
     window.on('pointerdown', this.onPointerDown)
     window.on('pointermove', this.onPointerMove)
     window.on('pointerup', this.onPointerUp)
     window.on('pointerupoutside', this.onPointerUp)
-
-    // scroll
-    this.enableX = enableX
-    this.enableY = enableY
-    this.resistance = resistance
-
-    // position
-    this.maxX = 0
-    this.minX = width - contentWidth
-    if (this.minX > 0) this.minX = 0
-
-    this.maxY = 0
-    this.minY = height - contentHeight
-    if (this.minY > 0) this.minY = 0
-
-    // bounce related
-    this.bounceX = null
-    this.bounceY = null
-    this.maxOverflowX = overflow
-    this.minOverflowX = this.minX - overflow
-    this.maxOverflowY = overflow
-    this.minOverflowY = this.minY - overflow
-
-    // momentum related
-    this.momentumX = null
-    this.momentumY = null
-    this.resetScrollVelocity()
-
-    this.lazyRender()
   }
 
   /**
@@ -344,7 +321,57 @@ class Scroller extends PIXI.Container {
   }
 
   onUpdate() {
-    this.lazyRender()
+    if (this.enableLazyRender) {
+      this.lazyRender()
+    }
+  }
+
+  setup({
+    width = 750,
+    height = 1500,
+    enableX = false,
+    enableY = true,
+    enableLazyRender = false,
+    resistance = 20,
+    overflow = 50,
+  }) {
+    this.viewWidth = width
+    this.viewHeight = height
+
+    // scroll
+    this.enableX = enableX
+    this.enableY = enableY
+    this.resistance = resistance
+
+    const contentWidth = this.content.width
+    const contentHeight = this.content.height
+    console.log(contentWidth, contentHeight)
+    // position
+    this.maxX = 0
+    this.minX = width - contentWidth
+    if (this.minX > 0) this.minX = 0
+
+    this.maxY = 0
+    this.minY = height - contentHeight
+    if (this.minY > 0) this.minY = 0
+
+    // bounce related
+    this.bounceX = null
+    this.bounceY = null
+    this.maxOverflowX = overflow
+    this.minOverflowX = this.minX - overflow
+    this.maxOverflowY = overflow
+    this.minOverflowY = this.minY - overflow
+
+    // momentum related
+    this.momentumX = null
+    this.momentumY = null
+    this.resetScrollVelocity()
+
+    this.enableLazyRender = enableLazyRender
+    if (this.enableLazyRender) {
+      this.lazyRender()
+    }
   }
 
   lazyRender() {
