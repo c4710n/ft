@@ -2,6 +2,7 @@ import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import { PIXI } from '../core'
 
 const { Sprite } = PIXI
+const { WHITE } = PIXI.Texture
 
 /**
  * A general scroller.
@@ -36,6 +37,11 @@ class Scroller extends PIXI.Container {
     super()
 
     const view = new PIXI.Container()
+
+    /* bg */
+    const bg = new Sprite(WHITE).setAlpha(0)
+    this.bg = bg
+    view.addChild(bg)
 
     /* mask */
     const mask = new PIXI.Graphics()
@@ -351,6 +357,11 @@ class Scroller extends PIXI.Container {
     this.cachedValues.viewHeight = currentViewHeight
     this.cachedValues.contentWidth = currentContentWidth
     this.cachedValues.contentHeight = currentContentHeight
+
+    // bg
+    const { bg } = this
+    bg.width = currentViewWidth
+    bg.height = currentViewHeight
 
     // view mask
     const mask = this.$mask
