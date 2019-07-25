@@ -387,6 +387,12 @@ class Scroller extends PIXI.Container {
     this.minOverflowX = this.minX - overflow
     this.maxOverflowY = overflow
     this.minOverflowY = this.minY - overflow
+
+    if (this.content.y < this.minY) {
+      window.requestAnimationFrame(() => {
+        this.content.y = this.minY
+      })
+    }
   }
 
   lazyRender() {
