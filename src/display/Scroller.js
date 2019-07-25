@@ -33,71 +33,46 @@ class Scroller extends PIXI.Container {
    * @param {number} [options.overflow=100] overflow distance of bounce
    * @param {number} [options.bgColor=0xffffff] background color
    */
-  constructor(
-    content,
-    {
-      width,
-      height,
-      enableX,
-      enableY,
-      enableLazyRender,
-      resistance,
-      overflow,
-      bgColor,
-    } = {}
-  ) {
+  constructor(content, options) {
     super()
 
+    const window = new PIXI.Container()
+
+    /* mask */
+    const mask = new PIXI.Graphics()
+    this.addChild(mask)
+    this.$mask = mask
+    window.mask = mask
+
+    /* bg */
+    const bg = new PIXI.Sprite(WHITE)
+    this.bg = bg
+    window.addChild(bg)
+
+    /* content */
     // help to calculate the right size of content
     const basePoint = new Sprite(PIXI.Texture.WHITE)
       .setAlpha(0)
-      .setSize(5, 5)
+      .setSize(1, 1)
       .setPosition(0, 0)
     content.addChild(basePoint)
+    this.content = content
+    window.addChild(content)
 
     // undefined value ensures that the first call of lazyRender will not be skipped
     this.cachedPosition = { x: undefined, y: undefined }
 
-    const mask = new PIXI.Graphics()
-    mask.beginFill(0xffff00)
-    mask.drawRect(0, 0, width, height)
-    mask.endFill()
-    this.addChild(mask)
+    /* setup */
+    this.setup(options)
 
-    const window = new PIXI.Container()
-    window.mask = mask
+    window
+      .setInteractive(true)
+      .on('pointerdown', this.onPointerDown)
+      .on('pointermove', this.onPointerMove)
+      .on('pointerup', this.onPointerUp)
+      .on('pointerupoutside', this.onPointerUp)
+
     this.addChild(window)
-
-    const bg = new PIXI.Sprite(WHITE)
-    this.bg = bg
-
-    if (bgColor !== undefined) {
-      bg.tint = bgColor
-    } else {
-      bg.alpha = 0
-    }
-
-    window.addChild(bg)
-
-    window.addChild(content)
-    this.content = content
-
-    const setupOptions = {
-      width,
-      height,
-      enableX,
-      enableY,
-      enableLazyRender,
-      resistance,
-      overflow,
-    }
-    this.setup(setupOptions)
-
-    window.interactive = true
-    window.on('pointerdown', this.onPointerDown)
-    window.on('pointermove', this.onPointerMove)
-    window.on('pointerup', this.onPointerUp)
-    window.on('pointerupoutside', this.onPointerUp)
   }
 
   /**
@@ -333,9 +308,22 @@ class Scroller extends PIXI.Container {
     enableLazyRender = false,
     resistance = 20,
     overflow = 50,
+    bgColor,
   }) {
-    this.bg.width = width
-    this.bg.height = height
+    const mask = this.$mask
+    mask.clear()
+    mask.beginFill(0xffff00)
+    mask.drawRect(0, 0, width, height)
+    mask.endFill()
+
+    const bg = this.bg
+    bg.width = width
+    bg.height = height
+    if (bgColor !== undefined) {
+      bg.tint = bgColor
+    } else {
+      bg.alpha = 0
+    }
 
     this.viewWidth = width
     this.viewHeight = height
@@ -347,7 +335,6 @@ class Scroller extends PIXI.Container {
 
     const contentWidth = this.content.width
     const contentHeight = this.content.height
-    console.log(contentWidth, contentHeight)
     // position
     this.maxX = 0
     this.minX = width - contentWidth
