@@ -86,8 +86,8 @@ class Scroller extends PIXI.Container {
    * @access private
    */
   onPointerDown = event => {
-    this.isScrolling = true
     this.stopTween()
+    this.isScrolling = true
 
     this.data = event.data
     this.pointerDownPosition = this.data.getLocalPosition(this.content)
@@ -354,6 +354,8 @@ class Scroller extends PIXI.Container {
       return
     }
 
+    this.stopTween()
+
     this.cachedValues.viewWidth = currentViewWidth
     this.cachedValues.viewHeight = currentViewHeight
     this.cachedValues.contentWidth = currentContentWidth
@@ -382,22 +384,18 @@ class Scroller extends PIXI.Container {
     // if the scrolling distance beyonds the min and max value,
     // then reset it to min or max value
     if (this.content.x < this.minX) {
-      this.stopTween()
       this.content.x = this.minX
     }
 
     if (this.content.x > this.maxX) {
-      this.stopTween()
       this.content.x = this.maxX
     }
 
     if (this.content.y < this.minY) {
-      this.stopTween()
       this.content.y = this.minY
     }
 
     if (this.content.y > this.maxY) {
-      this.stopTween()
       this.content.y = this.maxY
     }
 
