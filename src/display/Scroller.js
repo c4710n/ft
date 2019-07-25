@@ -69,8 +69,7 @@ class Scroller extends PIXI.Container {
     this.addChild(window)
 
     const bg = new PIXI.Sprite(WHITE)
-    bg.width = width
-    bg.height = height
+    this.bg = bg
 
     if (bgColor !== undefined) {
       bg.tint = bgColor
@@ -335,6 +334,9 @@ class Scroller extends PIXI.Container {
     resistance = 20,
     overflow = 50,
   }) {
+    this.bg.width = width
+    this.bg.height = height
+
     this.viewWidth = width
     this.viewHeight = height
 
