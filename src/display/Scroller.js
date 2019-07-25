@@ -2,7 +2,6 @@ import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import { PIXI } from '../core'
 
 const { Sprite } = PIXI
-const { WHITE } = PIXI.Texture
 
 /**
  * A general scroller.
@@ -36,18 +35,13 @@ class Scroller extends PIXI.Container {
   constructor(content, options) {
     super()
 
-    const window = new PIXI.Container()
+    const view = new PIXI.Container()
 
     /* mask */
     const mask = new PIXI.Graphics()
     this.addChild(mask)
     this.$mask = mask
-    window.mask = mask
-
-    /* bg */
-    const bg = new PIXI.Sprite(WHITE)
-    this.bg = bg
-    window.addChild(bg)
+    view.mask = mask
 
     /* content */
     // help to calculate the right size of content
@@ -57,22 +51,29 @@ class Scroller extends PIXI.Container {
       .setPosition(0, 0)
     content.addChild(basePoint)
     this.content = content
-    window.addChild(content)
+    view.addChild(content)
 
-    // undefined value ensures that the first call of lazyRender will not be skipped
-    this.cachedPosition = { x: undefined, y: undefined }
+    // undefined value ensures that the first call of setup functions will not be skipped
+    this.cachedValues = {
+      x: undefined,
+      y: undefined,
+      viewWidth: undefined,
+      viewHeight: undefined,
+      contentWidth: undefined,
+      contentHeight: undefined,
+    }
 
     /* setup */
     this.setup(options)
 
-    window
+    view
       .setInteractive(true)
       .on('pointerdown', this.onPointerDown)
       .on('pointermove', this.onPointerMove)
       .on('pointerup', this.onPointerUp)
       .on('pointerupoutside', this.onPointerUp)
 
-    this.addChild(window)
+    this.addChild(view)
   }
 
   /**
@@ -295,83 +296,99 @@ class Scroller extends PIXI.Container {
   }
 
   onUpdate() {
-    if (this.enableLazyRender) {
-      this.lazyRender()
-    }
+    this.setupBounds()
+    this.lazyRender()
   }
 
   setup({
     width = 750,
     height = 1500,
+    overflow = 50,
+    resistance = 20,
     enableX = false,
     enableY = true,
     enableLazyRender = false,
-    resistance = 20,
-    overflow = 50,
-    bgColor,
   }) {
+    this.viewWidth = width
+    this.viewHeight = height
+    this.overflow = overflow
+    this.resistance = resistance
+    this.enableX = enableX
+    this.enableY = enableY
+    this.momentumX = null
+    this.momentumY = null
+    this.resetScrollVelocity()
+    this.enableLazyRender = enableLazyRender
+
+    this.setupBounds()
+    this.lazyRender()
+  }
+
+  setupBounds() {
+    const {
+      width: currentContentWidth,
+      height: currentContentHeight,
+    } = this.content
+    const { viewWidth: currentViewWidth, viewHeight: currentViewHeight } = this
+
+    const {
+      contentWidth: cachedContentWidth,
+      contentHeight: cachedContentHeight,
+      viewWidth: cachedViewWidth,
+      viewHeight: cachedViewHeight,
+    } = this.cachedValues
+
+    if (
+      currentContentWidth === cachedContentWidth &&
+      currentContentHeight === cachedContentHeight &&
+      currentViewWidth === cachedViewWidth &&
+      currentViewHeight === cachedViewHeight
+    ) {
+      return
+    }
+
+    this.cachedValues.viewWidth = currentViewWidth
+    this.cachedValues.viewHeight = currentViewHeight
+    this.cachedValues.contentWidth = currentContentWidth
+    this.cachedValues.contentHeight = currentContentHeight
+
+    // view mask
     const mask = this.$mask
     mask.clear()
     mask.beginFill(0xffff00)
-    mask.drawRect(0, 0, width, height)
+    mask.drawRect(0, 0, currentViewWidth, currentViewHeight)
     mask.endFill()
 
-    const bg = this.bg
-    bg.width = width
-    bg.height = height
-    if (bgColor !== undefined) {
-      bg.tint = bgColor
-    } else {
-      bg.alpha = 0
-    }
-
-    this.viewWidth = width
-    this.viewHeight = height
-
-    // scroll
-    this.enableX = enableX
-    this.enableY = enableY
-    this.resistance = resistance
-
-    const contentWidth = this.content.width
-    const contentHeight = this.content.height
     // position
     this.maxX = 0
-    this.minX = width - contentWidth
+    this.minX = currentViewWidth - currentContentWidth
     if (this.minX > 0) this.minX = 0
 
     this.maxY = 0
-    this.minY = height - contentHeight
+    this.minY = currentViewHeight - currentContentHeight
     if (this.minY > 0) this.minY = 0
 
     // bounce related
+    const { overflow } = this
     this.bounceX = null
     this.bounceY = null
     this.maxOverflowX = overflow
     this.minOverflowX = this.minX - overflow
     this.maxOverflowY = overflow
     this.minOverflowY = this.minY - overflow
-
-    // momentum related
-    this.momentumX = null
-    this.momentumY = null
-    this.resetScrollVelocity()
-
-    this.enableLazyRender = enableLazyRender
-    if (this.enableLazyRender) {
-      this.lazyRender()
-    }
   }
 
   lazyRender() {
+    if (!this.enableLazyRender) return
+
     const { x: currentX, y: currentY } = this.content
-    const { x: cachedX, y: cachedY } = this.cachedPosition
+    const { x: cachedX, y: cachedY } = this.cachedValues
 
     if (currentX === cachedX && currentY === cachedY) {
       return
     }
-    this.cachedPosition.x = currentX
-    this.cachedPosition.y = currentY
+    this.cachedValues.x = currentX
+    this.cachedValues.y = currentY
 
     const viewLeft = -this.content.x
     const viewRight = viewLeft + this.viewWidth
