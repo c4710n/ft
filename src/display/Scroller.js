@@ -292,6 +292,7 @@ class Scroller extends PIXI.Container {
         .duration(1000)
         .easing(Easing.Quartic.Out)
         .start()
+
       bounce.on('update', ({ y }) => {
         if (!this.content.added) return
         this.content.y = y
@@ -374,10 +375,31 @@ class Scroller extends PIXI.Container {
     this.maxX = 0
     this.minX = currentViewWidth - currentContentWidth
     if (this.minX > 0) this.minX = 0
-
     this.maxY = 0
     this.minY = currentViewHeight - currentContentHeight
     if (this.minY > 0) this.minY = 0
+
+    // if the scrolling distance beyonds the min and max value,
+    // then reset it to min or max value
+    if (this.content.x < this.minX) {
+      this.stopTween()
+      this.content.x = this.minX
+    }
+
+    if (this.content.x > this.maxX) {
+      this.stopTween()
+      this.content.x = this.maxX
+    }
+
+    if (this.content.y < this.minY) {
+      this.stopTween()
+      this.content.y = this.minY
+    }
+
+    if (this.content.y > this.maxY) {
+      this.stopTween()
+      this.content.y = this.maxY
+    }
 
     // bounce related
     const { overflow } = this
@@ -387,12 +409,6 @@ class Scroller extends PIXI.Container {
     this.minOverflowX = this.minX - overflow
     this.maxOverflowY = overflow
     this.minOverflowY = this.minY - overflow
-
-    if (this.content.y < this.minY) {
-      window.requestAnimationFrame(() => {
-        this.content.y = this.minY
-      })
-    }
   }
 
   lazyRender() {
