@@ -28,6 +28,7 @@ class Scene extends Container {
   constructor(name) {
     super()
     this.name = name
+    this.setInteractive(true)
   }
 
   async transitionIn() {}
