@@ -151,20 +151,7 @@ function wordWrapCJK(text, style, canvas = TextMetrics._canvas) {
     )
 
     // word is longer than desired bounds
-    if (tokenWidth > wordWrapWidth) {
-      // if we are not already at the beginning of a line
-
-      /**
-       * m31271n changed here:
-       *   don't wrap long line
-       */
-      // if (line !== '') {
-      //   // start newlines for overflow words
-      //   lines += TextMetrics.addLine(line)
-      //   line = ''
-      //   width = 0
-      // }
-
+    if (tokenWidth + width > wordWrapWidth) {
       // break large word over multiple lines
       if (TextMetrics.canBreakWords(token, style.breakWords)) {
         // break word into characters
@@ -219,10 +206,7 @@ function wordWrapCJK(text, style, canvas = TextMetrics._canvas) {
           line += char
           width += characterWidth
         }
-      }
-
-      // run word out of the bounds
-      else {
+      } else {
         // if there are words in this line already
         // finish that line and start a new one
         if (line.length > 0) {
@@ -239,24 +223,7 @@ function wordWrapCJK(text, style, canvas = TextMetrics._canvas) {
         line = ''
         width = 0
       }
-    }
-
-    // word could fit
-    else {
-      // word won't fit because of existing words
-      // start a new line
-      if (tokenWidth + width > wordWrapWidth) {
-        // if its a space we don't want it
-        canPrependSpaces = false
-
-        // add a new line
-        lines += TextMetrics.addLine(line)
-
-        // start a new line
-        line = ''
-        width = 0
-      }
-
+    } else {
       // don't add spaces to the beginning of lines
       if (
         line.length > 0 ||
