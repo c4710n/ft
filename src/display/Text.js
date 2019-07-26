@@ -2,6 +2,8 @@ import PIXI from '../core/PIXI'
 
 const { Container, TextMetrics, Text: TextOrigin, TextStyle } = PIXI
 
+TextMetrics.measureText = measureText
+
 class Text extends Container {
   constructor(text, style, canvas) {
     super()
