@@ -12,6 +12,7 @@ class Video extends PIXI.Container {
       layer = Layer.DOM_DISPLAY,
       poster,
       loop = false,
+      controls = false,
       spinnerTimeout = 300,
       onShowSpinner,
       onHideSpinner,
@@ -23,7 +24,12 @@ class Video extends PIXI.Container {
     this.$playing = false
     this.$previousTime = 0
 
-    this.videoPlayer = this.createVideoPlayer(url, { layer, poster, loop })
+    this.videoPlayer = this.createVideoPlayer(url, {
+      layer,
+      poster,
+      loop,
+      controls,
+    })
 
     this.onShowSpinner = onShowSpinner
     this.onHideSpinner = onHideSpinner

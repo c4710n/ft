@@ -24,7 +24,7 @@ class HTML5Video extends Video {
     this.$ready = false
   }
 
-  createVideoPlayer(url, { layer, poster, loop } = {}) {
+  createVideoPlayer(url, { layer, poster, loop, controls } = {}) {
     const video = new DOM('video', { layer }).setOrigin(0.5)
     this.video = video
     this.addChild(video)
@@ -34,6 +34,7 @@ class HTML5Video extends Video {
     videoDOM.loop = loop
     videoDOM.style.objectFit = 'fill'
     videoDOM.crossorigin = 'anonymous'
+    videoDOM.controls = controls
     videoDOM.setAttribute('preload', 'auto')
     videoDOM.setAttribute('playsinline', '')
     videoDOM.setAttribute('webkit-playsinline', '') // WebKit-based browser adaptation
