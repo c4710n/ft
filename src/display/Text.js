@@ -12,8 +12,17 @@ class Text extends Container {
     const { lines } = measureText(text, styleObject)
     const wrappedText = lines.join('\n')
     const t = new TextOrigin(wrappedText, style, canvas)
+    this.t = t
 
     this.addChild(t)
+  }
+
+  set text(value) {
+    this.t.text = value
+  }
+
+  get text() {
+    return this.t.text
   }
 }
 
