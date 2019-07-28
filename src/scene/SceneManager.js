@@ -136,7 +136,7 @@ class SceneManager {
   /**
    * Unload a scene by name explicitly.
    */
-  async unload(name) {
+  async unload(name, { destroy = true } = {}) {
     const scene = this.get(name)
     if (scene) {
       if (scene?.transitionOut) {
@@ -145,11 +145,13 @@ class SceneManager {
 
       app.stage.removeChild(scene)
 
-      scene.destroy({
-        children: true,
-        texture: scene.oneOff,
-        baseTexture: scene.oneOff,
-      })
+      if (destroy) {
+        scene.destroy({
+          children: true,
+          texture: scene.oneOff,
+          baseTexture: scene.oneOff,
+        })
+      }
     }
   }
 
