@@ -45,6 +45,18 @@ class CanvasVideo extends Video {
     return videoPlayer
   }
 
+  get muted() {
+    return this.videoPlayer.volume === 0
+  }
+
+  set muted(value) {
+    if (value === true) {
+      this.videoPlayer.volume = 0
+    } else {
+      this.videoPlayer.volume = 1
+    }
+  }
+
   onPlay(context) {
     if (!context.isPlayed && context.videoPlayer.isPlaying) {
       context.isPlayed = true

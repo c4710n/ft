@@ -55,6 +55,18 @@ class HTML5Video extends Video {
     return videoPlayer
   }
 
+  get muted() {
+    return this.videoPlayer.muted
+  }
+
+  set muted(value) {
+    if (value === true) {
+      this.videoPlayer.muted = true
+    } else {
+      this.videoPlayer.muted = false
+    }
+  }
+
   onAdded() {
     this.videoPlayer.addEventListener('ended', this.onEnd)
   }
