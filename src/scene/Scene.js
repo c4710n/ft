@@ -31,9 +31,9 @@ class Scene extends Container {
     this.setInteractive(true)
   }
 
-  async transitionIn() {}
+  async translateIn() {}
 
-  async transitionOut() {}
+  async translateOut() {}
 }
 
 export default Scene

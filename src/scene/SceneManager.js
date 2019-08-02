@@ -31,7 +31,7 @@ class SceneManager {
   /**
    * Start a scene with cleaning up other scenes.
    */
-  async load(name, { unique = false, oneOff = false, index, transition } = {}) {
+  async load(name, { unique = false, oneOff = false, index, translate } = {}) {
     if (unique && this.get(name)) return
 
     // find registered scene, then create an instance of the scene
@@ -47,16 +47,16 @@ class SceneManager {
     }
 
     const { currentScene } = this
-    if (transition) {
-      // custom logic for transition
-      await transition(currentScene, nextScene)
+    if (translate) {
+      // custom logic for translate
+      await translate(currentScene, nextScene)
     } else {
-      // default logic for transition
-      if (currentScene?.transitionOut) {
-        await currentScene.transitionOut()
+      // default logic for translate
+      if (currentScene?.translateOut) {
+        await currentScene.translateOut()
       }
-      if (nextScene?.transitionIn) {
-        await nextScene.transitionIn()
+      if (nextScene?.translateIn) {
+        await nextScene.translateIn()
       }
     }
 
@@ -84,8 +84,8 @@ class SceneManager {
       app.stage.addChild(launchedScene)
     }
 
-    if (launchedScene?.transitionIn) {
-      await launchedScene.transitionIn()
+    if (launchedScene?.translateIn) {
+      await launchedScene.translateIn()
     }
 
     return true
@@ -139,8 +139,8 @@ class SceneManager {
   async unload(name, { destroy = true } = {}) {
     const scene = this.get(name)
     if (scene) {
-      if (scene?.transitionOut) {
-        await scene.transitionOut()
+      if (scene?.translateOut) {
+        await scene.translateOut()
       }
 
       app.stage.removeChild(scene)
