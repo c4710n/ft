@@ -42,7 +42,7 @@ Visit [starter-ft](https://github.com/m31271n/starter-ft) to get examples about 
 
 ### Updating PIXI
 
-ft hacks codes from PIXI. So, when updating PIXI, remember to search `OVERRIDES ORIGINAL PIXI CODE` in order to locate related codes.
+ft hacks codes from pixi.js. So, when updating pixi.js, remember to search `OVERRIDES ORIGINAL PIXI CODE` in order to locate related codes.
 
 ## Supported By
 
