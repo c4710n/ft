@@ -28,9 +28,16 @@ class Text extends Container {
 
 export default Text
 
-// following code is fetched from:
-// + https://github.com/pixijs/pixi.js/blob/fc70bdd66c19b2d52e42f3653fe43e313cb19566/packages/text/src/TextMetrics.js#L100
-// + https://github.com/pixijs/pixi.js/blob/fc70bdd66c19b2d52e42f3653fe43e313cb19566/packages/text/src/TextMetrics.js#L169
+/**
+ * OVERRIDES ORIGINAL PIXI CODE
+ * Ensure CJK texts with external spaces is not wrapped:
+ *
+ *   Billy Brown 不是 1 只狗。
+ *
+ * PIXI VERSION: 5.1.1
+ * + https://github.com/pixijs/pixi.js/blob/40e1e4a12518ee067c6871dcdd930602346197de/packages/text/src/TextMetrics.js#L100
+ * + https://github.com/pixijs/pixi.js/blob/40e1e4a12518ee067c6871dcdd930602346197de/packages/text/src/TextMetrics.js#L169
+ */
 function measureText(text, style, wordWrap, canvas = TextMetrics._canvas) {
   wordWrap =
     wordWrap === undefined || wordWrap === null ? style.wordWrap : wordWrap
