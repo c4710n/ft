@@ -1,3 +1,4 @@
+import { Ticker } from '@pixi/ticker'
 import app from '../../app'
 import System, { UPDATE_PRIORITY } from '../System'
 import { Layer, PIXI } from '../../core'
@@ -92,16 +93,12 @@ class RenderSystem extends System {
    * @access private
    */
   remapInteraction() {
-    /**
-     * Visit following link for more details.
-     * @see https://github.com/pixijs/pixi.js/blob/dev/packages/interaction/src/InteractionManager.js
-     */
     const { container, renderer } = this
     const { interaction } = renderer.plugins
     const { normalizeToPointerData } = interaction
 
-    interaction.setTargetElement(container, renderer.resolution)
     interaction.autoPreventDefault = false
+    interaction.addEvents = addEvents.bind(interaction)
     interaction.normalizeToPointerData = function(event) {
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
@@ -124,7 +121,105 @@ class RenderSystem extends System {
         point.y = ((y - rect.top) / scale) * resolutionMultiplier
       }
     }
+
+    // reset instance of InteractionManager
+    interaction.setTargetElement(container, renderer.resolution)
   }
 }
 
 export default RenderSystem
+
+/**
+ * OVERRIDES ORIGINAL PIXI CODE
+ *
+ * make sure touch events and mouse events aren't binded together.
+ *
+ * PIXI VERSION: 5.1.1
+ * + https://github.com/pixijs/pixi.js/blob/40e1e4a12518ee067c6871dcdd930602346197de/packages/interaction/src/InteractionManager.js
+ */
+function addEvents() {
+  if (!this.interactionDOMElement) {
+    return
+  }
+  Ticker.system.add(this.update, this, UPDATE_PRIORITY.INTERACTION)
+  if (window.navigator.msPointerEnabled) {
+    this.interactionDOMElement.style['-ms-content-zooming'] = 'none'
+    this.interactionDOMElement.style['-ms-touch-action'] = 'none'
+  } else if (this.supportsPointerEvents) {
+    this.interactionDOMElement.style['touch-action'] = 'none'
+  }
+  /**
+   * These events are added first, so that if pointer events are normalized, they are fired
+   * in the same order as non-normalized events. ie. pointer event 1st, mouse / touch 2nd
+   */
+
+  if (this.supportsPointerEvents) {
+    window.document.addEventListener('pointermove', this.onPointerMove, true)
+    this.interactionDOMElement.addEventListener(
+      'pointerdown',
+      this.onPointerDown,
+      true
+    )
+    // pointerout is fired in addition to pointerup (for touch events) and pointercancel
+    // we already handle those, so for the purposes of what we do in onPointerOut, we only
+    // care about the pointerleave event
+    this.interactionDOMElement.addEventListener(
+      'pointerleave',
+      this.onPointerOut,
+      true
+    )
+    this.interactionDOMElement.addEventListener(
+      'pointerover',
+      this.onPointerOver,
+      true
+    )
+    window.addEventListener('pointercancel', this.onPointerCancel, true)
+    window.addEventListener('pointerup', this.onPointerUp, true)
+  }
+
+  if (this.supportsTouchEvents) {
+    // always look directly for touch events so that we can provide original data
+    // In a future version we should change this to being just a fallback and rely solely on
+    // PointerEvents whenever available
+    this.interactionDOMElement.addEventListener(
+      'touchstart',
+      this.onPointerDown,
+      true
+    )
+    this.interactionDOMElement.addEventListener(
+      'touchcancel',
+      this.onPointerCancel,
+      true
+    )
+    this.interactionDOMElement.addEventListener(
+      'touchend',
+      this.onPointerUp,
+      true
+    )
+    this.interactionDOMElement.addEventListener(
+      'touchmove',
+      this.onPointerMove,
+      true
+    )
+  } else {
+    window.document.addEventListener('mousemove', this.onPointerMove, true)
+    this.interactionDOMElement.addEventListener(
+      'mousedown',
+      this.onPointerDown,
+      true
+    )
+    this.interactionDOMElement.addEventListener(
+      'mouseout',
+      this.onPointerOut,
+      true
+    )
+    this.interactionDOMElement.addEventListener(
+      'mouseover',
+      this.onPointerOver,
+      true
+    )
+    window.addEventListener('mouseup', this.onPointerUp, true)
+  }
+
+  this.eventsAdded = true
+}
