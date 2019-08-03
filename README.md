@@ -38,6 +38,12 @@ Not ready to release.
 
 Visit [starter-ft](https://github.com/m31271n/starter-ft) to get examples about how to use this library.
 
+## Maintainence
+
+### Updating PIXI
+
+ft hacks codes from PIXI. So, when updating PIXI, remember to search `OVERRIDES ORIGINAL PIXI CODE` in order to locate related codes.
+
 ## Supported By
 
 ft is supported by following libraries:
