@@ -24,10 +24,6 @@ function _bindComponent(displayObject, component) {
     }
 
     component.onAdded(displayObject)
-
-    if (component.onUpdate) {
-      app.ticker.add(component.onUpdate, component)
-    }
   }
 }
 
@@ -43,10 +39,6 @@ function _unbindComponent(displayObject, component) {
       console.log(
         `[lifecycle] unbind component ${component.constructor.name} for ${displayObject.constructor.name}`
       )
-    }
-
-    if (component.onUpdate) {
-      app.ticker.remove(component.onUpdate, component)
     }
   }
 }

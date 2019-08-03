@@ -52,13 +52,6 @@ class Component {
   onRemoved(displayObject) {
     this.displayObject = null
   }
-
-  /**
-   * Hook will be called on every tick of game loop.
-   *
-   * @override
-   */
-  onUpdate() {}
 }
 
 export default Component
