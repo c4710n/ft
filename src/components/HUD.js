@@ -16,6 +16,7 @@ class HUD extends Component {
     super(options)
 
     this.system = app.systems.hud
+    this.name = this.system.name
   }
 
   setMeta({ left, right, top, bottom } = {}) {

@@ -1,5 +1,4 @@
 import app from '../app'
-import { HUD } from '../components'
 import System from './System'
 
 function checkPercentage(value) {
@@ -25,16 +24,9 @@ class HUDSystem extends System {
   }
 
   update() {
-    this.positionAll()
-  }
-
-  positionAll() {
     this.entities.forEach(entity => {
-      const hud = entity.components.find(component => component instanceof HUD)
-
-      if (hud) {
-        this.positionOne(entity, hud.meta)
-      }
+      const hudComponent = entity.components[this.name]
+      this.positionOne(entity, hudComponent.meta)
     })
   }
 

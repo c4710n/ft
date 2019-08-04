@@ -1,7 +1,6 @@
 /* global FT_PRODUCTION_MODE */
 import app from '../app'
 import { PIXI } from '../core'
-import { splice } from '../utils/fast'
 import patchDisplayObjectMethods from './patchDisplayObjectMethods'
 
 const { Container, DisplayObject } = PIXI
@@ -55,7 +54,7 @@ function callPostAdd(container) {
   }
 
   if (container.components) {
-    container.components.forEach(component => {
+    Object.values(container.components).forEach(component => {
       _bindComponent(container, component)
     })
   }
@@ -69,7 +68,7 @@ function callPostRemove(container) {
   container.added = false
 
   if (container.components) {
-    container.components.forEach(component => {
+    Object.values(container.components).forEach(component => {
       _unbindComponent(container, component)
     })
   }
@@ -135,14 +134,15 @@ function _removeChild(child) {
 
 function initComponents() {
   if (!this.components) {
-    this.components = []
+    this.components = {}
   }
 }
 
 function addComponent(component) {
   this.initComponents()
 
-  this.components.push(component)
+  const componentName = component.name
+  this.components[componentName] = component
   _bindComponent(this, component)
 
   return this
@@ -151,11 +151,10 @@ function addComponent(component) {
 function removeComponent(component) {
   this.initComponents()
 
-  const index = this.components.indexOf(component)
-  const exist = index !== -1
-  if (exist) {
+  const componentName = component.name
+  if (this.components[componentName]) {
     _unbindComponent(this, component)
-    splice(this.components, index, 1)
+    delete this.components[componentName]
   }
 
   return this
