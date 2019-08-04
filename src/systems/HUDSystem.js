@@ -25,14 +25,14 @@ class HUDSystem extends System {
 
   update() {
     this.entities.forEach(entity => {
-      const hudComponent = entity.components[this.name]
-      this.positionOne(entity, hudComponent.meta)
+      const component = entity.components[this.name]
+      this.position(entity, component)
     })
   }
 
-  positionOne(entity, meta) {
+  position(entity, component) {
     let $x, $y
-    const { left, right, top, bottom } = meta
+    const { left, right, top, bottom } = component
     const { bounds } = app.systems.scale
 
     if (left !== undefined) {

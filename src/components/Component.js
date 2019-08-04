@@ -4,7 +4,7 @@
  * @interface
  */
 class Component {
-  constructor(options) {
+  constructor(_options) {
     /**
      * current component is added or not.
      */
@@ -16,22 +16,6 @@ class Component {
      * @type {DisplayObject}
      */
     this.displayObject = null
-
-    /**
-     * meta info of current component.
-     *
-     * @type {Object}
-     */
-    this.setMeta(options)
-  }
-
-  /**
-   * Method to set meta data.
-   *
-   * @override
-   */
-  setMeta(_options) {
-    this.meta = {}
   }
 
   /**
