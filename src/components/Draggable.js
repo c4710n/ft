@@ -9,8 +9,10 @@ import Component from './Component'
  * displayObject.addComponent(draggable)
  */
 class Draggable extends Component {
-  constructor({ startCallback, moveCallback, endCallback } = {}) {
+  constructor({ onStart, onMove, onEnd } = {}) {
     super()
+
+    this.name = 'draggable'
 
     /**
      * @access private
@@ -27,9 +29,9 @@ class Draggable extends Component {
      */
     this.$pointerdownPosition = null
 
-    this.startCallback = startCallback
-    this.moveCallback = moveCallback
-    this.endCallback = endCallback
+    this.onStart = onStart
+    this.onMove = onMove
+    this.onEnd = onEnd
   }
 
   onAdded(displayObject) {
@@ -62,8 +64,8 @@ class Draggable extends Component {
     // click position relative to current displayObject
     this.$pointerdownPosition = this.$eventData.getLocalPosition(this)
 
-    const component = this.components.find(c => c instanceof Draggable)
-    component.startCallback && component.startCallback(this)
+    const component = this.components[this.name]
+    component?.onStart?.(this)
   }
 
   /**
@@ -73,8 +75,8 @@ class Draggable extends Component {
     this.$dragging = false
     this.$eventData = null
 
-    const component = this.components.find(c => c instanceof Draggable)
-    component.endCallback && component.endCallback(this)
+    const component = this.components[this.name]
+    component?.onEnd?.(this)
   }
 
   /**
@@ -89,8 +91,8 @@ class Draggable extends Component {
     const y = currentPosition.y - this.$pointerdownPosition.y
     this.position.set(x, y)
 
-    const component = this.components.find(c => c instanceof Draggable)
-    component.moveCallback && component.moveCallback(this)
+    const component = this.components[this.name]
+    component?.onMove?.(this)
   }
 }
 
