@@ -1,5 +1,5 @@
 import System from '../System'
-import sound from 'pixi-sound'
+import sound from './Sound'
 import events from '../../events'
 
 class SoundSystem extends System {

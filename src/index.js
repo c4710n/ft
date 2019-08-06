@@ -10,5 +10,6 @@ export * from './res'
 export * from './debug'
 
 export * from './systems/TweenSystem/TWEEN'
+export * from './systems/SoundSystem/Sound'
 
 export default FT
