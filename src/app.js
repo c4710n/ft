@@ -23,8 +23,13 @@ class App {
     this.ticker = new PIXI.Ticker()
     this.stage = new PIXI.Container()
     this.systems = {}
+
+    // default instances of managers
     this.rm = ResManager.default
     this.sm = SceneManager.default
+
+    // place to hold global references
+    this.share = {}
   }
 
   /**
