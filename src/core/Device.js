@@ -42,6 +42,11 @@ class Device {
     return ua
   }
 
+  static get isIOS() {
+    const pattern = /ip[honead]{2,4}/i
+    return pattern.test(Device.UA)
+  }
+
   static get isAndroid() {
     const pattern = /android/i
     return pattern.test(Device.UA)
