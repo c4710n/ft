@@ -38,18 +38,18 @@ class Draggable extends Component {
     super.onAdded(displayObject)
 
     displayObject.interactive = true
-    displayObject.on('pointerdown', this.onDragStart)
-    displayObject.on('pointerup', this.onDragEnd)
-    displayObject.on('pointerupoutside', this.onDragEnd)
-    displayObject.on('pointermove', this.onDragMove)
+    displayObject.on('pointerdown', this.onDragStart, this)
+    displayObject.on('pointerup', this.onDragEnd, this)
+    displayObject.on('pointerupoutside', this.onDragEnd, this)
+    displayObject.on('pointermove', this.onDragMove, this)
   }
 
   onRemoved(displayObject) {
     displayObject.interactive = false
-    displayObject.off('pointerdown', this.onDragStart)
-    displayObject.off('pointerup', this.onDragEnd)
-    displayObject.off('pointerupoutside', this.onDragEnd)
-    displayObject.off('pointermove', this.onDragMove)
+    displayObject.off('pointerdown', this.onDragStart, this)
+    displayObject.off('pointerup', this.onDragEnd, this)
+    displayObject.off('pointerupoutside', this.onDragEnd, this)
+    displayObject.off('pointermove', this.onDragMove, this)
 
     super.onRemoved(displayObject)
   }
@@ -58,25 +58,29 @@ class Draggable extends Component {
    * @access private
    */
   onDragStart(event) {
+    const component = this
+    const { displayObject } = this
+
     this.$dragging = true
     this.$eventData = event.data
 
     // click position relative to current displayObject
-    this.$pointerdownPosition = this.$eventData.getLocalPosition(this)
+    this.$pointerdownPosition = this.$eventData.getLocalPosition(displayObject)
 
-    const component = this.components[this.name]
-    component?.onStart?.(this)
+    component?.onStart?.(displayObject)
   }
 
   /**
    * @access private
    */
   onDragEnd() {
+    const component = this
+    const { displayObject } = this
+
     this.$dragging = false
     this.$eventData = null
 
-    const component = this.components[this.name]
-    component?.onEnd?.(this)
+    component?.onEnd?.(displayObject)
   }
 
   /**
@@ -84,15 +88,18 @@ class Draggable extends Component {
    */
   onDragMove() {
     if (!this.$dragging) return
+    const component = this
+    const { displayObject } = this
 
     // click position relative to the parent of current displayObject
-    const currentPosition = this.$eventData.getLocalPosition(this.parent)
+    const currentPosition = this.$eventData.getLocalPosition(
+      displayObject.parent
+    )
     const x = currentPosition.x - this.$pointerdownPosition.x
     const y = currentPosition.y - this.$pointerdownPosition.y
-    this.position.set(x, y)
+    displayObject.position.set(x, y)
 
-    const component = this.components[this.name]
-    component?.onMove?.(this)
+    component?.onMove?.(displayObject)
   }
 }
 
