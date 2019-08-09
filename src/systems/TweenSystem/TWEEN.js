@@ -1,5 +1,5 @@
 // delegate es6-tween
-import { update, remove, Tween } from 'es6-tween'
+import { update, remove, Tween } from 'es6-tween/src'
 
 const TWEEN = { update }
 
@@ -31,7 +31,7 @@ if (!Tween.prototype.startAsync) {
   }
 }
 
-export { Tween, Easing } from 'es6-tween'
+export { Tween, Easing } from 'es6-tween/src'
 
 /**
  * @external {TWEEN} https://github.com/tweenjs/es6-tween
