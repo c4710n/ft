@@ -27,13 +27,27 @@ const { Container } = PIXI
 class Scene extends Container {
   constructor(name) {
     super()
+
     this.name = name
+    this.allowInteraction = false
     this.setInteractive(true)
   }
 
-  async translateIn() {}
+  async _translateIn() {
+    if (this.translateIn) {
+      await this.translateIn()
+    }
 
-  async translateOut() {}
+    this.allowInteraction = true
+  }
+
+  async _translateOut() {
+    this.allowInteraction = false
+
+    if (this.translateOut) {
+      await this.translateOut()
+    }
+  }
 }
 
 export default Scene

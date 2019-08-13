@@ -52,12 +52,11 @@ class SceneManager {
       await translate(currentScene, nextScene)
     } else {
       // default logic for translate
-      if (currentScene?.translateOut) {
-        await currentScene.translateOut()
+      if (currentScene) {
+        await currentScene._translateOut()
       }
-      if (nextScene?.translateIn) {
-        await nextScene.translateIn()
-      }
+
+      await nextScene._translateIn()
     }
 
     this.currentScene = nextScene
@@ -84,9 +83,7 @@ class SceneManager {
       app.stage.addChild(launchedScene)
     }
 
-    if (launchedScene?.translateIn) {
-      await launchedScene.translateIn()
-    }
+    await launchedScene._translateIn()
 
     return true
   }
@@ -139,9 +136,7 @@ class SceneManager {
   async unload(name, { destroy = true } = {}) {
     const scene = this.get(name)
     if (scene) {
-      if (scene?.translateOut) {
-        await scene.translateOut()
-      }
+      await scene._translateOut()
 
       app.stage.removeChild(scene)
 
