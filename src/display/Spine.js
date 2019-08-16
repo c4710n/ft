@@ -18,6 +18,10 @@ class Spine extends PIXI.spine.Spine {
     return trackID
   }
 
+  setupPose() {
+    this.skeleton.setSlotsToSetupPose()
+  }
+
   playAnimation(
     animationName,
     { loop = false, pause = false, reverse = false } = {}
