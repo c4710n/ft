@@ -9,6 +9,7 @@ class Spine extends PIXI.spine.Spine {
     super(...args)
 
     this.$trackID = 0
+    this.$tracks = {}
   }
 
   get nextTrackID() {
@@ -39,6 +40,17 @@ class Spine extends PIXI.spine.Spine {
       track.timeScale = -1
     }
 
+    this.$tracks[animationName] = track
+
+    return track
+  }
+
+  stopAnimation(animationName) {
+    const track = this.$tracks[animationName]
+    if (track) {
+      track.timeScale = 0
+    }
+
     return track
   }
 
@@ -47,9 +59,11 @@ class Spine extends PIXI.spine.Spine {
       .filter(animation => animationNameRE.test(animation.name))
       .map(animation => animation.name)
 
-    animationNames.forEach(name => {
-      this.playAnimation(name, { loop, pause })
+    const tracks = animationNames.map(name => {
+      return this.playAnimation(name, { loop, pause })
     })
+
+    return tracks
   }
 
   addCompleteListener(animationName, callback) {
