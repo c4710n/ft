@@ -25,10 +25,10 @@ class Spine extends PIXI.spine.Spine {
 
   playAnimation(
     animationName,
-    { loop = false, pause = false, reverse = false } = {}
+    { loop = false, pause = false, reverse = false, trackID } = {}
   ) {
-    const trackID = this.nextTrackID
-    const track = this.state.setAnimation(trackID, animationName, loop)
+    const $trackID = trackID !== undefined ? trackID : this.nextTrackID
+    const track = this.state.setAnimation($trackID, animationName, loop)
 
     if (pause) {
       track.timeScale = 0
