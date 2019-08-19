@@ -31,12 +31,15 @@ class SceneManager {
   /**
    * Start a scene with cleaning up other scenes.
    */
-  async load(name, { unique = false, oneOff = false, index, translate } = {}) {
+  async load(
+    name,
+    { args = [], unique = false, oneOff = false, index, translate } = {}
+  ) {
     if (unique && this.get(name)) return
 
     // find registered scene, then create an instance of the scene
     const { Class, name: $name } = this.getRegisteredScene(name)
-    const nextScene = new Class($name)
+    const nextScene = new Class($name, ...args)
     nextScene.oneOff = oneOff
 
     // add instance of scene into stage
@@ -69,11 +72,14 @@ class SceneManager {
   /**
    * Start a scene without cleaning up other scenes.
    */
-  async launch(name, { unique = false, oneOff = false, index } = {}) {
+  async launch(
+    name,
+    { args = [], unique = false, oneOff = false, index } = {}
+  ) {
     if (unique && this.get(name)) return
 
     const { Class, name: $name } = this.getRegisteredScene(name)
-    const launchedScene = new Class($name)
+    const launchedScene = new Class($name, ...args)
     launchedScene.oneOff = oneOff
     launchedScene.launched = true
 
