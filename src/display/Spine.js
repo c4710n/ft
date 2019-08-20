@@ -21,6 +21,16 @@ class Spine extends PIXI.spine.Spine {
 
   setupPose() {
     this.skeleton.setSlotsToSetupPose()
+    return this
+  }
+
+  getCurrentAnimationName(trackID) {
+    return this.state.getCurrent(trackID)?.animation?.name
+  }
+
+  setDefaultMix(time) {
+    this.stateData.defaultMix = time
+    return this
   }
 
   playAnimation(
