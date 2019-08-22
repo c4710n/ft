@@ -26,7 +26,8 @@ if (!Tween.prototype.halt) {
 if (!Tween.prototype.startAsync) {
   Tween.prototype.startAsync = function() {
     return new Promise(resolve => {
-      this.on('complete', resolve).start()
+      this.on('complete', resolve)
+      this.start()
     })
   }
 }

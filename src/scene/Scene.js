@@ -36,6 +36,8 @@ class Scene extends Container {
   async _translateIn() {
     if (this.translateIn) {
       await this.translateIn()
+    } else {
+      await Promise.resolve()
     }
 
     this.allowInteraction = true
@@ -46,6 +48,8 @@ class Scene extends Container {
 
     if (this.translateOut) {
       await this.translateOut()
+    } else {
+      await Promise.resolve()
     }
   }
 }
