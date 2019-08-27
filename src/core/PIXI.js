@@ -17,7 +17,6 @@ export {
   Container,
   Graphics,
   Sprite,
-  Text,
   AnimatedSprite,
   NineSlicePlane,
 } from 'pixi.js-legacy'

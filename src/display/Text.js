@@ -1,4 +1,5 @@
 import PIXI from '../core/PIXI'
+import { string } from '../utils'
 
 const { Container, TextMetrics, Text: TextOrigin, TextStyle } = PIXI
 
@@ -12,13 +13,69 @@ class Text extends Container {
     const { lines } = measureText(text, styleObject)
     const wrappedText = lines.join('\n')
     const t = new TextOrigin(wrappedText, style, canvas)
+
     this.t = t
+    this.style = style
+    this.truncatedText()
 
     this.addChild(t)
   }
 
+  truncatedText() {
+    const { t, style } = this
+    const { fixedWidth } = style
+
+    if (fixedWidth === undefined || fixedWidth <= 0) {
+      return
+    }
+
+    const suffix = '...'
+    const suffixWidth = new TextOrigin(suffix, style).width
+    const calcWidth = fixedWidth - suffixWidth
+    const maxWidth = calcWidth > 0 ? calcWidth : 0
+
+    let truncated = false
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const isShortThanMaxWidth = t.width < maxWidth
+      const cannotBeShorten = t.text.length === 0 && t.width >= maxWidth
+
+      if (isShortThanMaxWidth || cannotBeShorten) {
+        if (truncated) {
+          t.text += suffix
+        }
+
+        break
+      } else {
+        truncated = true
+        const text = t.text
+        const end = string.length(t.text) - 1
+        t.text = string.sub(text, 0, end)
+      }
+    }
+  }
+
+  static concat(textDisplayObjects, { paddingX = 0 } = {}) {
+    const container = new Container()
+
+    let currentWidth = 0
+    textDisplayObjects.forEach((text, i) => {
+      if (i > 0) {
+        currentWidth += paddingX
+      }
+
+      text.setPositionX(currentWidth)
+      currentWidth += text.width
+
+      container.addChild(text)
+    })
+
+    return container
+  }
+
   set text(value) {
     this.t.text = value
+    this.truncatedText()
   }
 
   get text() {

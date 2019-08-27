@@ -1,6 +1,5 @@
 export * from '../core/PIXI'
-export { default as FixedWidthText } from './FixedWidthText'
-export { default as ConcatedText } from './ConcatedText'
+export { default as Text } from './Text'
 export { default as Spine } from './Spine'
 export { default as DOM } from './DOM'
 export { default as Mask } from './Mask'
