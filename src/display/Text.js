@@ -6,7 +6,7 @@ const { Container, TextMetrics, Text: TextOrigin, TextStyle } = PIXI
 TextMetrics.measureText = measureText
 
 class Text extends Container {
-  constructor(text, style, canvas) {
+  constructor(text, style = {}, canvas) {
     super()
 
     const styleObject = new TextStyle(style)
