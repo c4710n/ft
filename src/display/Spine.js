@@ -64,6 +64,15 @@ class Spine extends PIXI.spine.Spine {
     return track
   }
 
+  resumeAnimation(animationName) {
+    const track = this.$tracks[animationName]
+    if (track) {
+      track.timeScale = 1
+    }
+
+    return track
+  }
+
   playAnimations(animationNameRE, { loop = false, pause = false } = {}) {
     const animationNames = this.state.data.skeletonData.animations
       .filter(animation => animationNameRE.test(animation.name))
