@@ -5532,7 +5532,7 @@ pirates@^4.0.0:
   dependencies:
     node-modules-regexp "^1.0.0"
 
-pixi-sound@^3.0.3:
+pixi-sound@3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/pixi-sound/-/pixi-sound-3.0.3.tgz#c339e9e5f5bbe8ead9ef1c5ed7ce8b0ec2c6cac5"
   integrity sha512-FPe4+DOOOJGjGpOKWOg1x+NYAsx6tKKI3gAMyI2JmALVO0WHH8/lcsfqvb3nIBgClvHHszHtK0+UKQoxZLK/XA==
@@ -5542,7 +5542,7 @@ pixi-sound@^3.0.3:
     "@pixi/ticker" "^5.0.1"
     "@pixi/utils" "^5.0.1"
 
-pixi-spine@^2.0.3:
+pixi-spine@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/pixi-spine/-/pixi-spine-2.0.3.tgz#c3f501f3720b6a7d4ad9d520d61a2bc4f4f3e440"
   integrity sha512-2fUsux8wRm7k9ptameqhVoUIoYYKWsLh00r4UPhRzhl/kQ15tvumDo9wbCwGcX2E7OJZoBtZzcTacjrifYR8IA==
