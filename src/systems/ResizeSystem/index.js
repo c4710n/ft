@@ -16,6 +16,13 @@ class ResizeSystem extends System {
   update() {
     const { width, height } = Device.cssSize.clone()
     if (width !== this.$cachedWidth || height !== this.$cachedHeight) {
+      if (
+        document.activeElement &&
+        document.activeElement.tagName === 'INPUT' &&
+        document.hasFocus()
+      )
+        return
+
       this.$cachedWidth = width
       this.$cachedHeight = height
       events.resize.emit()
