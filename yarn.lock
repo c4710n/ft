@@ -5547,7 +5547,7 @@ pixi-spine@^2.0.3:
   resolved "https://registry.yarnpkg.com/pixi-spine/-/pixi-spine-2.0.3.tgz#c3f501f3720b6a7d4ad9d520d61a2bc4f4f3e440"
   integrity sha512-2fUsux8wRm7k9ptameqhVoUIoYYKWsLh00r4UPhRzhl/kQ15tvumDo9wbCwGcX2E7OJZoBtZzcTacjrifYR8IA==
 
-pixi.js-legacy@^5.1.0:
+pixi.js-legacy@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/pixi.js-legacy/-/pixi.js-legacy-5.1.0.tgz#e14d24041c6a438b76c1ba181263a5a6bd09b151"
   integrity sha512-2MAgfIEf2XZvdzfi3pWZ7H9GR2C68JnbAJjZ7rkzNhj4FEM02odgqTfH56+9bo+HlbzPSoJIZFwypvOJjiJGiw==
