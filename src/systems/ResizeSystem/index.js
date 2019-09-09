@@ -22,14 +22,10 @@ class ResizeSystem extends System {
       document.activeElement.tagName === 'INPUT' &&
       document.hasFocus()
 
-    const isInputSwitchToFocused =
-      this.$cachedHasInputFocused === false && hasInputFocused === true
     const isInputSwitchToBlured =
       this.$cachedHasInputFocused === true && hasInputFocused === false
 
-    if (isInputSwitchToFocused) {
-      console.log('switch to focused')
-    } else if (isInputSwitchToBlured) {
+    if (isInputSwitchToBlured) {
       this.delayEmitResizeEvent()
     } else if (!hasInputFocused) {
       this.emitResizeEvent()
