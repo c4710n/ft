@@ -49,8 +49,12 @@ class ResizeSystem extends System {
     if (this.$emitLock) return
 
     this.$emitLock = true
-    await delay(1500)
+    await delay(250)
     this.$emitLock = false
+
+    if (Device.isIOS) {
+      window.scroll(0, 0)
+    }
 
     this.emitResizeEvent()
   }
