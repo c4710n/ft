@@ -14,6 +14,8 @@ import SceneManager from './scene/SceneManager'
 
 patch()
 
+const { autoDetectRenderer, RenderTexture } = PIXI
+
 /**
  * Commander for framework.
  */
@@ -29,7 +31,7 @@ class App {
     this.sm = SceneManager.default
 
     // place to hold global references
-    this.share = {}
+    this.shared = {}
   }
 
   /**
@@ -51,6 +53,22 @@ class App {
     this.addSystem(new VisibilitySystem())
     this.addSystem(new ResizeSystem())
     this.enqueueSystems()
+  }
+
+  get sharedRenderer() {
+    if (!this.shared.renderer) {
+      this.shared.renderer = autoDetectRenderer()
+    }
+
+    return this.shared.renderer
+  }
+
+  get sharedRenderTexture() {
+    if (!this.shared.renderTexture) {
+      this.shared.renderTexture = RenderTexture.create(0, 0)
+    }
+
+    return this.shared.renderTexture
   }
 
   /**

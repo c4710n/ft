@@ -10,7 +10,7 @@ class Text extends Container {
     super()
 
     const styleObject = new TextStyle(style)
-    const { lines } = measureText(text, styleObject)
+    const { lines } = measureText(text.toString(), styleObject)
     const wrappedText = lines.join('\n')
     const t = new TextOrigin(wrappedText, style, canvas)
 

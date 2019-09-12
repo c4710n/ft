@@ -1,7 +1,4 @@
 import app from '../app'
-import { PIXI } from '../core'
-
-const { autoDetectRenderer, RenderTexture } = PIXI
 
 /**
  * Generate DataURL of given display object.
@@ -24,16 +21,8 @@ function capture(
   const $width = width !== undefined ? width : displayObject.width
   const $height = height !== undefined ? height : displayObject.height
 
-  if (!app.share.captureRenderer) {
-    app.share.captureRenderer = autoDetectRenderer()
-  }
-
-  if (!app.share.captureRenderTexture) {
-    app.share.captureRenderTexture = RenderTexture.create(0, 0)
-  }
-
-  const renderer = app.share.captureRenderer
-  const rt = app.share.captureRenderTexture
+  const renderer = app.sharedRenderer
+  const rt = app.sharedRenderTexture
   rt.resize($width, $height)
   renderer.render(displayObject, rt)
 
