@@ -307,25 +307,37 @@ class Scroller extends PIXI.Container {
     this.lazyRender()
   }
 
+  setProp(prop, value, defaultValue) {
+    if (value === undefined) {
+      if (this[prop] === undefined) {
+        this[prop] = defaultValue
+      }
+    } else {
+      this[prop] = value
+    }
+  }
+
   setup({
-    width = 750,
-    height = 1500,
-    overflow = 50,
-    resistance = 20,
-    enableX = false,
-    enableY = true,
-    enableLazyRender = false,
+    width,
+    height,
+    overflow,
+    resistance,
+    enableX,
+    enableY,
+    enableLazyRender,
   }) {
-    this.viewWidth = width
-    this.viewHeight = height
-    this.overflow = overflow
-    this.resistance = resistance
-    this.enableX = enableX
-    this.enableY = enableY
+    this.setProp('viewWidth', width, 750)
+    this.setProp('viewHeight', height, 1500)
+    this.setProp('overflow', overflow, 50)
+    this.setProp('resistance', resistance, 20)
+    this.setProp('enableX', enableX, false)
+    this.setProp('enableY', enableY, true)
+
     this.momentumX = null
     this.momentumY = null
     this.resetScrollVelocity()
-    this.enableLazyRender = enableLazyRender
+
+    this.setProp('enableLazyRender', enableLazyRender, false)
 
     this.setupBounds()
     this.lazyRender()
