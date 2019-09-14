@@ -3,7 +3,7 @@ import WebFont from 'webfontloader'
 function generateFontFace(name, url) {
   return `
 @font-face {
-  font-family: "${name}";
+  font-family: "${name.replace('.', '')}";
   src: url("${url}");
 }
 `

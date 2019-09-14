@@ -60,6 +60,7 @@ class ResManager extends PIXI.Loader {
 
   addFont(name) {
     this.queuedResources.push({ name, type: 'webfont' })
+    name = name.replace('.', '')
     return name
   }
 
