@@ -1,5 +1,6 @@
 import app from '../app'
 import { classname, qs } from '../utils'
+import state from '../state'
 
 class SceneManager {
   constructor() {
@@ -37,6 +38,8 @@ class SceneManager {
   ) {
     if (unique && this.get(name)) return
 
+    state.allowInteraction = false
+
     // find registered scene, then create an instance of the scene
     const { Class, name: $name } = this.getRegisteredScene(name)
     const nextScene = new Class($name, ...args)
@@ -66,6 +69,8 @@ class SceneManager {
 
     this.cleanup()
 
+    state.allowInteraction = true
+
     return true
   }
 
@@ -77,6 +82,8 @@ class SceneManager {
     { args = [], unique = false, oneOff = false, index } = {}
   ) {
     if (unique && this.get(name)) return
+
+    state.allowInteraction = false
 
     const { Class, name: $name } = this.getRegisteredScene(name)
     const launchedScene = new Class($name, ...args)
@@ -90,6 +97,8 @@ class SceneManager {
     }
 
     await launchedScene._translateIn()
+
+    state.allowInteraction = true
 
     return true
   }
@@ -142,6 +151,8 @@ class SceneManager {
   async unload(name, { destroy = true } = {}) {
     const scene = this.get(name)
     if (scene) {
+      state.allowInteraction = false
+
       await scene._translateOut()
 
       app.stage.removeChild(scene)
@@ -153,6 +164,8 @@ class SceneManager {
           baseTexture: scene.oneOff,
         })
       }
+
+      state.allowInteraction = true
     }
   }
 
