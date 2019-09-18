@@ -3,6 +3,7 @@ import app from '../../app'
 import System, { UPDATE_PRIORITY } from '../System'
 import { Layer, PIXI } from '../../core'
 import events from '../../events'
+import state from '../../state'
 
 class RenderSystem extends System {
   constructor({
@@ -95,7 +96,7 @@ class RenderSystem extends System {
   remapInteraction() {
     const { container, renderer } = this
     const { interaction } = renderer.plugins
-    const { normalizeToPointerData } = interaction
+    const { normalizeToPointerData, processInteractive } = interaction
 
     interaction.autoPreventDefault = false
     interaction.addEvents = addEvents.bind(interaction)
@@ -103,6 +104,11 @@ class RenderSystem extends System {
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
     }
+    interaction.processInteractive = function(...args) {
+      if (!state.allowInteraction) return
+      return processInteractive.call(this, ...args)
+    }
+
     interaction.mapPositionToPoint = function(point, x, y) {
       const { scale } = app.systems.scale.position
       const rotate = app.systems.scale.rotate
@@ -141,7 +147,9 @@ function addEvents() {
   if (!this.interactionDOMElement) {
     return
   }
+
   Ticker.system.add(this.update, this, UPDATE_PRIORITY.INTERACTION)
+
   if (window.navigator.msPointerEnabled) {
     this.interactionDOMElement.style['-ms-content-zooming'] = 'none'
     this.interactionDOMElement.style['-ms-touch-action'] = 'none'
@@ -152,7 +160,6 @@ function addEvents() {
    * These events are added first, so that if pointer events are normalized, they are fired
    * in the same order as non-normalized events. ie. pointer event 1st, mouse / touch 2nd
    */
-
   if (this.supportsPointerEvents) {
     window.document.addEventListener('pointermove', this.onPointerMove, true)
     this.interactionDOMElement.addEventListener(

@@ -1,4 +1,5 @@
 import { PIXI } from '../core'
+import state from '../state'
 
 const { Container } = PIXI
 
@@ -29,8 +30,9 @@ class Scene extends Container {
     super()
 
     this.name = name
-    this.allowInteraction = false
     this.setInteractive(true)
+
+    state.allowInteraction = false
   }
 
   async _translateIn() {
@@ -40,11 +42,11 @@ class Scene extends Container {
       await Promise.resolve()
     }
 
-    this.allowInteraction = true
+    state.allowInteraction = true
   }
 
   async _translateOut() {
-    this.allowInteraction = false
+    state.allowInteraction = false
 
     if (this.translateOut) {
       await this.translateOut()
