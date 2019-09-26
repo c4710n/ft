@@ -23,8 +23,12 @@ class Component {
    *
    * @param {DisplayObject} displayObject
    */
-  onAdded(displayObject) {
+  _onAdded(displayObject) {
     this.displayObject = displayObject
+
+    if (this.onAdded) {
+      this.onAdded(displayObject)
+    }
   }
 
   /**
@@ -33,8 +37,12 @@ class Component {
    * @param {DisplayObject} displayObject
    */
   // eslint-disable-next-line
-  onRemoved(displayObject) {
+  _onRemoved(displayObject) {
     this.displayObject = null
+
+    if (this.onRemoved) {
+      this.onRemoved(displayObject)
+    }
   }
 }
 

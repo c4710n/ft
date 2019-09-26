@@ -22,7 +22,7 @@ function _bindComponent(displayObject, component) {
       )
     }
 
-    component.onAdded(displayObject)
+    component._onAdded(displayObject)
 
     if (component.onUpdate) {
       app.ticker.add(component.onUpdate, component)
@@ -39,7 +39,7 @@ function _unbindComponent(displayObject, component) {
       app.ticker.remove(component.onUpdate, component)
     }
 
-    component.onRemoved(displayObject)
+    component._onRemoved(displayObject)
 
     if (!FT_PRODUCTION_MODE) {
       // eslint-disable-next-line
