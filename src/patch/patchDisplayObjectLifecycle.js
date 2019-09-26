@@ -23,6 +23,10 @@ function _bindComponent(displayObject, component) {
     }
 
     component.onAdded(displayObject)
+
+    if (component.onUpdate) {
+      app.ticker.add(component.onUpdate, component)
+    }
   }
 }
 
@@ -30,6 +34,10 @@ function _unbindComponent(displayObject, component) {
   // no need to check displayed.added when removing component
   if (component.added === true) {
     component.added = false
+
+    if (component.onUpdate) {
+      app.ticker.remove(component.onUpdate, component)
+    }
 
     component.onRemoved(displayObject)
 
@@ -67,22 +75,22 @@ function callPostAdd(container) {
 function callPostRemove(container) {
   container.added = false
 
+  if (container.onUpdate) {
+    app.ticker.remove(container.onUpdate, container)
+  }
+
   if (container.components) {
     Object.values(container.components).forEach(component => {
       _unbindComponent(container, component)
     })
   }
 
-  if (!FT_PRODUCTION_MODE) {
-    console.log('[lifecycle] remove', container.constructor.name) // eslint-disable-line
-  }
-
   if (container.onRemoved) {
     container.onRemoved()
   }
 
-  if (container.onUpdate) {
-    app.ticker.remove(container.onUpdate, container)
+  if (!FT_PRODUCTION_MODE) {
+    console.log('[lifecycle] remove', container.constructor.name) // eslint-disable-line
   }
 }
 
