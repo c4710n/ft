@@ -38,11 +38,11 @@ class Component {
    */
   // eslint-disable-next-line
   _onRemoved(displayObject) {
-    this.displayObject = null
-
     if (this.onRemoved) {
       this.onRemoved(displayObject)
     }
+
+    this.displayObject = null
   }
 }
 

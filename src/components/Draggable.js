@@ -35,8 +35,6 @@ class Draggable extends Component {
   }
 
   onAdded(displayObject) {
-    super.onAdded(displayObject)
-
     displayObject.interactive = true
     displayObject.on('pointerdown', this.onDragStart, this)
     displayObject.on('pointerup', this.onDragEnd, this)
@@ -50,8 +48,6 @@ class Draggable extends Component {
     displayObject.off('pointerup', this.onDragEnd, this)
     displayObject.off('pointerupoutside', this.onDragEnd, this)
     displayObject.off('pointermove', this.onDragMove, this)
-
-    super.onRemoved(displayObject)
   }
 
   /**
