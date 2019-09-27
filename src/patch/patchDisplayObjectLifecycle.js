@@ -1,6 +1,7 @@
 /* global FT_PRODUCTION_MODE */
 import app from '../app'
 import { PIXI } from '../core'
+import events from '../events'
 import patchDisplayObjectMethods from './patchDisplayObjectMethods'
 
 const { Container, DisplayObject } = PIXI
@@ -70,10 +71,21 @@ function callPostAdd(container) {
   if (container.onUpdate) {
     app.ticker.add(container.onUpdate, container)
   }
+
+  if (container.onResize) {
+    container._onResize = function _onResize() {
+      container.onResize.call(container)
+    }
+    events.resize.on(container._onResize)
+  }
 }
 
 function callPostRemove(container) {
   container.added = false
+
+  if (container.onResize) {
+    events.resize.off(container._onResize)
+  }
 
   if (container.onUpdate) {
     app.ticker.remove(container.onUpdate, container)
