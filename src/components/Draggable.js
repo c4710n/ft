@@ -9,7 +9,7 @@ import Component from './Component'
  * displayObject.addComponent(draggable)
  */
 class Draggable extends Component {
-  constructor({ onStart, onMove, onEnd } = {}) {
+  constructor({ enableX = true, enableY = true, onStart, onMove, onEnd } = {}) {
     super()
 
     this.name = 'draggable'
@@ -29,6 +29,8 @@ class Draggable extends Component {
      */
     this.$pointerdownPosition = null
 
+    this.enableX = enableX
+    this.enableY = enableY
     this.onStart = onStart
     this.onMove = onMove
     this.onEnd = onEnd
@@ -91,11 +93,27 @@ class Draggable extends Component {
     const currentPosition = this.$eventData.getLocalPosition(
       displayObject.parent
     )
-    const x = currentPosition.x - this.$pointerdownPosition.x
-    const y = currentPosition.y - this.$pointerdownPosition.y
-    displayObject.position.set(x, y)
 
-    component?.onMove?.(displayObject)
+    const nextX = currentPosition.x - this.$pointerdownPosition.x
+    const nextY = currentPosition.y - this.$pointerdownPosition.y
+
+    if (component.onMove) {
+      component.onMove(displayObject, nextX, nextY)
+    } else {
+      this.positionDisplayObject(nextX, nextY)
+    }
+  }
+
+  positionDisplayObject(x, y) {
+    const { displayObject, enableX, enableY } = this
+
+    if (enableX) {
+      displayObject.position.x = x
+    }
+
+    if (enableY) {
+      displayObject.position.y = y
+    }
   }
 }
 
