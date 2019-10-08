@@ -38,6 +38,7 @@ class ScaleSystem extends System {
     this.rotate = shouldRotate
     this.position = position
     this.bounds = bounds
+    app.size.screen = bounds
     this.viewport = viewport
 
     let { scale, offsetCSSX, offsetCSSY } = position
