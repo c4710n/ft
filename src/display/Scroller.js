@@ -81,6 +81,16 @@ class Scroller extends PIXI.Container {
     this.previousTimestamp = event.data.originalEvent.timeStamp
   }
 
+  emitProgress() {
+    const { x, y } = this.content
+    const { minX, minY } = this
+
+    const progressX = minX === 0 ? 1 : x / minX
+    const progressY = minY === 0 ? 1 : y / minY
+
+    this.emit('progress', { x: progressX, y: progressY })
+  }
+
   /**
    * @access private
    */
@@ -122,6 +132,7 @@ class Scroller extends PIXI.Container {
       this.content.y = y
     }
 
+    this.emitProgress()
     this.previousPosition = currentPosition
     this.previousTimestamp = currentTimestamp
   }
@@ -182,6 +193,7 @@ class Scroller extends PIXI.Container {
         if (cacheX <= this.maxOverflowX && cacheX >= this.minOverflowX) {
           if (!this.content.added) return
           this.content.x = cacheX
+          this.emitProgress()
         } else {
           momentum.halt()
           this.handleBounce()
@@ -220,6 +232,7 @@ class Scroller extends PIXI.Container {
         if (cacheY <= this.maxOverflowY && cacheY >= this.minOverflowY) {
           if (!this.content.added) return
           this.content.y = cacheY
+          this.emitProgress()
         } else {
           momentum.halt()
           this.handleBounceY()
@@ -254,6 +267,7 @@ class Scroller extends PIXI.Container {
       bounce.on('update', ({ x }) => {
         if (!this.content.added) return
         this.content.x = x
+        this.emitProgress()
       })
 
       this.bounceX = bounce
@@ -282,6 +296,7 @@ class Scroller extends PIXI.Container {
       bounce.on('update', ({ y }) => {
         if (!this.content.added) return
         this.content.y = y
+        this.emitProgress()
       })
 
       this.bounceY = bounce
