@@ -1,5 +1,6 @@
 import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import { PIXI } from '../core'
+import { clamp } from '../math'
 
 const { Sprite } = PIXI
 const { WHITE } = PIXI.Texture
@@ -85,10 +86,17 @@ class Scroller extends PIXI.Container {
     const { x, y } = this.content
     const { minX, minY } = this
 
-    const progressX = minX === 0 ? 1 : x / minX
-    const progressY = minY === 0 ? 1 : y / minY
+    const progressX = minX === 0 ? 0 : x / minX
+    const progressY = minY === 0 ? 0 : y / minY
 
     this.emit('progress', { x: progressX, y: progressY })
+  }
+
+  setProgress(x, y) {
+    const { minX, minY } = this
+
+    this.content.x = minX * clamp(x, 0, 1)
+    this.content.y = minY * clamp(y, 0, 1)
   }
 
   /**
