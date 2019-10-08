@@ -4,23 +4,6 @@ import { PIXI } from '../core'
 const { Sprite } = PIXI
 const { WHITE } = PIXI.Texture
 
-/**
- * A general scroller.
- *
- * @example
- * const content = new DisplayObject()
- * const scroller = FT.create(Scroller, content, {
- *   width: 640,
- *   height: 320,
- *   enableX: false,
- *   enableY: true,
- * })
- *
- * scroller.position.set(pos)
- *
- * container.addChild(scroller)
- */
-
 class Scroller extends PIXI.Container {
   /**
    * @param {DisplayObject} content the content will be scrolled
@@ -91,6 +74,9 @@ class Scroller extends PIXI.Container {
 
     this.data = event.data
     this.pointerDownPosition = this.data.getLocalPosition(this.content)
+    this.pointerDownPosition.x *= this.content.scale.x
+    this.pointerDownPosition.y *= this.content.scale.y
+
     this.previousPosition = this.pointerDownPosition
     this.previousTimestamp = event.data.originalEvent.timeStamp
   }
@@ -348,6 +334,7 @@ class Scroller extends PIXI.Container {
       width: currentContentWidth,
       height: currentContentHeight,
     } = this.content
+
     const { viewWidth: currentViewWidth, viewHeight: currentViewHeight } = this
 
     const {
