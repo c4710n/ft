@@ -65,7 +65,7 @@ class Draggable extends Component {
     // click position relative to current displayObject
     this.$pointerdownPosition = this.$eventData.getLocalPosition(displayObject)
 
-    component?.onStart?.(displayObject)
+    component.onStart?.(displayObject)
   }
 
   /**
@@ -78,7 +78,7 @@ class Draggable extends Component {
     this.$dragging = false
     this.$eventData = null
 
-    component?.onEnd?.(displayObject)
+    component.onEnd?.(displayObject)
   }
 
   /**
