@@ -110,7 +110,7 @@ class Scroller extends PIXI.Container {
     const time = currentTimestamp - this.previousTimestamp
     const factor = 10
 
-    if (this.enableX) {
+    if (this.isEnabledX()) {
       const shiftX = currentPosition.x - this.previousPosition.x
       this.scrollVelocityX = (shiftX / time) * factor
 
@@ -125,7 +125,7 @@ class Scroller extends PIXI.Container {
       this.content.x = x
     }
 
-    if (this.enableY) {
+    if (this.isEnabledY()) {
       const shiftY = currentPosition.y - this.previousPosition.y
       this.scrollVelocityY = (shiftY / time) * factor
 
@@ -152,8 +152,8 @@ class Scroller extends PIXI.Container {
     this.isScrolling = false
     this.data = null
 
-    if (this.enableX) this.handleMovementX()
-    if (this.enableY) this.handleMovementY()
+    if (this.isEnabledX()) this.handleMovementX()
+    if (this.isEnabledY()) this.handleMovementY()
     this.resetScrollVelocity()
   }
 
@@ -464,6 +464,16 @@ class Scroller extends PIXI.Container {
         child.visible = true
       }
     }
+  }
+
+  isEnabledX() {
+    const { viewWidth, contentWidth } = this.cachedValues
+    return this.enableX && viewWidth < contentWidth
+  }
+
+  isEnabledY() {
+    const { viewHeight, contentHeight } = this.cachedValues
+    return this.enableY && viewHeight < contentHeight
   }
 }
 
