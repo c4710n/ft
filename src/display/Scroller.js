@@ -204,14 +204,14 @@ class Scroller extends PIXI.Container {
           this.emitProgress()
         } else {
           momentum.halt()
-          this.handleBounce()
+          this.handleBounceX({ fromMomentum: true })
         }
       })
 
-      momentum.on('complete', this.handleBounce)
+      momentum.on('complete', () => this.handleBounceX({ fromMomentum: true }))
       this.momentumX = momentum
     } else {
-      this.handleBounceX()
+      this.handleBounceX({ fromMomentum: false })
     }
   }
 
@@ -243,18 +243,18 @@ class Scroller extends PIXI.Container {
           this.emitProgress()
         } else {
           momentum.halt()
-          this.handleBounceY()
+          this.handleBounceY({ fromMomentum: true })
         }
       })
 
-      momentum.on('complete', this.handleBounceY)
+      momentum.on('complete', () => this.handleBounceY({ fromMomentum: true }))
       this.momentumY = momentum
     } else {
-      this.handleBounceY()
+      this.handleBounceY({ fromMomentum: false })
     }
   }
 
-  handleBounceX = () => {
+  handleBounceX = ({ fromMomentum = false } = {}) => {
     const { x } = this.content
 
     if (x > this.maxX || x < this.minX) {
@@ -263,8 +263,10 @@ class Scroller extends PIXI.Container {
 
       if (x > this.maxX) {
         to.x = this.maxX
+        this.emit('bounce', { type: 'right', fromMomentum })
       } else if (x < this.minX) {
         to.x = this.minX
+        this.emit('bounce', { type: 'left', fromMomentum })
       }
 
       const bounce = new Tween(from)
@@ -282,7 +284,7 @@ class Scroller extends PIXI.Container {
     }
   }
 
-  handleBounceY = () => {
+  handleBounceY = ({ fromMomentum = false } = {}) => {
     const { y } = this.content
 
     if (y > this.maxY || y < this.minY) {
@@ -291,8 +293,10 @@ class Scroller extends PIXI.Container {
 
       if (y > this.maxY) {
         to.y = this.maxY
+        this.emit('bounce', { type: 'top', fromMomentum })
       } else if (y < this.minY) {
         to.y = this.minY
+        this.emit('bounce', { type: 'bottom', fromMomentum })
       }
 
       const bounce = new Tween(from)
