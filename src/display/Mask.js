@@ -3,10 +3,6 @@ import { PIXI } from '../core'
 
 /**
  * A mask whose size is equal to viewport's size.
- *
- * @example
- * const mask = FT.create(Mask, { color: 0xff0000, alpha: 0.8 })
- * container.addChild(mask)
  */
 class Mask extends PIXI.Graphics {
   /**
