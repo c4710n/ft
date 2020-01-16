@@ -103,6 +103,27 @@ class SceneManager {
     return true
   }
 
+  launchSync(name, { args = [], unique = false, oneOff = false, index } = {}) {
+    if (unique && this.get(name)) return
+
+    state.allowInteraction = false
+
+    const { Class, name: $name } = this.getRegisteredScene(name)
+    const launchedScene = new Class($name, ...args)
+    launchedScene.oneOff = oneOff
+    launchedScene.launched = true
+
+    if (typeof index === 'number') {
+      app.stage.addChildAt(launchedScene, index)
+    } else {
+      app.stage.addChild(launchedScene)
+    }
+
+    state.allowInteraction = true
+
+    return true
+  }
+
   async setCurrent(nameOrScene) {
     const scene = this.get(nameOrScene)
     scene.launched = false
