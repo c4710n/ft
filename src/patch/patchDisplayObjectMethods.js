@@ -138,7 +138,9 @@ function setVisible(value = true) {
 }
 
 function removeSelf() {
-  this.parent.removeChild(this)
+  if (this.parent) {
+    this.parent.removeChild(this)
+  }
 }
 
 function getComponent(name) {
