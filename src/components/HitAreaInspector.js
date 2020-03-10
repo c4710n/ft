@@ -5,6 +5,8 @@ class HitAreaInspector extends Component {
   constructor() {
     super()
 
+    this.name = 'hitarea-inspector'
+
     const outline = new Graphics()
     this.outline = outline
   }
