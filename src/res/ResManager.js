@@ -155,13 +155,32 @@ class ResManager extends PIXI.Loader {
   /**
    * Get sub texture by name.
    */
-  subTexture(name, subname) {
-    const resource = this.resources[name]
-    if (!resource) {
-      throw new Error(`[${classname(this)}] missing subtexture - ${name}`)
+  subTexture(names, subname) {
+    let _names = []
+
+    if (Array.isArray(names)) {
+      _names = names
     } else {
-      return resource.textures[subname]
+      const name = names
+      _names.push(name)
     }
+
+    for (const name of _names) {
+      const resource = this.resources[name]
+
+      if (!resource) {
+        throw new Error(`[${classname(this)}] missing texture - ${name}`)
+      } else {
+        const subtexture = resource.textures[subname]
+        if (subtexture) {
+          return subtexture
+        } else {
+          continue
+        }
+      }
+    }
+
+    throw new Error(`[${classname(this)}] missing subtexture - ${subname}`)
   }
 
   /**
