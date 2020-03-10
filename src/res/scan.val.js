@@ -135,9 +135,14 @@ function detectType(extname) {
       re: /\.(mp4)/,
     },
     {
-      // format for jsmpeg
+      // deprecated: format for jsmpeg
       type: 'mpegts',
       re: /\.(ts)/,
+    },
+    {
+      // format for jsmpeg
+      type: 'mpeg',
+      re: /\.(mpeg)/,
     },
     {
       type: 'json',
