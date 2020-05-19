@@ -28,14 +28,14 @@
     ""
   ],
   "dependencies": {
-    "es6-tween": "^5.5.10",
-    "eventemitter3": "^4.0.0",
-    "fast-glob": "^3.1.0",
-    "pixi-sound": "^3.0.3",
+    "es6-tween": "^5.5.11",
+    "eventemitter3": "^4.0.4",
+    "fast-glob": "^3.2.2",
+    "pixi-sound": "^3.0.4",
     "pixi-spine": "2.0.5",
-    "pixi.js-legacy": "^5.1.5",
-    "qs": "^6.9.0",
-    "string-length": "^3.1.0",
+    "pixi.js-legacy": "^5.2.4",
+    "qs": "^6.9.4",
+    "string-length": "^4.0.1",
     "vconsole": "^3.3.4",
     "webfontloader": "^1.6.28"
   },
