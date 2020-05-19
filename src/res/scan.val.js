@@ -6,7 +6,7 @@
  * Currently, this module needs webpack and val-loader.
  *
  * Usage:
- *   import res from '!val-loader?basedir=./basedirOfResources!@2players/ft/res/scan'
+ *   import res from '!val-loader?basedir=./basedirOfResources!@yiiz/ft/res/scan'
  *
  * @example
  * // structure of metadata array.
@@ -29,7 +29,7 @@ module.exports = ({ basedir } = {}) => {
   const _dir = fs.realpathSync(basedir)
 
   const self = __filename
-  const paths = fg.sync([`${_dir}/**/*`]).filter(i => i !== self)
+  const paths = fg.sync([`${_dir}/**/*`]).filter((i) => i !== self)
   const resources = paths.map(($path, index) => {
     const extname = path.extname($path)
     const basename = path.basename($path)

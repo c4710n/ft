@@ -1,8 +1,8 @@
 {
-  "name": "@2players/ft",
+  "name": "yiiz/ft",
   "description": "A simple framework in EC pattern for HTML5 marketing pages.",
   "version": "0.10.0",
-  "repository": "2players/ft",
+  "repository": "yiiz/ft",
   "engines": {
     "node": ">=8"
   },
