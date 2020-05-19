@@ -33,7 +33,7 @@ Not ready to release.
 
 ## Usage
 
-Visit [starter-ft](https://github.com/m31271n/starter-ft) to get examples about how to use this library.
+Visit [starter-ft](https://github.com/yiiz/starter-ft) to get examples about how to use this library.
 
 ## Maintainence
 
