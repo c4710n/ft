@@ -131,10 +131,12 @@ function setFilters(filters) {
   }
 
   this.filters = _filters
+  return this
 }
 
 function clearFilters() {
   this.filters = []
+  return this
 }
 
 function setInteractive(value = true, { includeChildren } = {}) {
