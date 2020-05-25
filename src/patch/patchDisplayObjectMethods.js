@@ -121,6 +121,22 @@ function setTint(value) {
   return this
 }
 
+function setFilters(filters) {
+  let _filters
+
+  if (!Array.isArray(filters)) {
+    _filters = [filters]
+  } else {
+    _filters = filters
+  }
+
+  this.filters = _filters
+}
+
+function clearFilters() {
+  this.filters = []
+}
+
 function setInteractive(value = true, { includeChildren } = {}) {
   this.interactive = value
 
@@ -162,6 +178,8 @@ export default function patchDisplayObjectMethods(prototype) {
   prototype.setRotation = setRotation
   prototype.setAngle = setAngle
   prototype.setTint = setTint
+  prototype.setFilters = setFilters
+  prototype.clearFilters = clearFilters
   prototype.setInteractive = setInteractive
   prototype.setVisible = setVisible
 
