@@ -1,6 +1,9 @@
+import Parameter from 'parameter'
+
 class SessionStore {
   constructor() {
     this._store = {}
+    this.validator = new Parameter()
   }
 
   get(key, default_value) {

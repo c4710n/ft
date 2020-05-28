@@ -32,6 +32,7 @@
     "eventemitter3": "^4.0.4",
     "fast-glob": "^3.2.2",
     "js-cookie": "^2.2.1",
+    "parameter": "^3.6.0",
     "pixi-sound": "^3.0.4",
     "pixi-spine": "2.0.5",
     "pixi.js-legacy": "^5.2.4",
