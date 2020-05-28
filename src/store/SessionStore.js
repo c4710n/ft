@@ -13,6 +13,10 @@ class SessionStore {
   set(key, value) {
     this._store[key] = value
   }
+
+  inspect() {
+    return this._store
+  }
 }
 
 export default SessionStore
