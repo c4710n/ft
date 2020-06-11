@@ -42,6 +42,20 @@ class ResManager extends PIXI.Loader {
     $res = res
   }
 
+  static async loadImage(url) {
+    const name = 'current'
+
+    const $rm = new ResManager()
+    $rm.add(name, url)
+    await new Promise(function(resolve, reject) {
+      $rm.on('complete', resolve)
+      $rm.on('error', reject)
+      $rm.load()
+    })
+
+    return $rm.texture(name)
+  }
+
   get res() {
     return $res
   }
