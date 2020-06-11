@@ -1,4 +1,5 @@
 export * from '../core/PIXI'
+export { default as CircleSprite } from './CircleSprite'
 export { default as Text } from './Text'
 export { default as Spine } from './Spine'
 export { default as DOM } from './DOM'
