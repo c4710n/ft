@@ -1,17 +1,17 @@
 import { PIXI } from '../core'
 
-const { Sprite, Graphics } = PIXI
+const { Container, Sprite, Graphics } = PIXI
 
-class CircleSprite extends Sprite {
+class CircleSprite extends Container {
   constructor(texture) {
-    super(texture)
+    super()
 
-    const { width, height } = this
+    const sprite = new Sprite(texture)
+
+    const { width, height } = sprite
     const radius = Math.min(width, height) / 2
-
     const offsetX = width / 2 - radius
     const offsetY = height / 2 - radius
-
     const x = offsetX + radius
     const y = offsetY + radius
 
@@ -22,6 +22,8 @@ class CircleSprite extends Sprite {
 
     this.mask = circle
     this.addChild(circle)
+
+    this.addChild(sprite)
   }
 }
 
