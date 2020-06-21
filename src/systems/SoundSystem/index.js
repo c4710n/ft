@@ -16,6 +16,14 @@ class SoundSystem extends System {
       sound._context.refreshPaused()
     })
   }
+
+  muteAll() {
+    sound.muteAll()
+  }
+
+  unmuteAll() {
+    sound.unmuteAll()
+  }
 }
 
 export default SoundSystem
