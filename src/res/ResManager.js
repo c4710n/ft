@@ -48,8 +48,8 @@ class ResManager extends PIXI.Loader {
     const $rm = new ResManager()
     $rm.add(name, url)
     await new Promise(function(resolve, reject) {
-      $rm.on('complete', resolve)
-      $rm.on('error', reject)
+      $rm.onComplete.add(resolve)
+      $rm.onError.add(reject)
       $rm.load()
     })
 
