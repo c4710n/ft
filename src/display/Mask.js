@@ -9,7 +9,7 @@ class Mask extends PIXI.Graphics {
    * @param {Object} options
    * @param {number} options.color mask's color
    */
-  constructor({ color = 0x000000, alpha = 0.5 } = {}) {
+  constructor({ color = 0x000000, alpha = 0.7 } = {}) {
     super()
 
     this.beginFill(color)
