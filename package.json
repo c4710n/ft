@@ -34,7 +34,7 @@
     "js-cookie": "^2.2.1",
     "parameter": "^3.6.0",
     "pixi-sound": "^3.0.4",
-    "pixi-spine": "2.0.5",
+    "pixi-spine": "^2.1.8",
     "pixi.js-legacy": "^5.3.0",
     "qs": "^6.9.4",
     "string-length": "^4.0.1",
