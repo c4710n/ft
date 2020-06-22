@@ -7,7 +7,7 @@ import app from '../app'
  * @param {DisplayObject} displayObject the display object which provides position and size.
  */
 function transformDOM(dom, displayObject, layer) {
-  const { width, height, worldAlpha: alpha, angle } = displayObject
+  const { width, height, worldAlpha: alpha, angle, visible } = displayObject
 
   const { x: $x, y: $y } = displayObject.getGlobalPosition()
 
@@ -26,6 +26,7 @@ function transformDOM(dom, displayObject, layer) {
   const y = $y - stagePosition.y - pivotY
 
   dom.style.position = 'absolute'
+  dom.style.display = visible ? '' : 'none'
   dom.style.width = `${width}px`
   dom.style.height = `${height}px`
   dom.style.left = `${x}px`
