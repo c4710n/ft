@@ -20,7 +20,15 @@ class TimeProgress extends Tween {
     super({ progress: 0 })
     this.to({ progress: 100 }, timeout)
 
-    this.onProgress = this.onUpdate
+    if (!this.onProgress) {
+      this.onProgress = {}
+    }
+    this.onProgress.add = f => this.onUpdate(f)
+
+    if (!this.onComplete) {
+      this.onComplete = {}
+    }
+    this.onComplete.add = f => this.onComplete(f)
   }
 }
 
