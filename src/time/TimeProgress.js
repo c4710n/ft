@@ -12,42 +12,15 @@ import { Tween } from '../systems/TweenSystem/TWEEN'
  * // start timer
  * timer.start()
  */
-class TimeProgress {
+class TimeProgress extends Tween {
   /**
    * @param {number} timeout timeout in milliseconds.
    */
   constructor(timeout) {
-    const timerStart = { progress: 0 }
-    const timerEnd = { progress: 100 }
-    this.timer = new Tween(timerStart).to(timerEnd, timeout)
-  }
+    super({ progress: 0 })
+    this.to({ progress: 100 }, timeout)
 
-  transformEvent(event) {
-    switch (event) {
-      case 'progress':
-        return 'update'
-
-      default:
-        return event
-    }
-  }
-
-  on(event, listener, context) {
-    event = this.transformEvent(event)
-    this.timer.on(event, listener, context)
-  }
-
-  off(event, listener, context) {
-    event = this.transformEvent(event)
-    this.timer.off(event, listener, context)
-  }
-
-  start() {
-    this.timer.start()
-  }
-
-  stop() {
-    this.timer.stop()
+    this.onProgress = this.onUpdate
   }
 }
 
