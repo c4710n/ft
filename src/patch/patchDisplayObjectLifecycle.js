@@ -32,7 +32,7 @@ function _bindComponent(displayObject, component) {
 }
 
 function _unbindComponent(displayObject, component) {
-  // no need to check displayed.added when removing component
+  // no need to check displayObject.added when removing component
   if (component.added === true) {
     component.added = false
 
