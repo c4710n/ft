@@ -1,5 +1,5 @@
 import app from '../app'
-import { classname, qs } from '../utils'
+import { classname, qs } from '../util'
 import state from '../state'
 
 class SceneManager {

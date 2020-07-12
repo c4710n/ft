@@ -1,5 +1,5 @@
 import app from '../app'
-import classname from '../utils/classname'
+import classname from '../util/classname'
 
 /**
  * A timer via

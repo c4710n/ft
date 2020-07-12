@@ -2,7 +2,7 @@ import app from '../../app'
 import System from '../System'
 import modes from './Modes'
 import events from '../../events'
-import { classname } from '../../utils'
+import { classname } from '../../util'
 
 class ScaleSystem extends System {
   constructor({ mode = 'COVER' } = {}) {

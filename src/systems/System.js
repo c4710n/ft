@@ -1,4 +1,4 @@
-import { splice } from '../utils/fast'
+import { splice } from '../util/fast'
 import { PIXI } from '../core'
 
 export const { UPDATE_PRIORITY } = PIXI

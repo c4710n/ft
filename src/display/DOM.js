@@ -1,6 +1,6 @@
 import app from '../app'
 import { PIXI, Layer } from '../core'
-import { transformDOM } from '../utils'
+import { transformDOM } from '../util'
 
 const { Sprite, Texture } = PIXI
 

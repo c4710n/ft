@@ -1,5 +1,5 @@
 import PIXI from '../core/PIXI'
-import { string } from '../utils'
+import { string } from '../util'
 
 const { Container, TextMetrics, Text: TextOrigin, TextStyle } = PIXI
 
