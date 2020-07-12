@@ -1,9 +1,8 @@
-import FT from './FT'
+import app from './app'
 
-export { default as app } from './app'
 export * from './core'
 export * from './systems'
 export * from './res'
 export * from './scene'
 
-export default FT
+export default app

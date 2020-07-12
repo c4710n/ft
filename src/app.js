@@ -53,6 +53,8 @@ class App {
     this.addSystem(new VisibilitySystem())
     this.addSystem(new ResizeSystem())
     this.enqueueSystems()
+
+    return this
   }
 
   get sharedRenderer() {
