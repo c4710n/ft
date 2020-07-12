@@ -1,8 +1,5 @@
 import app from './app'
 
-export * from './core'
-export * from './systems'
-export * from './res'
-export * from './scene'
+window.ft = app
 
 export default app

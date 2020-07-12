@@ -29,6 +29,9 @@
   - random number helper
   - ...
 - thoughtful and organized modules
+  - ft/core
+  - ft/res
+  - ft/scene
   - ft/display
   - ft/component
   - ft/animation
@@ -39,6 +42,7 @@
   - ft/util
   - ft/debug
   - ft/wireframe
+  - ...
 
 ## Installation
 
