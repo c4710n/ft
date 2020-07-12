@@ -7,7 +7,9 @@ import { Tween } from '../animation'
  * const progress = new TimeMixer(3000)
  *
  * // listen on progress event
- * progress.on('progress', function({ progress: value }) {console.log(value)}, this)
+ * progress.on('progress', function({ progress: value }) {
+ *   console.log(value)
+ * }, this)
  *
  * // start timer
  * timer.start()
@@ -29,6 +31,10 @@ class TimeMixer extends Tween {
       this.onComplete = {}
     }
     this.onComplete.add = f => this.onComplete(f)
+  }
+
+  load() {
+    this.start()
   }
 }
 

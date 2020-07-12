@@ -10,6 +10,7 @@ import {
   ResizeSystem,
 } from './systems'
 import ResManager from './res/ResManager'
+import AdvancedResManager from './res/AdvancedResManager'
 import SceneManager from './scene/SceneManager'
 
 patch()
@@ -28,6 +29,7 @@ class App {
 
     // default instances of managers
     this.rm = ResManager.default
+    this.arm = AdvancedResManager.default
     this.sm = SceneManager.default
 
     // place to hold global references
