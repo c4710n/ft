@@ -1,6 +1,6 @@
 import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import { PIXI } from '../core'
-import { clamp } from '../math'
+import { clamp } from '../util/math'
 
 const { Sprite } = PIXI
 const { WHITE } = PIXI.Texture

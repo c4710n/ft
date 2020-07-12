@@ -1,5 +1,5 @@
 import Component from './Component'
-import { clamp } from '../math'
+import { clamp } from '../util/math'
 
 class Slidable extends Component {
   constructor(direction, { min = -400, max = 0, onCompleted, onFailed } = {}) {
