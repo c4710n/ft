@@ -1,10 +1,10 @@
-import { Tween } from '../systems/TweenSystem/TWEEN'
+import { Tween } from '../animation'
 
 /**
  * Fake progress emitter based on timeout.
  *
  * @example
- * const progress = new TimerProgress(3000)
+ * const progress = new TimeMixer(3000)
  *
  * // listen on progress event
  * progress.on('progress', function({ progress: value }) {console.log(value)}, this)
@@ -12,7 +12,7 @@ import { Tween } from '../systems/TweenSystem/TWEEN'
  * // start timer
  * timer.start()
  */
-class TimeProgress extends Tween {
+class TimeMixer extends Tween {
   /**
    * @param {number} timeout timeout in milliseconds.
    */
@@ -32,4 +32,4 @@ class TimeProgress extends Tween {
   }
 }
 
-export default TimeProgress
+export default TimeMixer
