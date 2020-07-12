@@ -1,5 +1,5 @@
-import { Tween, Easing } from '../systems/TweenSystem/TWEEN'
 import { PIXI } from '../core'
+import { Tween, Easing } from '../animation'
 import { clamp } from '../util/math'
 
 const { Sprite } = PIXI
@@ -161,10 +161,10 @@ class Scroller extends PIXI.Container {
    * @access private
    */
   stopTween = () => {
-    if (this.bounceX) this.bounceX.halt()
-    if (this.bounceY) this.bounceY.halt()
-    if (this.momentumX) this.momentumX.halt()
-    if (this.momentumY) this.momentumY.halt()
+    if (this.bounceX) this.bounceX.stop()
+    if (this.bounceY) this.bounceY.stop()
+    if (this.momentumX) this.momentumX.stop()
+    if (this.momentumY) this.momentumY.stop()
   }
 
   /**
@@ -195,7 +195,7 @@ class Scroller extends PIXI.Container {
         .easing(Easing.Quintic.Out)
         .start()
 
-      momentum.on('update', ({ velocity }) => {
+      momentum.onUpdate(({ velocity }) => {
         cacheX += velocity
 
         if (cacheX <= this.maxOverflowX && cacheX >= this.minOverflowX) {
@@ -203,12 +203,12 @@ class Scroller extends PIXI.Container {
           this.content.x = cacheX
           this.emitProgress()
         } else {
-          momentum.halt()
+          momentum.stop()
           this.handleBounceX({ fromMomentum: true })
         }
       })
 
-      momentum.on('complete', () => this.handleBounceX({ fromMomentum: true }))
+      momentum.onComplete(() => this.handleBounceX({ fromMomentum: true }))
       this.momentumX = momentum
     } else {
       this.handleBounceX({ fromMomentum: false })
@@ -234,7 +234,7 @@ class Scroller extends PIXI.Container {
         .easing(Easing.Quintic.Out)
         .start()
 
-      momentum.on('update', ({ velocity }) => {
+      momentum.onUpdate(({ velocity }) => {
         cacheY += velocity
 
         if (cacheY <= this.maxOverflowY && cacheY >= this.minOverflowY) {
@@ -242,12 +242,12 @@ class Scroller extends PIXI.Container {
           this.content.y = cacheY
           this.emitProgress()
         } else {
-          momentum.halt()
+          momentum.stop()
           this.handleBounceY({ fromMomentum: true })
         }
       })
 
-      momentum.on('complete', () => this.handleBounceY({ fromMomentum: true }))
+      momentum.onComplete(() => this.handleBounceY({ fromMomentum: true }))
       this.momentumY = momentum
     } else {
       this.handleBounceY({ fromMomentum: false })
@@ -274,7 +274,8 @@ class Scroller extends PIXI.Container {
         .duration(1000)
         .easing(Easing.Quartic.Out)
         .start()
-      bounce.on('update', ({ x }) => {
+
+      bounce.onUpdate(({ x }) => {
         if (!this.content.added) return
         this.content.x = x
         this.emitProgress()
@@ -305,7 +306,7 @@ class Scroller extends PIXI.Container {
         .easing(Easing.Quartic.Out)
         .start()
 
-      bounce.on('update', ({ y }) => {
+      bounce.onUpdate(({ y }) => {
         if (!this.content.added) return
         this.content.y = y
         this.emitProgress()
