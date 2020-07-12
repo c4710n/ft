@@ -7,6 +7,7 @@
 
 ## Features
 
+- GPU memory sensitive code
 - common managers
   - resource manager
   - scene manager
@@ -18,6 +19,7 @@
   - sound system
   - tween system
   - HUD system
+  - ...
 - common display object for developing marketing page
   - DOM
   - HTML5Video / CanvasVideo
@@ -25,7 +27,18 @@
 - useful helpers
   - unicode string helper
   - random number helper
-- GPU memory sensitive code
+  - ...
+- thoughtful and organized modules
+  - ft/display
+  - ft/component
+  - ft/animation
+  - ft/sound
+  - ft/filter
+  - ft/time
+  - ft/store
+  - ft/util
+  - ft/debug
+  - ft/wireframe
 
 ## Installation
 
@@ -54,4 +67,4 @@ ft is supported by following libraries:
 
 ## License
 
-[MIT](MIT) © [YIZ](https://yiz.design/)
+MIT © [YIZ](https://yiz.design/)
