@@ -103,6 +103,12 @@ function setAlpha(alpha) {
   return this
 }
 
+function setZIndex(zIndex) {
+  this.zIndex = zIndex
+
+  return this
+}
+
 function setRotation(rotation) {
   this.rotation = rotation
 
@@ -177,6 +183,7 @@ export default function patchDisplayObjectMethods(prototype) {
   prototype.setScaleX = setScaleX
   prototype.setScaleY = setScaleY
   prototype.setAlpha = setAlpha
+  prototype.setZIndex = setZIndex
   prototype.setRotation = setRotation
   prototype.setAngle = setAngle
   prototype.setTint = setTint
