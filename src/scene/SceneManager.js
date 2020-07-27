@@ -135,7 +135,7 @@ class SceneManager {
    */
   qsload() {
     const qo = qs.parse()
-    const { scene: name } = qo
+    const { __scene__: name } = qo
 
     if (name) {
       return this.load(name)
