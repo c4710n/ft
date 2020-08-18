@@ -3,8 +3,8 @@ class PlainStore {
     this._store = {}
   }
 
-  get(key, default_value = null) {
-    return this._store[key] || default_value
+  get(key) {
+    return this._store[key]
   }
 
   set(key, value) {
