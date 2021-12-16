@@ -1,11 +1,19 @@
 # ft
 
 > This project is created and maintained by me when I worked for [YIZ](https://yiz.design/).
+> Currently, I maintain it at some very random times.
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Module System](https://img.shields.io/badge/module%20system-ES%20Module-brightgreen.svg)](#)
 
 > A simple framework in EC pattern for HTML5 marketing pages.
+
+## Demos
+
+- [来跑跑寻找你的 Line Friends 伙伴](https://c4710n.github.io/static/qq-popcart-linefriends/index_master.html)
+- [LOL 电玩研究所](https://c4710n.github.io/static/qq-lol-arcade/index.html)
+- [LOL 冰雪节 2018 主题活动](https://c4710n.github.io/static/qq-lol-snowing-festival-2018/index.html)
+- ...
 
 ## Features
 
@@ -52,7 +60,7 @@ Not ready to release.
 
 ## Usage
 
-Visit [starter-ft](https://github.com/yiiz/starter-ft) to get examples about how to use this library.
+Visit [ft-starter](https://github.com/c4710n/ft-starter) to get examples about how to use this library.
 
 ## Maintainence
 
