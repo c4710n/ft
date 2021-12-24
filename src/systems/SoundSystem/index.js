@@ -1,6 +1,12 @@
+import { PIXI } from '../../core'
 import System from '../System'
-import sound from './Sound'
+import { SoundLoader, sound } from '@pixi/sound'
 import events from '../../events'
+
+// Use HTML Audio
+sound.useLegacy = true
+
+PIXI.Loader.registerPlugin(SoundLoader)
 
 class SoundSystem extends System {
   constructor() {
