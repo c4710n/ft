@@ -6,7 +6,7 @@
  * Currently, this module needs webpack and val-loader.
  *
  * Usage:
- *   import res from '!val-loader?basedir=./basedirOfResources!@yiiz/ft/res/scan'
+ *   import res from '!val-loader?basedir=./basedirOfResources!ft/res/scan'
  *
  * @example
  * // structure of metadata array.

@@ -1,8 +1,8 @@
 {
-  "name": "@yiiz/ft",
+  "name": "ft",
   "description": "A simple framework in EC pattern for HTML5 marketing pages.",
   "version": "0.10.0",
-  "repository": "yiiz/ft",
+  "repository": "c4710n/ft",
   "engines": {
     "node": ">=8"
   },
