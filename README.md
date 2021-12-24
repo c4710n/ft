@@ -74,7 +74,7 @@ ft is supported by following libraries:
 
 - 2D Renderer - [pixi.js](https://github.com/pixijs/pixi.js)
 - Sound support - [@pixi/sound](https://github.com/pixijs/sound)
-- Tween library - [es6-tween](https://github.com/tweenjs/es6-tween)
+- Tween library - [@tweenjs/tween.js](https://github.com/tweenjs/tween.js/)
 - Web Console - [vConsole](https://github.com/Tencent/vConsole)
 - ...
 
