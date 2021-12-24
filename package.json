@@ -21,6 +21,7 @@
     "*"
   ],
   "main": "index.js",
+  "sideEffects": false,
   "keywords": [
     ""
   ],
