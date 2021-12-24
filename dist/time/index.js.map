@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/time/index.js"],"names":["default","delay","timeout"],"mappings":"AAAA,SAASA,OAAO,IAAIC,KAApB,QAAiC,SAAjC;AACA,SAASD,OAAO,IAAIE,OAApB,QAAmC,WAAnC","sourcesContent":["export { default as delay } from './delay'\nexport { default as timeout } from './timeout'\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/systems/ScaleSystem/ORIENTATION.js"],"names":["LANDSCAPE","PORTRAIT"],"mappings":"AAAA,eAAe;AACbA,EAAAA,SAAS,EAAE,WADE;AAEbC,EAAAA,QAAQ,EAAE;AAFG,CAAf","sourcesContent":["export default {\n  LANDSCAPE: 'landscape',\n  PORTRAIT: 'portrait',\n}\n"],"file":"ORIENTATION.js"}

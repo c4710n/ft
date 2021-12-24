@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["app","window","ft"],"mappings":"AAAA,OAAOA,GAAP,MAAgB,OAAhB;AAEAC,MAAM,CAACC,EAAP,GAAYF,GAAZ;AAEA,eAAeA,GAAf","sourcesContent":["import app from './app'\n\nwindow.ft = app\n\nexport default app\n"],"file":"index.js"}

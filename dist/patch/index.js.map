@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/patch/index.js"],"names":["patchDisplayObjectLifecycle","patch"],"mappings":"AAAA,OAAOA,2BAAP,MAAwC,+BAAxC;AAEA,eAAe,SAASC,KAAT,GAAiB;AAC9BD,EAAAA,2BAA2B;AAC5B","sourcesContent":["import patchDisplayObjectLifecycle from './patchDisplayObjectLifecycle'\n\nexport default function patch() {\n  patchDisplayObjectLifecycle()\n}\n"],"file":"index.js"}

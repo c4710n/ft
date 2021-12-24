@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/state.js"],"names":["allowInteraction"],"mappings":"AAAA,eAAe;AACbA,EAAAA,gBAAgB,EAAE;AADL,CAAf","sourcesContent":["export default {\n  allowInteraction: true,\n}\n"],"file":"state.js"}
