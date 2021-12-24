@@ -20,7 +20,6 @@
   "files": [
     "*"
   ],
-  "sideEffects": false,
   "main": "index.js",
   "keywords": [
     ""
@@ -32,7 +31,6 @@
     "fast-glob": "^3.2.7",
     "js-cookie": "^3.0.1",
     "parameter": "^3.6.0",
-    "pixi-spine": "^3.0.13",
     "pixi.js-legacy": "^6.2.1",
     "qs": "^6.10.2",
     "string-length": "^5.0.1",

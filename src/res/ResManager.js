@@ -1,9 +1,7 @@
 import { PIXI } from '../core'
 import fontLoader from './loader/font'
-import { generateImageLoader as generateSpineImageLoader } from './loader/spine'
 import { patch as patchSpritesheetLoader } from './loader/spritesheet'
 import { classname } from '../util'
-import 'pixi-spine'
 
 patchSpritesheetLoader()
 
@@ -47,7 +45,7 @@ class ResManager extends PIXI.Loader {
 
     const $rm = new ResManager()
     $rm.add(name, url)
-    await new Promise(function(resolve, reject) {
+    await new Promise(function (resolve, reject) {
       $rm.onComplete.add(resolve)
       $rm.onError.add(reject)
       $rm.load()
@@ -93,11 +91,6 @@ class ResManager extends PIXI.Loader {
     return name
   }
 
-  addSpine(name) {
-    this.queuedResources.push({ name, type: 'spine' })
-    return name
-  }
-
   load() {
     for (const resource of this.queuedResources) {
       const { type, name } = resource
@@ -105,9 +98,6 @@ class ResManager extends PIXI.Loader {
       if (this.resources[name]) continue
 
       switch (type) {
-        case 'spine':
-          this.loadSpine(name)
-          break
         case 'spritesheet':
           this.loadSpritesheet(name)
           break
@@ -133,24 +123,6 @@ class ResManager extends PIXI.Loader {
         meta: { image },
       },
       metadata: { image },
-    })
-  }
-
-  loadSpine(name) {
-    if (!this.spineImageLoader) {
-      this.spineImageLoader = generateSpineImageLoader(name =>
-        this.url(name, { basename: true })
-      )
-    }
-
-    const { spineImageLoader } = this
-    const json = $res.url(name, { type: 'json' })
-    const atlas = $res.url(name, { type: 'atlas' })
-    this.add(name, json, {
-      metadata: {
-        spineAtlasFile: atlas,
-        imageLoader: spineImageLoader,
-      },
     })
   }
 
@@ -239,7 +211,7 @@ class ResManager extends PIXI.Loader {
 
         return 0
       })
-      .map(i => i.texture)
+      .map((i) => i.texture)
 
     return textures
   }
@@ -265,18 +237,6 @@ class ResManager extends PIXI.Loader {
       throw new Error(`[${classname(this)}] missing json - ${name}`)
     } else {
       return resource.data
-    }
-  }
-
-  /**
-   * Get a spine by name.
-   */
-  spine(name) {
-    const resource = this.resources[name]
-    if (!resource) {
-      throw new Error(`[${classname(this)}] missing spine - ${name}`)
-    } else {
-      return resource.spineData
     }
   }
 }

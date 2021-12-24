@@ -73,7 +73,6 @@ ft hacks codes from pixi.js. So, when updating pixi.js, remember to search `OVER
 ft is supported by following libraries:
 
 - 2D Renderer - [pixi.js](https://github.com/pixijs/pixi.js)
-- Spine support - [pixi-spine](https://github.com/pixijs/pixi-spine)
 - Sound support - [@pixi/sound](https://github.com/pixijs/sound)
 - Tween library - [es6-tween](https://github.com/tweenjs/es6-tween)
 - Web Console - [vConsole](https://github.com/Tencent/vConsole)
