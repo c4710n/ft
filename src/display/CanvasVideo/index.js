@@ -67,7 +67,7 @@ class CanvasVideo extends Video {
   nativePlay() {
     super.nativePlay()
 
-    const promise = new Promise(resolve => {
+    const promise = new Promise((resolve) => {
       EE.on('play', resolve)
     })
     this.videoPlayer.play()
@@ -78,7 +78,7 @@ class CanvasVideo extends Video {
   nativePause() {
     super.nativePause()
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.videoPlayer.pause()
       resolve()
     })

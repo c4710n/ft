@@ -25,12 +25,12 @@ class TimeMixer extends Tween {
     if (!this.onProgress) {
       this.onProgress = {}
     }
-    this.onProgress.add = f => this.onUpdate(f)
+    this.onProgress.add = (f) => this.onUpdate(f)
 
     if (!this.onComplete) {
       this.onComplete = {}
     }
-    this.onComplete.add = f => this.onComplete(f)
+    this.onComplete.add = (f) => this.onComplete(f)
   }
 
   load() {

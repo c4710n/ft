@@ -11,8 +11,8 @@ if (!TWEEN.Tween.prototype.loop) {
 
 // Promisify start()
 if (!TWEEN.Tween.prototype.startAsync) {
-  TWEEN.Tween.prototype.startAsync = function() {
-    return new Promise(resolve => {
+  TWEEN.Tween.prototype.startAsync = function () {
+    return new Promise((resolve) => {
       this.onComplete(resolve)
       this.start()
     })

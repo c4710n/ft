@@ -7,7 +7,7 @@ import app from '../app'
  * @return {Promise} a promise will be resolved when timeout.
  */
 function delay(ms) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const start = performance.now()
     const timer = () => {
       const now = performance.now()

@@ -128,7 +128,7 @@ class HTML5Video extends Video {
 
     this.$preplayPromise =
       this.$preplayPromise ||
-      new Promise(resolve => {
+      new Promise((resolve) => {
         const listener = () => {
           const { currentTime } = videoPlayer
           if (currentTime > 0) {

@@ -8,7 +8,7 @@ function styleDOM(dom, { disableScroll = true, bgColor = '#ffffff' } = {}) {
   if (disableScroll) {
     document.body.addEventListener(
       'touchmove',
-      function(e) {
+      function (e) {
         e.preventDefault()
       },
       { passive: false }
@@ -16,7 +16,7 @@ function styleDOM(dom, { disableScroll = true, bgColor = '#ffffff' } = {}) {
 
     document.body.addEventListener(
       'scroll',
-      function(e) {
+      function (e) {
         e.preventDefault()
       },
       { passive: false }

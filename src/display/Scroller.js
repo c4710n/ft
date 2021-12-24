@@ -69,7 +69,7 @@ class Scroller extends PIXI.Container {
   /**
    * @access private
    */
-  onPointerDown = event => {
+  onPointerDown = (event) => {
     this.stopTween()
     this.isScrolling = true
 
@@ -102,7 +102,7 @@ class Scroller extends PIXI.Container {
   /**
    * @access private
    */
-  onPointerMove = event => {
+  onPointerMove = (event) => {
     if (!this.isScrolling) return
 
     const currentPosition = this.data.getLocalPosition(this)
@@ -358,10 +358,8 @@ class Scroller extends PIXI.Container {
   }
 
   setupBounds() {
-    const {
-      width: currentContentWidth,
-      height: currentContentHeight,
-    } = this.content
+    const { width: currentContentWidth, height: currentContentHeight } =
+      this.content
 
     const { viewWidth: currentViewWidth, viewHeight: currentViewHeight } = this
 

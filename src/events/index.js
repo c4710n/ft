@@ -9,47 +9,47 @@ function emitResizeEvent() {
   EE.emit(EVENT_RESIZE, { width, height })
 }
 const resize = {}
-resize.on = function(...args) {
+resize.on = function (...args) {
   EE.on(EVENT_RESIZE, ...args)
 }
-resize.off = function(...args) {
+resize.off = function (...args) {
   EE.off(EVENT_RESIZE, ...args)
 }
 resize.emit = emitResizeEvent
 
 const EVENT_SCALE = 'scale'
 const scale = {}
-scale.on = function(...args) {
+scale.on = function (...args) {
   EE.on(EVENT_SCALE, ...args)
 }
-scale.off = function(...args) {
+scale.off = function (...args) {
   EE.off(EVENT_SCALE, ...args)
 }
-scale.emit = function(...args) {
+scale.emit = function (...args) {
   EE.emit(EVENT_SCALE, ...args)
 }
 
 const EVENT_SHOW = 'show'
 const show = {}
-show.on = function(...args) {
+show.on = function (...args) {
   EE.on(EVENT_SHOW, ...args)
 }
-show.off = function(...args) {
+show.off = function (...args) {
   EE.off(EVENT_SHOW, ...args)
 }
-show.emit = function(...args) {
+show.emit = function (...args) {
   EE.emit(EVENT_SHOW, ...args)
 }
 
 const EVENT_HIDE = 'hide'
 const hide = {}
-hide.on = function(...args) {
+hide.on = function (...args) {
   EE.on(EVENT_HIDE, ...args)
 }
-hide.off = function(...args) {
+hide.off = function (...args) {
   EE.off(EVENT_HIDE, ...args)
 }
-hide.emit = function(...args) {
+hide.emit = function (...args) {
   EE.emit(EVENT_HIDE, ...args)
 }
 

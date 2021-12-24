@@ -100,16 +100,16 @@ class RenderSystem extends System {
 
     interaction.autoPreventDefault = false
     interaction.addEvents = addEvents.bind(interaction)
-    interaction.normalizeToPointerData = function(event) {
+    interaction.normalizeToPointerData = function (event) {
       this.interactionDOMElement = event.target
       return normalizeToPointerData.call(this, event)
     }
-    interaction.processInteractive = function(...args) {
+    interaction.processInteractive = function (...args) {
       if (!state.allowInteraction) return
       return processInteractive.call(this, ...args)
     }
 
-    interaction.mapPositionToPoint = function(point, x, y) {
+    interaction.mapPositionToPoint = function (point, x, y) {
       const { scale } = app.systems.scale.position
       const rotate = app.systems.scale.rotate
 

@@ -24,7 +24,7 @@ class HUDSystem extends System {
   }
 
   update() {
-    this.entities.forEach(entity => {
+    this.entities.forEach((entity) => {
       const component = entity.components[this.name]
       this.position(entity, component)
     })

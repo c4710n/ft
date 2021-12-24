@@ -63,7 +63,7 @@ function callPostAdd(container) {
   }
 
   if (container.components) {
-    Object.values(container.components).forEach(component => {
+    Object.values(container.components).forEach((component) => {
       _bindComponent(container, component)
     })
   }
@@ -92,7 +92,7 @@ function callPostRemove(container) {
   }
 
   if (container.components) {
-    Object.values(container.components).forEach(component => {
+    Object.values(container.components).forEach((component) => {
       _unbindComponent(container, component)
     })
   }
@@ -109,13 +109,13 @@ function callPostRemove(container) {
 function recursiveCallPostAdd(container) {
   callPostAdd(container)
 
-  container.children.forEach(c => {
+  container.children.forEach((c) => {
     recursiveCallPostAdd(c)
   })
 }
 
 function recursiveCallPostRemove(container) {
-  container.children.forEach(c => {
+  container.children.forEach((c) => {
     recursiveCallPostRemove(c)
   })
 

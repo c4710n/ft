@@ -151,7 +151,7 @@ class SceneManager {
   cleanup() {
     const scenes = app.stage.children
 
-    scenes.forEach(scene => {
+    scenes.forEach((scene) => {
       if (scene.launched || scene === this.currentScene) {
         return
       }
@@ -196,7 +196,7 @@ class SceneManager {
    * Get a registered scene.
    */
   getRegisteredScene(name) {
-    const scene = this.registeredScenes.find(s => s.name === name)
+    const scene = this.registeredScenes.find((s) => s.name === name)
     if (!scene) {
       throw `[${classname(this)}] failed to get unregistered scene - ${name}`
     }
@@ -213,10 +213,10 @@ class SceneManager {
 
     if (typeof nameOrScene === 'string') {
       const providedSceneName = nameOrScene
-      scene = scenes.find(s => s.name === providedSceneName)
+      scene = scenes.find((s) => s.name === providedSceneName)
     } else {
       const providedScene = nameOrScene
-      scene = scenes.find(s => s === providedScene)
+      scene = scenes.find((s) => s === providedScene)
     }
 
     return scene
