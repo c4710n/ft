@@ -4,15 +4,20 @@ import { Tween } from '../animation'
  * Fake progress emitter based on timeout.
  *
  * @example
- * const progress = new TimeMixer(3000)
+ * const tm = new TimeMixer(3000)
  *
  * // listen on progress event
- * progress.on('progress', function({ progress: value }) {
+ * tm.onProgress.add(({ progress: value }) => {
  *   console.log(value)
- * }, this)
+ * })
+ *
+ * // listen on complete event
+ * tm.onComplete.add(({ progress: value }) => {
+ *   console.log(value)
+ * })
  *
  * // start timer
- * timer.start()
+ * timer.load()
  */
 class TimeMixer extends Tween {
   /**
