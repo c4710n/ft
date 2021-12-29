@@ -28,7 +28,7 @@
     "fast-glob": "^3.2.7",
     "js-cookie": "^3.0.1",
     "parameter": "^3.6.0",
-    "pixi.js-legacy": "^5.0.0",
+    "pixi.js-legacy": "^6.0.0",
     "qs": "^6.10.2",
     "string-length": "^5.0.1",
     "vconsole": "^3.10.1",
