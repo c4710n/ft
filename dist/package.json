@@ -1,10 +1,10 @@
 {
   "name": "ft",
   "description": "A simple framework in EC pattern for HTML5 marketing pages.",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "repository": "c4710n/ft",
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "scripts": {
     "lint": "eslint 'src/**/*.js'",
@@ -16,13 +16,10 @@
     "build:watch": "nodemon --watch src --exec 'npm run build'",
     "release": "npm run code-quality && npm run build && cd dist && npm publish"
   },
-  "files": [
-    "*"
-  ],
-  "main": "index.js",
   "sideEffects": false,
-  "keywords": [
-    ""
+  "main": "dist/index.js",
+  "files": [
+    "dist/*"
   ],
   "dependencies": {
     "@pixi/sound": "^4.0.3",
@@ -31,7 +28,7 @@
     "fast-glob": "^3.2.7",
     "js-cookie": "^3.0.1",
     "parameter": "^3.6.0",
-    "pixi.js-legacy": "^6.2.1",
+    "pixi.js-legacy": "^5.0.0",
     "qs": "^6.10.2",
     "string-length": "^5.0.1",
     "vconsole": "^3.10.1",
